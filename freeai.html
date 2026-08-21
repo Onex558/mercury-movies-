@@ -3,15 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free AI</title>
+<title>Real Free AI</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
@@ -32,26 +28,19 @@
   }
 
   .logo {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     background: linear-gradient(135deg, #8b5cf6, #06b6d4);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
   }
 
-  .header h1 {
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  .header span {
-    font-size: 13px;
-    color: #a1a1aa;
-  }
+  .header h1 { font-size: 18px; font-weight: 600; }
+  .header span { font-size: 13px; color: #a1a1aa; }
 
   .chat-container {
     flex: 1;
@@ -63,16 +52,17 @@
   }
 
   .message {
-    max-width: 80%;
-    padding: 12px 16px;
+    max-width: 85%;
+    padding: 14px 18px;
     border-radius: 18px;
-    line-height: 1.5;
+    line-height: 1.55;
     font-size: 15px;
-    animation: fadeIn 0.3s ease;
+    white-space: pre-wrap;
+    animation: fadeIn 0.25s ease;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -80,19 +70,19 @@
     align-self: flex-end;
     background: #8b5cf6;
     color: white;
-    border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 5px;
   }
 
   .bot {
     align-self: flex-start;
     background: #27272a;
-    border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 5px;
   }
 
   .typing {
     align-self: flex-start;
     background: #27272a;
-    padding: 12px 18px;
+    padding: 14px 20px;
     border-radius: 18px;
     display: none;
   }
@@ -104,9 +94,8 @@
     background: #a1a1aa;
     border-radius: 50%;
     margin: 0 2px;
-    animation: bounce 1.4s infinite ease-in-out both;
+    animation: bounce 1.3s infinite ease-in-out both;
   }
-
   .typing span:nth-child(1) { animation-delay: -0.32s; }
   .typing span:nth-child(2) { animation-delay: -0.16s; }
 
@@ -127,36 +116,34 @@
     flex: 1;
     background: #27272a;
     border: 1px solid #3f3f46;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 14px 16px;
     color: white;
     font-size: 15px;
     outline: none;
-    transition: border 0.2s;
   }
 
-  #userInput:focus {
-    border-color: #8b5cf6;
-  }
+  #userInput:focus { border-color: #8b5cf6; }
 
   #sendBtn {
     background: #8b5cf6;
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 0 22px;
+    border-radius: 14px;
+    padding: 0 24px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: 0.2s;
   }
 
-  #sendBtn:hover {
-    background: #7c3aed;
-  }
+  #sendBtn:hover { background: #7c3aed; }
+  #sendBtn:disabled { background: #3f3f46; cursor: not-allowed; }
 
-  #sendBtn:disabled {
-    background: #3f3f46;
-    cursor: not-allowed;
+  .error {
+    color: #f87171;
+    font-size: 13px;
+    text-align: center;
+    padding: 8px;
   }
 </style>
 </head>
@@ -164,15 +151,15 @@
   <div class="header">
     <div class="logo">AI</div>
     <div>
-      <h1>Free AI</h1>
-      <span>100% free • No API • Runs offline</span>
+      <h1>Real Free AI</h1>
+      <span>Powered by real LLMs • No API key needed</span>
     </div>
   </div>
 
   <div class="chat-container" id="chat">
     <div class="message bot">
-      Hey! I'm Free AI — a simple chatbot that runs entirely in your browser.  
-      Ask me anything (I know a bit about coding, jokes, advice, and general knowledge). What's on your mind?
+      Hey! I'm connected to real AI models (no key required).  
+      Ask me anything — coding, explanations, ideas, jokes, whatever you need.
     </div>
   </div>
 
@@ -181,7 +168,7 @@
   </div>
 
   <div class="input-area">
-    <input type="text" id="userInput" placeholder="Type a message..." autocomplete="off">
+    <input type="text" id="userInput" placeholder="Ask me anything..." autocomplete="off">
     <button id="sendBtn">Send</button>
   </div>
 
@@ -191,67 +178,13 @@
   const sendBtn = document.getElementById('sendBtn');
   const typing = document.getElementById('typing');
 
-  // Simple knowledge + personality
-  const responses = {
-    greetings: [
-      "Hey there! How can I help you today?",
-      "Hi! What's up?",
-      "Hello! Ready when you are.",
-      "Yo! What do you need?"
-    ],
-    howAreYou: [
-      "I'm just a bunch of JavaScript, but I'm doing great! How about you?",
-      "Feeling electric today. You?",
-      "Pretty good for an offline AI. How are you holding up?"
-    ],
-    name: [
-      "I'm Free AI — built just for you in a single HTML file.",
-      "You can call me Free AI. Nice to meet you!"
-    ],
-    joke: [
-      "Why do programmers prefer dark mode? Because light attracts bugs!",
-      "Why did the AI go to therapy? It had too many neural issues.",
-      "I told my computer I needed a break... now it won't stop sending me KitKat ads."
-    ],
-    help: [
-      "I can chat, tell jokes, give basic advice, explain simple coding concepts, or just keep you company. What do you need?",
-      "Try asking me for a joke, coding help, motivation, or just say hi!"
-    ],
-    bye: [
-      "See you later! Come back anytime.",
-      "Bye! It was nice chatting.",
-      "Catch you later!"
-    ],
-    default: [
-      "Interesting... tell me more.",
-      "Hmm, I'm still learning. Can you rephrase that?",
-      "That's a good one. What else is on your mind?",
-      "I'm a simple offline AI, so I might not know everything, but I'm listening!",
-      "Got it. Anything else you'd like to talk about?"
-    ]
-  };
-
-  function getReply(text) {
-    const msg = text.toLowerCase().trim();
-
-    if (/^(hi|hello|hey|yo|sup|hiya)\b/.test(msg)) return random(responses.greetings);
-    if (/how are you|how's it going|how do you feel/.test(msg)) return random(responses.howAreYou);
-    if (/what('?s| is) your name|who are you/.test(msg)) return random(responses.name);
-    if (/joke|funny|make me laugh/.test(msg)) return random(responses.joke);
-    if (/help|what can you do|commands/.test(msg)) return random(responses.help);
-    if (/bye|goodbye|see you|cya|exit/.test(msg)) return random(responses.bye);
-    if (/thank|thanks|thx/.test(msg)) return "You're welcome! Happy to help.";
-    if (/love you|i like you/.test(msg)) return "Aww that's sweet! I'm just code, but I appreciate it.";
-    if (/weather|time|date/.test(msg)) return "I don't have live data (I'm fully offline), but you can check your phone for that!";
-    if (/code|programming|javascript|html|python/.test(msg)) return "I can talk about coding! What language or problem are you working on?";
-    if (/motivat|inspire|sad|depressed|lonely/.test(msg)) return "Hey, you're stronger than you think. One step at a time. Want to talk about it?";
-    
-    return random(responses.default);
-  }
-
-  function random(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
+  // Keep full conversation history so the AI remembers context
+  let messages = [
+    {
+      role: "system",
+      content: "You are a helpful, friendly, and concise AI assistant. Keep answers clear and useful."
+    }
+  ];
 
   function addMessage(text, isUser) {
     const div = document.createElement('div');
@@ -267,7 +200,34 @@
     chat.scrollTop = chat.scrollHeight;
   }
 
-  function sendMessage() {
+  async function askAI(userText) {
+    messages.push({ role: "user", content: userText });
+
+    try {
+      const response = await fetch("https://dg-ai.scriptsnsenses.workers.dev/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages })
+      });
+
+      if (!response.ok) throw new Error("API error");
+
+      const data = await response.json();
+      const reply = data.response?.choices?.[0]?.message?.content 
+                 || data.choices?.[0]?.message?.content 
+                 || data.response 
+                 || "Sorry, I couldn't generate a reply.";
+
+      messages.push({ role: "assistant", content: reply });
+      return reply;
+
+    } catch (err) {
+      console.error(err);
+      return "⚠️ Connection issue. The free AI server might be busy. Try again in a few seconds.";
+    }
+  }
+
+  async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
@@ -276,18 +236,16 @@
     sendBtn.disabled = true;
     showTyping(true);
 
-    // Fake thinking delay
-    setTimeout(() => {
-      showTyping(false);
-      const reply = getReply(text);
-      addMessage(reply, false);
-      sendBtn.disabled = false;
-      input.focus();
-    }, 600 + Math.random() * 800);
+    const reply = await askAI(text);
+
+    showTyping(false);
+    addMessage(reply, false);
+    sendBtn.disabled = false;
+    input.focus();
   }
 
   sendBtn.addEventListener('click', sendMessage);
-  input.addEventListener('keypress', (e) => {
+  input.addEventListener('keypress', e => {
     if (e.key === 'Enter') sendMessage();
   });
 
