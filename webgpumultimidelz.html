@@ -169,7 +169,7 @@
     messages.push({ role: "user", content: userText });
 
     try {
-      const response = await fetch("https://studytoolsss.b-cdn.net/v1/chat/deepseek", {
+      const response = await fetch("https://studytoolsss.b-cdn.net/v1/chat/gpt-oss", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages })
