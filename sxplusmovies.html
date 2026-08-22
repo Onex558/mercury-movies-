@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sx+</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#07070f;--surface:#0f0f1c;--surface2:#16162a;--surface3:#1e1e38;
+  --accent:#e8c84a;--accent2:#c8402a;--accent3:#5b8dee;--accent4:#9333ea;
+  --text:#eae8f5;--muted:#6a6880;--border:#22223a;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100%;overflow-x:hidden;}
+
+.disclaimer-bar{
+  width:100%;background:rgba(200,64,42,0.12);border-bottom:1px solid rgba(200,64,42,0.35);
+  padding:8px 20px;font-size:.72rem;color:rgba(255,255,255,0.6);
+  text-align:center;letter-spacing:.3px;line-height:1.5;
+}
+.disclaimer-bar strong{color:rgba(255,255,255,0.85);}
+.disclaimer-bar a{color:var(--accent);text-decoration:none;font-weight:600;}
+.disclaimer-bar a:hover{text-decoration:underline;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* HEADER */
+.site-header{
+  position:sticky;top:0;z-index:200;
+  background:rgba(7,7,15,0.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  flex-shrink:0;
+}
+.logo-plus{color:var(--accent3);-webkit-text-fill-color:var(--accent3);}
+.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
+.tab{
+  padding:5px 14px;border-radius:16px;font-size:.75rem;font-weight:600;letter-spacing:.5px;
+  cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);
+  transition:all .2s;white-space:nowrap;
+}
+.tab.active{background:var(--accent);color:#07070f;border-color:var(--accent);}
+.tab:hover:not(.active){color:var(--text);border-color:var(--muted);}
+.search-bar{
+  width:100%;max-width:320px;padding:8px 14px;border-radius:18px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);font-size:.83rem;outline:none;transition:border-color .2s;
+}
+.search-bar:focus{border-color:var(--accent3);}
+.search-bar::placeholder{color:var(--muted);}
+
+/* LAYOUT */
+.site{max-width:1100px;margin:0 auto;padding:24px 16px 100px;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* SECTION */
+.section{margin-bottom:36px;}
+.section-header{
+  font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:3px;
+  color:var(--accent2);border-bottom:2px solid var(--accent2);
+  padding-bottom:5px;margin-bottom:12px;
+}
+
+/* MOVIE GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;cursor:pointer;transition:all .2s;position:relative;
+}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 28px rgba(232,200,74,.13);}
+.card-thumb{
+  width:100%;aspect-ratio:2/3;background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;font-size:2.2rem;
+  position:relative;overflow:hidden;
+}
+.card-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,15,.9) 0%,transparent 55%);}
+.card-play{
+  position:absolute;bottom:7px;right:7px;z-index:2;
+  width:28px;height:28px;border-radius:50%;background:var(--accent2);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;
+}
+.card-play svg{width:11px;height:11px;fill:white;margin-left:2px;}
+.card:hover .card-play{opacity:1;}
+.card-info{padding:7px 9px;}
+.card-title{font-size:.68rem;font-weight:600;color:var(--text);line-height:1.3;}
+
+/* LIST ITEMS */
+.list-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--surface);border:1px solid var(--border);
+  border-radius:7px;margin-bottom:6px;cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.list-item:hover{border-color:var(--accent);background:var(--surface2);}
+.list-name{font-size:.86rem;color:var(--text);flex:1;}
+.list-arrow{color:var(--muted);}
+.play-dot{width:24px;height:24px;border-radius:50%;background:var(--accent2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.play-dot svg{width:10px;height:10px;fill:white;margin-left:2px;}
+.manga-dot{background:var(--accent4);}
+.music-dot{background:var(--accent3);}
+
+/* ARTIST GRID */
+.artist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px;}
+.artist-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;text-decoration:none;display:block;transition:all .2s;cursor:pointer;
+}
+.artist-card:hover{border-color:var(--accent3);transform:translateY(-3px);}
+.artist-avatar{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:2.8rem;background:var(--surface2);}
+.artist-name{padding:8px 10px;font-size:.75rem;font-weight:600;color:var(--text);text-align:center;}
+
+/* SECTION LABEL */
+.sec-label{
+  font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:4px;
+  color:var(--accent3);margin:1.5rem 0 .8rem;display:flex;align-items:center;gap:8px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* PLAYER MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(4,4,12,.97);align-items:center;justify-content:center;padding:14px;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  width:100%;max-width:820px;overflow:hidden;
+  box-shadow:0 0 60px rgba(200,64,42,.25);
+  animation:modalIn .25s cubic-bezier(.16,1,.3,1);
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.94) translateY(16px)}to{opacity:1;transform:none}}
+.modal-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2);
+}
+.modal-title{font-size:.9rem;font-weight:600;letter-spacing:.5px;max-width:60%;}
+.modal-btns{display:flex;gap:8px;}
+.mbtn{
+  padding:5px 12px;border-radius:7px;font-size:.68rem;font-weight:700;letter-spacing:.5px;
+  cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s;
+}
+.mbtn-fs{background:var(--accent);color:#07070f;}
+.mbtn-fs:hover{background:#f5d55a;}
+.mbtn-close{background:var(--surface3);color:var(--muted);}
+.mbtn-close:hover{color:var(--text);}
+.modal-player{position:relative;width:100%;padding-top:56.25%;background:#000;}
+.modal-player iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+
+/* FULLSCREEN */
+.fs-overlay{display:none;position:fixed;inset:0;z-index:2000;background:#000;flex-direction:column;}
+.fs-overlay.open{display:flex;}
+.fs-bar{
+  position:absolute;top:0;left:0;right:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.fs-overlay:hover .fs-bar{opacity:1;}
+.fs-title{font-size:.88rem;font-weight:600;color:#fff;}
+.fs-x{
+  padding:5px 12px;border-radius:7px;background:rgba(200,64,42,.8);
+  color:#fff;font-size:.68rem;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;
+}
+.fs-iframe{flex:1;border:none;width:100%;height:100%;}
+
+/* ALPHA NAV */
+.alpha-nav{display:flex;flex-wrap:wrap;gap:4px;padding:.7rem 0;border-bottom:1px solid var(--border);margin-bottom:.5rem;}
+.alpha-nav a{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:1px;color:var(--muted);padding:2px 6px;border-radius:4px;cursor:pointer;transition:all .15s;}
+.alpha-nav a:hover{background:var(--surface2);color:var(--accent);}
+
+.empty{text-align:center;padding:50px 20px;color:var(--muted);font-size:.9rem;}
+</style>
+</head>
+<body>
+
+<div class="disclaimer-bar">
+  ⚠️ All content on <strong>Sx+</strong> is sourced from third-party providers and is <strong>not affiliated with, endorsed by, or hosted by SX</strong>. All links open external <strong>Google Drive</strong> files. Use at your own discretion.
+</div>
+<header class="site-header">
+  <div class="logo">Sx<span class="logo-plus">+</span></div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('movies',event)">🍿 Movies</div>
+    <div class="tab" onclick="switchTab('tv',event)">📺 TV</div>
+    <div class="tab" onclick="switchTab('anime',event)">⛩️ Anime</div>
+    <div class="tab" onclick="switchTab('manga',event)">📚 Manga</div>
+    <div class="tab" onclick="switchTab('music',event)">🎵 Music</div>
+  </div>
+  <input class="search-bar" id="search" placeholder="Search Sx+..." oninput="handleSearch()"/>
+</header>
+
+<div class="site">
+
+  <!-- MOVIES -->
+  <div class="page active" id="movies-page">
+    <div class="alpha-nav" id="movie-alpha"></div>
+    <div id="movies-container"></div>
+    <div id="movies-results" style="display:none"></div>
+  </div>
+
+  <!-- TV -->
+  <div class="page" id="tv-page">
+    <div id="tv-container"></div>
+    <div id="tv-results" style="display:none"></div>
+  </div>
+
+  <!-- ANIME -->
+  <div class="page" id="anime-page">
+    <div id="anime-container"></div>
+    <div id="anime-results" style="display:none"></div>
+  </div>
+
+  <!-- MANGA -->
+  <div class="page" id="manga-page">
+    <div id="manga-container"></div>
+    <div id="manga-results" style="display:none"></div>
+  </div>
+
+  <!-- MUSIC -->
+  <div class="page" id="music-page">
+    <div id="music-all">
+      <div class="sec-label">🎤 Artists</div>
+      <div class="artist-grid" id="artist-grid"></div>
+      <div class="sec-label">💿 Albums</div>
+      <div id="albums-container"></div>
+    </div>
+    <div id="music-results" style="display:none"></div>
+  </div>
+
+</div>
+
+<!-- MODAL PLAYER -->
+<div class="modal-overlay" id="modal" onclick="closeModalBg(event)">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-btns">
+        <button class="mbtn mbtn-fs" onclick="openFS()">⛶ Fullscreen</button>
+        <button class="mbtn mbtn-close" onclick="closeModal()">✕</button>
+      </div>
+    </div>
+    <div class="modal-player">
+      <iframe id="modal-iframe" allowfullscreen allow="autoplay;fullscreen"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- FULLSCREEN -->
+<div class="fs-overlay" id="fs-overlay">
+  <div class="fs-bar">
+    <span class="fs-title" id="fs-title"></span>
+    <button class="fs-x" onclick="closeFS()">✕ Exit</button>
+  </div>
+  <iframe class="fs-iframe" id="fs-iframe" allowfullscreen allow="autoplay;fullscreen"></iframe>
+</div>
+
+<script>
+// ── MOVIES ──
+const movies = {
+  A:[
+    {t:"A Bug's Life",e:"🐛",l:"https://drive.google.com/file/d/1AIq4OqiMWiY9zZSayF5VID7pfTwSH6BM/view"},
+    {t:"A Charlie Brown Christmas",e:"🎄",l:"https://drive.google.com/file/d/1e2UIrJdsz_0k5tp2v0EnPZiPv2ZQSTzg/view"},
+    {t:"A Christmas Carol",e:"🕯",l:"https://drive.google.com/file/d/1hi5sfVVAYK5AsMis11QjD5JLvL5aUY0h/view"},
+    {t:"A Christmas Story",e:"🎄",l:"https://drive.google.com/file/d/1nz29MUfftWx_MeBVh4Bn7TVXlUy_6BH2/view"},
+    {t:"A Goofy Movie",e:"🎸",l:"https://sites.google.com/view/chil-zone-return/moves/goofy-movie"},
+    {t:"A Minecraft Movie",e:"⛏️",l:"https://drive.google.com/file/d/1Oppg2lJlwwqKmPK8z4HNcdeiEyf6GaHq/view"},
+    {t:"A Quiet Place",e:"🤫",l:"https://drive.google.com/file/d/1zNpKoTXnVAFBpT2BCBnpEqemuSROkYOX/view"},
+    {t:"Abigail",e:"🩰",l:"https://drive.google.com/file/d/1Na6kU306We-xHXqQlu7VIPtpCgruyRjg/view"},
+    {t:"Ad Vitam",e:"🔮",l:"https://drive.google.com/file/d/101dcG1Oiy-0ERWVk1Fb03dm_j09WdFfq/view"},
+    {t:"Aladdin",e:"🧞",l:"https://drive.google.com/file/d/1e4NzmeC84qest_9Wzmtvmi80brGPYnsN/view"},
+    {t:"Alarum",e:"🔫",l:"https://drive.google.com/file/d/1U4MHoaBMWu0yoZOnzrAlqefeq57wBZqD/view"},
+    {t:"Alien: Romulus",e:"👽",l:"https://drive.google.com/file/d/122SQiB6invgpsu7KpWiYbix5KPUW2WN4/view"},
+    {t:"Alvin and the Chipmunks",e:"🐿️",l:"https://drive.google.com/file/d/1uCRRJZj1GAaweX996uHbF2zxPoessmGW/view"},
+    {t:"Alvin and the Chipmunks 2",e:"🐿️",l:"https://drive.google.com/file/d/1em55qHTtdrWD4Dox9CXs9r1042TLu_cu/view"},
+    {t:"Alvin and the Chipmunks 3",e:"🐿️",l:"https://drive.google.com/file/d/1LTKy48IbusfXsl5nSNDTd0M3A8B3aPke/view"},
+    {t:"Alvin and the Chipmunks: Road Chip",e:"🐿️",l:"https://drive.google.com/file/d/1ljX4FCKuoIuDR-hcH3J97hZ21Os_4C3W/view"},
+    {t:"Amistad",e:"⛓️",l:"https://drive.google.com/file/d/1yLnn08WMfw_Gans9jmOGoDVHwOkf-LFD/view"},
+    {t:"An Extremely Goofy Movie",e:"🎸",l:"https://drive.google.com/file/d/1oKDbw6zCdSRKRbABn6nKf_4LGsA3ftwL/view"},
+    {t:"Annabelle",e:"🪆",l:"https://drive.google.com/file/d/1WqwxGkOyDRfuo985rc-zmwyMvqu4K-D-/view"},
+    {t:"Annabelle Creation",e:"🪆",l:"https://drive.google.com/file/d/15KHQgqhFmRc2zVedlVDqK48zTWq3Xioe/view"},
+    {t:"Annabelle Comes Home",e:"🪆",l:"https://drive.google.com/file/d/1_yZ-5-8mqmu4OKD8mzyfRYyLvIE4VqzM/view"},
+    {t:"Annie",e:"🌞",l:"https://drive.google.com/file/d/1GYQqHUdyWMNQJKj4Sa8SGW0ZRX32D5og/view"},
+    {t:"Ant-Man",e:"🐜",l:"https://drive.google.com/file/d/1_qJqk2Ss1f45puz3xGQcdD1NxM3ipupj/view"},
+    {t:"Ant-Man and the Wasp",e:"🐜",l:"https://drive.google.com/file/d/1AstKQ5KLX94k7RFIlsu2St9um8sS_w_M/view"},
+    {t:"Ant-Man & Wasp: Quantumania",e:"🐜",l:"https://sites.google.com/view/chil-zone-return/moves/ant-man-and-the-wasp-quantomania"},
+    {t:"Army of Darkness",e:"💀",l:"https://drive.google.com/file/d/1fvE9oeXfnVO-RrEbB8YrxQVMVBLT0Oj9/view"},
+    {t:"As Above So Below",e:"😱",l:"https://drive.google.com/file/d/1Ma6c-rHygg9vah-4Y9V5iPs0DzXZ-S5r/view"},
+    {t:"Attack on Titan (ep 1)",e:"⚔️",l:"https://drive.google.com/file/d/0B7TEzdS9mvQ4NTk1d0h6T09uSnc/view"},
+    {t:"Avatar",e:"🌿",l:"https://drive.google.com/file/d/16tKuEYtxi7EeKtX3yZZR-nXgZ_oGTxXS/view"},
+    {t:"Avengers: Age of Ultron",e:"🦸",l:"https://drive.google.com/file/d/1im0w37bz61WkwbQTvP_InTsYwphE6Sxn/view"},
+    {t:"Avengers: Endgame",e:"🦸",l:"https://drive.google.com/file/d/1UsxNtlBxGFp955GwEB-s8wYJCA6bXt7e/view"},
+    {t:"Avengers: Infinity War",e:"🦸",l:"https://drive.google.com/file/d/1VWLpj4G4CEgHnjpxfc67MrlEWu5pD75Y/view"},
+  ],
+  B:[
+    {t:"Back in Action",e:"🎬",l:"https://drive.google.com/file/d/1YZ4OYkY_ez4FObMe9_a0cWB2oLgoq4Jd/view"},
+    {t:"Back to the Future",e:"⏰",l:"https://drive.google.com/file/d/1ZwP0FLdFdAoeskqGvQYX5CwqEeSFWS1G/view"},
+    {t:"Back to the Future 2",e:"⏰",l:"https://drive.google.com/file/d/1vmA2LTkSzbtUJve8TTy2UVkPAfHMtGwK/view"},
+    {t:"Back to the Future 3",e:"⏰",l:"https://drive.google.com/file/d/16A4hzHFTcNduq6F-u4zQw7iTha5aEKD-/view"},
+    {t:"Bad Guys",e:"🐺",l:"https://drive.google.com/file/d/1Ep4I8JdvH8NlbcqxiNMA8c7U_UAOpewT/view"},
+    {t:"Bad Guys 2",e:"🐺",l:"https://drive.google.com/file/d/1V9yPZr0YlrSthlfU2Df3mgrs9Mcnok4q/view"},
+    {t:"Baghead",e:"👜",l:"https://drive.google.com/file/d/17Tfb1RDtFZ8fJGIKi0qWrQxnaP-mG97A/view"},
+    {t:"Ballerina (John Wick)",e:"🩰",l:"https://drive.google.com/file/d/1QkggMVcGZDUcJNcAtuI7ZBCDKpb9WWgK/view"},
+    {t:"Barbie",e:"👗",l:"https://drive.google.com/file/d/1K88LvZ6q9KRwsdiVQ72Wrh5DQqWVLkd3/view"},
+    {t:"Batman (1989)",e:"🦇",l:"https://sites.google.com/view/chil-zone-return/moves/batman-1989"},
+    {t:"Batman Returns",e:"🦇",l:"https://drive.google.com/file/d/1CTkIREb5SIrY92tgA5gbnDQ0YOtQYHew/view"},
+    {t:"Batman Forever",e:"🦇",l:"https://drive.google.com/file/d/14otvm-KngNP8nbX5oKDzBtYws9DGd5-2/view"},
+    {t:"Batman & Robin",e:"🦇",l:"https://drive.google.com/file/d/1nDoJ5H8Kk0UTImkUU-aQ8obGm19oi4MJ/view"},
+    {t:"Batman Begins",e:"🦇",l:"https://sites.google.com/view/chil-zone-return/moves/batman-begins"},
+    {t:"Batman: The Dark Knight",e:"🃏",l:"https://drive.google.com/file/d/1_g_fq1MEbqXuapY_dxXSdohAx8zmxwOX/view"},
+    {t:"Batman: The Dark Knight Rises",e:"🦇",l:"https://sites.google.com/view/chil-zone-return/moves/the-dark-knight-rises"},
+    {t:"Batman Beyond: Return of the Joker",e:"🃏",l:"https://sites.google.com/view/chil-zone-return/moves/return-of-the-joker"},
+    {t:"Batman Ninja vs Yakuza League",e:"🦇",l:"https://drive.google.com/file/d/1v4ePMMFVkWIBYNcYTyXUYPd_Uq2z2bf8/view"},
+    {t:"The Batman",e:"🦇",l:"https://drive.google.com/file/d/16si_yvGyZn5mgvNIHil5xXOR3I8RaTKb/view"},
+    {t:"Beavis & Butt-Head Do America",e:"🤘",l:"https://drive.google.com/file/d/1BTKq8RC65IOZVgI0VfdRekLzVY_SMKQ_/view"},
+    {t:"Bee Movie",e:"🐝",l:"https://drive.google.com/file/d/1AiuhAubyrKVmqpu3OfM1sonhRJrzw5v6/view"},
+    {t:"Beetlejuice",e:"👻",l:"https://drive.google.com/file/d/1fs2-oBGADuUeepkLX2V3zxNNUstHvBTs/view"},
+    {t:"Beetlejuice Beetlejuice",e:"👻",l:"https://drive.google.com/file/d/1OsCtW4NUV94utDNxmFejUFoH6euf8Ind/view"},
+    {t:"Birds of Prey",e:"🦅",l:"https://drive.google.com/file/d/1AShi8tLLzbPiPO6vDokf8ew-qBbzh5Pb/view"},
+    {t:"Black Adam",e:"⚡",l:"https://drive.google.com/file/d/1RvzJFPZbr-jM8EKjMFUb56QLDHQ4LTBV/view"},
+    {t:"Black Panther",e:"🐆",l:"https://drive.google.com/file/d/1GdMksUpH7ghCBF1j4sEmJU9hmZ3pPpkn/view"},
+    {t:"The Blackening",e:"😱",l:"https://drive.google.com/file/d/1VBG7WXqeiZ3BSvPuWUPCL1_iF9znvPI5/view"},
+    {t:"Blue Beetle",e:"🪲",l:"https://drive.google.com/file/d/1T2XMXtDAlohPcGdi-u2p9zXF9Os9zkY1/view"},
+    {t:"Boo! A Madea Halloween",e:"🎃",l:"https://drive.google.com/file/d/1vBDYkMbS1WR0E5tOj0Tdou9S6HJ5Nb5w/view"},
+    {t:"Boo 2! A Madea Halloween",e:"🎃",l:"https://drive.google.com/file/d/1p8PGU6RQya7wIRi5no4pPNOVRaBbnfwR/view"},
+    {t:"Boss Baby",e:"👔",l:"https://drive.google.com/file/d/1gdwI2JzBioxG5X6ewvaG2mcMeCUW346o/view"},
+    {t:"Boss Baby 2",e:"👔",l:"https://drive.google.com/file/d/1aiZMcnKPiHlmK9D0HpQRKd-SueENFFFC/view"},
+    {t:"Boys N the Hood",e:"🏙️",l:"https://drive.google.com/file/d/1fCv2dJuy8k_NQWAxbNRxqW0_zKetF-uy/view"},
+    {t:"Brave Little Toaster",e:"🍞",l:"https://drive.google.com/file/d/1qZxoOGQTxqwlJtOQbwN8jeyD_yVvX7yc/view"},
+    {t:"Bride of Chucky",e:"🔪",l:"https://drive.google.com/file/d/1sjzCM6SsEDbb1EzG4noI_rX868nAltcb/view"},
+    {t:"Brightburn",e:"🦹",l:"https://drive.google.com/file/d/1j1cYjjEDqV8VcTJ3oSwaOeMHPglVd-um/view"},
+    {t:"Britannic",e:"🚢",l:"https://drive.google.com/file/d/1KviJq5Kuw7NbTUCuNEsep3Sj22NDYRgc/view"},
+  ],
+  C:[
+    {t:"Captain America: Civil War",e:"🛡",l:"https://sites.google.com/view/chil-zone-return/moves/captain-america-civil-war"},
+    {t:"Captain America: Brave New World",e:"🛡",l:"https://drive.google.com/file/d/1pJ5N0z8bQFpqeMx2UrZqrU1526ygzxDm/view"},
+    {t:"Captain Underpants",e:"🩲",l:"https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/view"},
+    {t:"Cars",e:"🚗",l:"https://drive.google.com/file/d/106N7zd611ShtPMOx97XwFSxkg8theQLN/view"},
+    {t:"Cars 2",e:"🚗",l:"https://drive.google.com/file/d/1YinG1kmgSqWI5kQwfDsQO6vK1xzM6K7o/view"},
+    {t:"Child's Play",e:"🔪",l:"https://drive.google.com/file/d/105jPLl1GM66RC-6nYyK_6naHvU1oMhSR/view"},
+    {t:"Child's Play 2",e:"🔪",l:"https://drive.google.com/file/d/1IOoeJUBb83Vai480J3iuZsoQSuBC_mnQ/view"},
+    {t:"Child's Play 3",e:"🔪",l:"https://drive.google.com/file/d/1g-PfyUnvVYUXHC9yBr1Ans4jw11lBNur/view"},
+    {t:"Coat of Many Colors",e:"🎀",l:"https://drive.google.com/file/d/1TNihEVsEiUIzxYV_6KHQKXC5pDR_nWW9/view"},
+    {t:"Cocaine Bear",e:"🐻",l:"https://drive.google.com/file/d/1vrClp3nIYkdIBRPzZDxxq7ICIOWHioAh/view"},
+    {t:"Coco",e:"💀",l:"https://drive.google.com/file/d/194M4dGCwh1hTxVM1-_axnLSdt4trnbK2/view"},
+    {t:"The Conjuring",e:"👻",l:"https://drive.google.com/file/d/17VPLw23bmvSYSa7C9fyiB9c3iXB09PNN/view"},
+    {t:"The Conjuring 2",e:"👻",l:"https://drive.google.com/file/d/1zECVNreFAl8LNGcOrlPqtMzw_Su1S3AC/view"},
+    {t:"The Conjuring: Devil Made Me Do It",e:"👻",l:"https://drive.google.com/file/d/1k0tAH--aSS2Ik_xCwr9nJSr1XAS0cFH6/view"},
+    {t:"The Conjuring: Last Rites",e:"👻",l:"https://drive.google.com/file/d/1DGeZcbS6EeKgAZdmTRr-haezOxenoYRf/view"},
+    {t:"Coraline",e:"🪡",l:"https://sites.google.com/view/chil-zone-return/moves/coraline"},
+    {t:"Corpse Bride",e:"💍",l:"https://drive.google.com/file/d/1AHqrYm4cItyiEquPHJV5z3H81Cc0cCfI/view"},
+    {t:"Creed 1",e:"🥊",l:"https://drive.google.com/file/d/1w9nVBGOKDax-xCr-caqekW4hcjRUQWZA/view"},
+    {t:"Creed 2",e:"🥊",l:"https://sites.google.com/view/chil-zone-return/moves/creed-2"},
+    {t:"Creed 3",e:"🥊",l:"https://drive.google.com/file/d/1j8pGyNx9PHk_Gicns9JlDaX82qBIi1_m/view"},
+    {t:"The Croods 2",e:"🦴",l:"https://drive.google.com/file/d/1-1YdQJt3yQYQ_e-xwdqQLyEWLl8nuYD7/view"},
+    {t:"Cujo",e:"🐕",l:"https://drive.google.com/file/d/1wiVsT3Wy71xZmykiW8voDpkPdth-WX5t/view"},
+    {t:"Cult of Chucky",e:"🔪",l:"https://drive.google.com/file/d/1qPipvrYaINji65Pr6U9Wb8eLXR1PcggX/view"},
+    {t:"Curse of Chucky",e:"🔪",l:"https://drive.google.com/file/d/1iREiS873cIR4Wq3nKV-uBwaJVWbqIZe0/view"},
+  ],
+  D:[
+    {t:"D&D: Honor Among Thieves",e:"🐉",l:"https://drive.google.com/file/d/1iX6QbaV3Oi_yGDvqRcFvrJ4_gzIOisnT/view"},
+    {t:"Dead Silence",e:"🤫",l:"https://drive.google.com/file/d/1oPQopf4osD9zegNkg_gRTgckTpJS7BcZ/view"},
+    {t:"Deadpool",e:"💥",l:"https://drive.google.com/file/d/1drXS4b8XjDqgQ6tIjbS7RCN1Yq8CjDLZ/view"},
+    {t:"Deadpool 2",e:"💥",l:"https://drive.google.com/file/d/1zZ8WCsX7VyC1PSiSkA3Vi7g8M8txSTsk/view"},
+    {t:"Deadpool & Wolverine",e:"💥",l:"https://drive.google.com/file/d/1aBzsoTJAjhZeFFDkIV2SN7p7ZHagUEDc/view"},
+    {t:"Den of Thieves 2: Pantera",e:"🐆",l:"https://drive.google.com/file/d/1zXldKkRUbXsql3rLXGX9bNpuwcPOiusw/view"},
+    {t:"Descendants: Rise of Red",e:"👑",l:"https://drive.google.com/file/d/14uIYHn4xepm1GLF2USxyBkUE6nQfueoE/view"},
+    {t:"Despicable Me",e:"🌙",l:"https://drive.google.com/file/d/1upRWBqPKcQjviBjAgYkzkWZuVjQ1SAWF/view"},
+    {t:"Despicable Me 2",e:"🌙",l:"https://drive.google.com/file/d/1qWNcu7uPAUqh0SaBlL4rEhcH1QaKIfgf/view"},
+    {t:"Despicable Me 3",e:"🌙",l:"https://drive.google.com/file/d/1mT5BU-DLMI0kDVjEIk7kBNL55ETuNyGN/view"},
+    {t:"Despicable Me 4",e:"🌙",l:"https://drive.google.com/file/d/1ggXkdigLOzQQgelB8exwzjVFb8bbef7d/view"},
+    {t:"Detective Pikachu",e:"⚡",l:"https://drive.google.com/file/d/1q5wcbuy536XQKTBAF7ImApMAlNMVHM5T/view"},
+    {t:"Diary of a Wimpy Kid: Rodrick Rules",e:"📔",l:"https://drive.google.com/file/d/1rKRsgdNioFs3rtkZai7Gz97FtAX0jdJ_/view"},
+    {t:"Diddy: Monster's Fall",e:"🎵",l:"https://drive.google.com/file/d/1ptJdU8If1DhaevNXIVnvy8Ugx5jX9CFy/view"},
+    {t:"Dodgeball",e:"🏐",l:"https://drive.google.com/file/d/0B8oerU1d9p_ta2lHekdKeDQxekE/view"},
+    {t:"Dog Man",e:"🐕",l:"https://drive.google.com/file/d/1eMcc8rzjgdoJnV8V2CPk3zRfTVlJeqKg/view"},
+    {t:"Doctor Strange",e:"🔮",l:"https://drive.google.com/file/d/11PAFLA_D94t0ZbSqcy-ggyl2DU7g0Ay2/view"},
+    {t:"The Mighty Ducks",e:"🏒",l:"https://drive.google.com/file/d/1MKL3dbjVCDH4cmnPtBoT8SeQeoK8bRYN/view"},
+    {t:"D2: The Mighty Ducks",e:"🏒",l:"https://drive.google.com/file/d/1xqucoWKrHYKgkPtIH504nV_QWrezUcC9/view"},
+    {t:"Dune Part Two",e:"🏜️",l:"https://drive.google.com/file/d/14VeNSqVtt5gcibZOfjPcjkBoasPrpiEG/view"},
+  ],
+  E:[
+    {t:"8 Mile",e:"🎤",l:"https://drive.google.com/file/d/13KF2oQ-b1WRvbjL0vMMAMlI0Vj8TYBuM/view"},
+    {t:"The Electric State",e:"⚡",l:"https://drive.google.com/file/d/1HdmYKbuy5tElViuxt9sFwR-0Azj9_D6M/view"},
+    {t:"Elf",e:"🎄",l:"https://drive.google.com/file/d/1-cJP_6uvuboesHkiYPgfIg49eKvsBsF0/view"},
+    {t:"Encanto",e:"🦋",l:"https://drive.google.com/file/d/1y5q4v_Sx6Kj9nIrNjaAbCVcX36nRC3qB/view"},
+    {t:"Evil Dead II",e:"🪓",l:"https://drive.google.com/file/d/1BklK_O-rTRNrk0q7xOhXt_LEiBmmYan8/view"},
+    {t:"Evil Dead Rise",e:"🪓",l:"https://drive.google.com/file/d/10pB2dWxRnTfgQ7UE-m7OMuorO4UA4Q-L/view"},
+    {t:"The Exorcist",e:"😱",l:"https://drive.google.com/file/d/15QLRWlaytePX6clBBZqrv461c2VCi_Vl/view"},
+    {t:"The Exorcist: Believer",e:"😱",l:"https://drive.google.com/file/d/1p4TJ6af9UjVh544rHcZ5-JNdfB5YEFo8/view"},
+  ],
+  F:[
+    {t:"The Fast and the Furious",e:"🏎️",l:"https://drive.google.com/file/d/1GzovJHzUxtS6XQQiPLVXj92hWZ7PTABa/view"},
+    {t:"2 Fast 2 Furious",e:"🏎️",l:"https://drive.google.com/file/d/1mNS4IqcwoeUs-JpEr55RsiEdF5HP6mS9/view"},
+    {t:"Fast & Furious: Tokyo Drift",e:"🏎️",l:"https://drive.google.com/file/d/1DQDZewf_sT9QM0J0qalqpIu0thdXAJlX/view"},
+    {t:"Fast & Furious 4",e:"🏎️",l:"https://drive.google.com/file/d/1tVld16POKQ8cInYwhozvWXg_nMtf7jC4/view"},
+    {t:"Fast 5",e:"🏎️",l:"https://drive.google.com/file/d/1U4jgMS5nNB-jLFz8pH3nyKJpQtw9VLk4/view"},
+    {t:"Fast & Furious 6",e:"🏎️",l:"https://drive.google.com/file/d/1BKfeAMDunmjoWRTXBuWPUjzoK-mdjByX/view"},
+    {t:"Furious 7",e:"🏎️",l:"https://drive.google.com/file/d/1aXXnv2TmInk1KKGXs_z83XsMfuDtEIMm/view"},
+    {t:"Fate of the Furious",e:"🏎️",l:"https://drive.google.com/file/d/1nlxg7cAV08cklGpX-Lx1OUFDT990Eye4/view"},
+    {t:"Hobbs & Shaw",e:"🏎️",l:"https://drive.google.com/file/d/1qBkRTrEwk_6cUJGkcoRc2uSSU4jVl34F/view"},
+    {t:"Fast 9",e:"🏎️",l:"https://drive.google.com/file/d/19u-D1Y434C8Q54SFKvoQsZzCH7alPWA8/view"},
+    {t:"Fast X",e:"🏎️",l:"https://drive.google.com/file/d/1ce3-ogetLMUWm40CUPIOu4R4Ofdg7u0h/view"},
+    {t:"Fantastic 4: First Steps",e:"🔥",l:"https://drive.google.com/file/d/1cBhl_4yyqtXZXvTMaAsS3zFBC076lHUe/view"},
+    {t:"Fight Club",e:"🥊",l:"https://drive.google.com/file/d/1J_WyATYoZH9qcaX5RNFrjrwmvySFPTom/view"},
+    {t:"Finding Nemo",e:"🐠",l:"https://drive.google.com/file/d/11CN0fT7CwCHgz__mY4FWjcoT5w_wZD9S/view"},
+    {t:"Five Nights at Freddy's",e:"🐻",l:"https://drive.google.com/file/d/1U9iKneXKo4ViYy4bFQIvE_yY6V7RlLVK/view"},
+    {t:"Ford v Ferrari",e:"🏁",l:"https://drive.google.com/file/d/1NPB0oCsIuiPAc471b_XOGDnchbCZ72yh/view"},
+    {t:"Forrest Gump",e:"🏃",l:"https://drive.google.com/file/d/0B-uFeCO4yCFIa3hNRDc5eVlBSjQ/view"},
+    {t:"Friday",e:"😎",l:"https://drive.google.com/file/d/1SKE9sQ-DnHRRVGxU10Qk2QJ1Ws2jvv5M/view"},
+    {t:"Friday the 13th",e:"🔪",l:"https://drive.google.com/file/d/1pf3faVonicfbhSDfIviaEWsvKquERczR/view"},
+    {t:"Friday the 13th Part 2",e:"🔪",l:"https://drive.google.com/file/d/1ow5SQE-VLGUZYGyqChQKoWuy-Bb-GlWv/view"},
+    {t:"Friday the 13th Part 3",e:"🔪",l:"https://drive.google.com/file/d/15ZtduQTe8804up37j28MpwXXMrVBIrpd/view"},
+    {t:"Friday the 13th Part VI",e:"🔪",l:"https://drive.google.com/file/d/1RRgtJCbQWRvxvk62PRY1JdwLznMJsV24/view"},
+    {t:"Frozen",e:"❄️",l:"https://drive.google.com/file/d/1XIuN4Zp35mW0iN4p0ME5APxH18-6Zqft/view"},
+    {t:"Frozen 2",e:"❄️",l:"https://drive.google.com/file/d/1hpUpKEdeT9ta-8FjSpMUAXw17E-8uwIY/view"},
+  ],
+  G:[
+    {t:"Garfield the Movie",e:"🐱",l:"https://drive.google.com/file/d/1g_YZyeIbjua21PNL4ZLfeIzJx-givpPE/view"},
+    {t:"Get Out",e:"😰",l:"https://drive.google.com/file/d/1NAL07bOQPidzTFNMSrccqr53PGag6nn2/view"},
+    {t:"Ghost Rider",e:"💀",l:"https://drive.google.com/file/d/1-QiYxJYgk4gw8fRHez7gUWMS6zE7vG-u/view"},
+    {t:"Ghost Rider: Spirit of Vengeance",e:"💀",l:"https://drive.google.com/file/d/1EeG9giZgHvJMjvC6SnmQPFW3gHpwmYXJ/view"},
+    {t:"Ghostbusters",e:"👻",l:"https://drive.google.com/file/d/1OY7HZkep77B12l4wRYCN_D23gR9M2G9m/view"},
+    {t:"Ghostbusters 2",e:"👻",l:"https://drive.google.com/file/d/1VPN-P5xWjbEHv-VtlzjryjyV-nx7Z_w_/view"},
+    {t:"Ghostbusters: Frozen Empire",e:"👻",l:"https://drive.google.com/file/d/115NMznT9rm8LGZzRzE0OvgqCbP-_y-Ia/view"},
+    {t:"Godzilla 1985",e:"🦖",l:"https://drive.google.com/file/d/1pP6Kkr-1WmcWWt2IKEIUv7RTkgMLXTmp/view"},
+    {t:"Godzilla: King of the Monsters",e:"🦖",l:"https://drive.google.com/file/d/1xlVHznoHc3cczI4emQUNE0vuyD2H_x9g/view"},
+    {t:"Godzilla: Final Wars",e:"🦖",l:"https://drive.google.com/file/d/1rin01fF2JeTiqBkvae2SJLZIuv2UUp2v/view"},
+    {t:"Godzilla x Kong: New Empire",e:"🦖",l:"https://drive.google.com/file/d/1h5vNxBZhabSuZdPvbGcFQN1x-xfURsfO/view"},
+    {t:"Good Burger",e:"🍔",l:"https://drive.google.com/file/d/1jucPocCb8aq23Bh-GFLcniAk-k5UU-wC/view"},
+    {t:"Good Burger 2",e:"🍔",l:"https://drive.google.com/file/d/1TOjPbqSF5UqnPrn1zFqEWvkUeBNiyMax/view"},
+    {t:"The Good Dinosaur",e:"🦕",l:"https://drive.google.com/file/d/1vELzmz9u6vQ18YtMipK9nSWJhZLP6KaH/view"},
+    {t:"The Goonies",e:"🗺️",l:"https://drive.google.com/file/d/18sSKADZamG3w8ZaanP93XU4yHSVKzApM/view"},
+    {t:"The Gorge",e:"🏔️",l:"https://drive.google.com/file/d/1_uEz11OaT8lyL0DBK12xs86ESNlG2N9c/view"},
+    {t:"Grease",e:"🎤",l:"https://drive.google.com/file/d/1W77S931ShuhZ2RVeiNrfdQQUcR4pKsD0/view"},
+    {t:"The Greatest Showman",e:"🎪",l:"https://drive.google.com/file/d/1ErElLX4tetXsqWfpivPg3JlEht4ERibn/view"},
+    {t:"Gremlins",e:"👾",l:"https://drive.google.com/file/d/1OaLNJbZmSdQgH7Q9uN2u18ZOxHXOU7YJ/view"},
+    {t:"Gremlins 2",e:"👾",l:"https://drive.google.com/file/d/1rrs7I7yn1V2HJdQHooGhnpI-yVwYccj6/view"},
+    {t:"The Grinch",e:"💚",l:"https://drive.google.com/file/d/1_z5TUQlNH-IWdeFo_jDZDKsuVi32VdRs/view"},
+    {t:"Grown Ups 2",e:"😂",l:"https://drive.google.com/file/d/1igY-5wivsgwpd3tKUNZ_wcAmAbPpwMcz/view"},
+    {t:"Guardians of the Galaxy Vol. 2",e:"🌌",l:"https://drive.google.com/file/d/0B-uFeCO4yCFIZXNnLUg3cVdiU3M/view"},
+    {t:"Guardians of the Galaxy Vol. 3",e:"🌌",l:"https://drive.google.com/file/d/1pFavPs7Mi9rx_BrAjxbeHNWg7ClAB2_K/view"},
+    {t:"Gunslingers",e:"🔫",l:"https://drive.google.com/file/d/1GdEt79gpwT4s6wRDZXH4GZuMmtj7BWeG/view"},
+  ],
+  H:[
+    {t:"Halloween II (1981)",e:"🎃",l:"https://drive.google.com/file/d/1m32R5sqZJ7asq_oPOCusPYCFB68fuWW4/view"},
+    {t:"Halloween III",e:"🎃",l:"https://drive.google.com/file/d/19iJrizksrAZfszCgGXDHqkopFg5hpXZD/view"},
+    {t:"Halloween 4",e:"🎃",l:"https://drive.google.com/file/d/1wWndI6GA3NuJV_XTYyEFcN5eHRZLR9dJ/view"},
+    {t:"Halloween 5",e:"🎃",l:"https://drive.google.com/file/d/1RE_r1wBJbejmMaHPZ6d_4DU6QXVcihHC/view"},
+    {t:"Halloween 6",e:"🎃",l:"https://drive.google.com/file/d/1apo3DtYMCxv-1F917g7hkTYUhRRTY3zJ/view"},
+    {t:"Halloween H20",e:"🎃",l:"https://drive.google.com/file/d/1U481H5yFj21pv5Xh5D13YL_kLZuQUKYW/view"},
+    {t:"Halloween Resurrection",e:"🎃",l:"https://drive.google.com/file/d/1FshXb87-FI-XKIdgndG3k4Ja30r3_Feb/view"},
+    {t:"Halloween (2007)",e:"🎃",l:"https://drive.google.com/file/d/1oy9kIOC9bY3U217MWxlac9EDLQmcpFBh/view"},
+    {t:"Halloween II (2009)",e:"🎃",l:"https://drive.google.com/file/d/1bIr43TDm-Za3USQ7pLrTMQAWyi4dnL8b/view"},
+    {t:"Halloween (2018)",e:"🎃",l:"https://drive.google.com/file/d/1qnC4Ksy5FUoHLVDBtfeWnrM_-EyVWc3p/view"},
+    {t:"Halloween Kills",e:"🎃",l:"https://drive.google.com/file/d/1CdhzdqiTQvWMCvmLE_zFLuc2jHvTMqq8/view"},
+    {t:"Halloween Ends",e:"🎃",l:"https://drive.google.com/file/d/1Lsjj8VceEJMM4mvav7WOwhAH1X56-woA/view"},
+    {t:"Happy Gilmore 2",e:"⛳",l:"https://drive.google.com/file/d/1SQiPdbp8GbxC2Lu7i2b9prkjYU0HXOeu/view"},
+    {t:"Harry Potter 1",e:"🔮",l:"https://drive.google.com/file/d/1bJMKhvzwuVfAYECLheyA_h38T9oYvkgX/view"},
+    {t:"Harry Potter 2",e:"🔮",l:"https://drive.google.com/file/d/1NSY9Ij-PcPhN4ODmmNTSvUhD5osQ_SCo/view"},
+    {t:"Harry Potter 3",e:"🔮",l:"https://drive.google.com/file/d/1Zu15ykGtc1xxKIKfAeUV_L1vAbCt--zO/view"},
+    {t:"Harry Potter 4",e:"🔮",l:"https://drive.google.com/file/d/1yYxqmSv99zFBsJkT0cZYd4C4PTNC9bUU/view"},
+    {t:"Harry Potter 5",e:"🔮",l:"https://drive.google.com/file/d/1eVK_s8Sp-Gvv1J65ocyLbwyqC7vkuoFK/view"},
+    {t:"Harry Potter 6",e:"🔮",l:"https://drive.google.com/file/d/1QfAnvJtU3oR7IV2CrN2qRx4vFThjbbe1/view"},
+    {t:"Harry Potter 7 Part 1",e:"🔮",l:"https://drive.google.com/file/d/17UlhT2qVX10O8AksEEdWuaUqoVF78-oH/view"},
+    {t:"Harry Potter 7 Part 2",e:"🔮",l:"https://drive.google.com/file/d/16jXkeJny6L8MrC_7issz4AtANAzNDJqw/view"},
+    {t:"Head Over Heels",e:"💘",l:"https://drive.google.com/file/d/10N4s7Roujs0L7wRWNKltdWOPcoC29hiv/view"},
+    {t:"Henry Danger: The Movie",e:"⚡",l:"https://drive.google.com/file/d/1siTn1l8gYcgh3nbITJVAiCUZrDdQG-wD/view"},
+    {t:"Hercules",e:"⚡",l:"https://drive.google.com/file/d/1sXad7VvXVn7qIilwdspq5RtjmInpa7mQ/view"},
+    {t:"High School Musical",e:"🎭",l:"https://drive.google.com/file/d/1tg84YPuUqFUMlVpGzjkhoEehBHV8W9ZF/view"},
+    {t:"High School Musical 2",e:"🎭",l:"https://drive.google.com/file/d/1iE1foAQrNAMJJg3aOd37GECWBkXmAEi7/view"},
+    {t:"High School Musical 3",e:"🎭",l:"https://drive.google.com/file/d/1aGq7saEhWkyACQlOmGIAmylSTeEOL864/view"},
+    {t:"Home",e:"🏠",l:"https://drive.google.com/file/d/1PvzOPEZp09GjSj3PEDuxb0Y1ceQvo1AX/view"},
+    {t:"Home Alone",e:"🏠",l:"https://drive.google.com/file/d/1AUuPlJ9PfNSI1CuulCwvtSXHfj92sBqI/view"},
+    {t:"Home Alone 2",e:"🏠",l:"https://drive.google.com/file/d/13wAOplYsKnssaM4MVRprZ4B1XCtl-rpk/view"},
+    {t:"Homestead",e:"🏡",l:"https://drive.google.com/file/d/1mD5iunsM3JNIE3aLyd4m5BIB88bxzFdm/view"},
+    {t:"Hotel Transylvania",e:"🧛",l:"https://drive.google.com/file/d/1gZ4FVX5GLCSv2-i_sabXWhgl9u_3FeOB/view"},
+    {t:"Hotel Transylvania 2",e:"🧛",l:"https://drive.google.com/file/d/1LZI5E52J_R_Cx6f3EXLl-BAn6vuhUduD/view"},
+    {t:"Hotel Transylvania 3",e:"🧛",l:"https://drive.google.com/file/d/1aS3rHee1w5zNTGGmSFM57DSVlC1hSvIs/view"},
+    {t:"Hotel Transylvania 4",e:"🧛",l:"https://drive.google.com/file/d/1_Ujbv8ONdcmV8TrYw8WzTwdD93deiiZp/view"},
+    {t:"How to Train Your Dragon 2",e:"🐉",l:"https://drive.google.com/file/d/1lygHQMhfWWBjlp1mzSaOI5kDsbBq6Ibn/view"},
+    {t:"How to Train Your Dragon 3",e:"🐉",l:"https://drive.google.com/file/d/1cS4L5FYnWergTViVgJJpKbMIIi8sju4P/view"},
+    {t:"How to Train Your Dragon (2025)",e:"🐉",l:"https://drive.google.com/file/d/17o79ERK-HO1uQmEZwgr8wDygog_HTQsX/view"},
+  ],
+  I:[
+    {t:"I Know What You Did Last Summer",e:"🔪",l:"https://drive.google.com/file/d/1sSPtR3lcvTcjtDHvv3sOHw8qHbuaeQY1/view"},
+    {t:"IMAGINARY",e:"👁️",l:"https://drive.google.com/file/d/1fuFg1QpZAwYFPh0VOqfhTDxctdqFGbjU/view"},
+    {t:"The Incredibles",e:"💪",l:"https://drive.google.com/file/d/1tVsDrCHeADhoZRkQZnXIIj3R5kpB2une/view"},
+    {t:"The Incredibles 2",e:"💪",l:"https://drive.google.com/file/d/1XZ0pSe4bccOpJeF_VkXhkOhxQ3Tzp8RB/view"},
+    {t:"Indiana Jones 1",e:"🪬",l:"https://drive.google.com/file/d/1C2iryPKn6P5Kyl0zH3XCceIS5em1sP0i/view"},
+    {t:"Indiana Jones 2",e:"🪬",l:"https://drive.google.com/file/d/1OBWysvLap85UVNwRCOAuxGzo4HcKTq04/view"},
+    {t:"Indiana Jones 3",e:"🪬",l:"https://drive.google.com/file/d/10PzGD7BCkNSwMIxu4MjafarfZKQh-JGO/view"},
+    {t:"Indiana Jones 4",e:"🪬",l:"https://drive.google.com/file/d/12hye3P63ckfSsEU3GJf3_Xm4__b75bj_/view"},
+    {t:"Indiana Jones 5",e:"🪬",l:"https://drive.google.com/file/d/1BuNmXFmhFBoSKvcnbi5W1_hQkVLTrzwu/view"},
+    {t:"Inside Out",e:"😊",l:"https://drive.google.com/file/d/1e0OdhlzTKWie6TDXNDOKjKYXbfYfmz6t/view"},
+    {t:"Inside Out 2",e:"😰",l:"https://drive.google.com/file/d/1SABVZNMwHTME4hsFwL9IWyWZPKDTBSoT/view"},
+    {t:"Insidious",e:"😱",l:"https://drive.google.com/file/d/1X9lu2ezlff8dpqTyQs0Z4b3g3k0tDTVH/view"},
+    {t:"Iron Man",e:"🤖",l:"https://drive.google.com/file/d/1QOIBXMPZk86AVo0jI-zXYAuJGiWRUnNg/view"},
+    {t:"Iron Man 2",e:"🤖",l:"https://drive.google.com/file/d/1u1glpdPyZvJ1MAgTrxAnTrS8Wvys3Bdt/view"},
+    {t:"Iron Man 3",e:"🤖",l:"https://drive.google.com/file/d/1f7AlYvxrURwU7138fr2CzyTmN0qK43rp/view"},
+    {t:"It (1990)",e:"🤡",l:"https://drive.google.com/file/d/1X4KKLClyHK_yIa_mYqFd4K6s_tvRAD1_/view"},
+    {t:"It Chapter Two",e:"🤡",l:"https://drive.google.com/file/d/1jL7mL_BNhFl0TJkaEFseqqXVXfVj_gP2/view"},
+  ],
+  J:[
+    {t:"Jason X",e:"🔪",l:"https://drive.google.com/file/d/1f_m_NTsYbbVFh1FBqXC1TOuS_4Yp6uSd/view"},
+    {t:"Jaws",e:"🦈",l:"https://drive.google.com/file/d/1ys7CQlyywTD5YlMeCpfp0ThltWcMH99E/view"},
+    {t:"Jaws 2",e:"🦈",l:"https://drive.google.com/file/d/1gA6fN27Rm6lj2FUUKiGv-sRZkLWmLly7/view"},
+    {t:"Jaws 3-D",e:"🦈",l:"https://drive.google.com/file/d/14pJGESxKXcFj3R3ysrQJ3bZIRCOPQpny/view"},
+    {t:"Jaws: The Revenge",e:"🦈",l:"https://drive.google.com/file/d/1vX-PNgtbaRWw_exdJt_foTjDdWaWAXrP/view"},
+    {t:"Jigsaw",e:"🪚",l:"https://drive.google.com/file/d/1TjXb0ZIUv0JgxcBzAD7W4HFPMfBgHWaK/view"},
+    {t:"Jingle All the Way",e:"🎁",l:"https://drive.google.com/file/d/1gdQba6i5IcBe7_a4eyU75cuAkbyJEpt4/view"},
+    {t:"John Wick",e:"🕴️",l:"https://drive.google.com/file/d/1X9Kflcg0LuRjceV6JghCzs49px8cRTIk/view"},
+    {t:"John Wick 2",e:"🕴️",l:"https://drive.google.com/file/d/1gzsZEVTNEb93tSa0nuzlpR2n20D4Dyx9/view"},
+    {t:"John Wick 3",e:"🕴️",l:"https://drive.google.com/file/d/1CsIZrKGXn557DdOJrdz5ty7nkg0i4CWR/view"},
+    {t:"John Wick 4",e:"🕴️",l:"https://drive.google.com/file/d/10LUlcX6Hu9pn3c3xmPlfJOf20Qjwgxq_/view"},
+    {t:"Joker (2019)",e:"🃏",l:"https://drive.google.com/file/d/1__wCd7uV9s7qY-o7qZ6F1lO9UQPV7B90/view"},
+    {t:"Joker: Folie à Deux",e:"🃏",l:"https://drive.google.com/file/d/1lah_NrpbGpx_Y4f3cuLjFsjxlM-YiZ2n/view"},
+    {t:"Jumanji (1995)",e:"🎲",l:"https://drive.google.com/file/d/1tXnq5Vy82ADqguaPVxH586h3IR5x6vEZ/view"},
+    {t:"Jumanji: Welcome to the Jungle",e:"🎲",l:"https://drive.google.com/file/d/1KownBUZELkJDdp-Rbg8Z4YI7n1msEWbD/view"},
+    {t:"Jumanji: The Next Level",e:"🎲",l:"https://drive.google.com/file/d/1aM4O7Zp59daNOwMVW7jvHYUCLEwAXjI_/view"},
+    {t:"Jurassic Park",e:"🦖",l:"https://drive.google.com/file/d/1bB65cEOgbz2Y0ic6nGDZfUQlECXBk2qt/view"},
+    {t:"Jurassic Park II",e:"🦖",l:"https://drive.google.com/file/d/15okru5XkkghrsKUfQJaFUTUHxHF_o9a1/view"},
+    {t:"Jurassic Park III",e:"🦖",l:"https://drive.google.com/file/d/1W9RJS1N_rBcNFAA73Y3B6leLhhjXXY9k/view"},
+    {t:"Jurassic Park: Rebirth",e:"🦖",l:"https://drive.google.com/file/d/1x0n_tZPq79HxAnV2ZwnVPTkBenFGZjx-/view"},
+    {t:"Jurassic World",e:"🦖",l:"https://drive.google.com/file/d/1oD0MwA_C9OVb7HeO70m9gAAs-dbm9SJG/view"},
+    {t:"Jurassic World Dominion",e:"🦖",l:"https://drive.google.com/file/d/1x84uwAQzm7-j9MhDdNF5sb_jCRQFhjIa/view"},
+  ],
+  K:[
+    {t:"The Karate Kid (1984)",e:"🥋",l:"https://drive.google.com/file/d/1tMJAooF8bG9ghav9CU4GPYF3t07ySMXL/view"},
+    {t:"Kill Bill Vol. 1",e:"⚔️",l:"https://drive.google.com/file/d/1O7IPP73pLpqj6qH4mfqjDhwNbeDMSU7N/view"},
+    {t:"Kill Bill Vol. 2",e:"⚔️",l:"https://drive.google.com/file/d/1p5DfNhB87k8bE-OQi7ELONmPkIhJIjC-/view"},
+    {t:"King Kong (2005)",e:"🦍",l:"https://drive.google.com/file/d/0B4puC3vPIb6YZmMxbk9DOURnVnM/view"},
+    {t:"Kingdom of the Planet of the Apes",e:"🦍",l:"https://drive.google.com/file/d/1dZ30bamkNV7OP9bJRF9bscboD9aRYaPY/view"},
+    {t:"Kung Fu Panda",e:"🐼",l:"https://drive.google.com/file/d/1cPYsXfP2YqdtUNnqXg3ycANRQQOuVOmR/view"},
+    {t:"Kung Fu Panda 2",e:"🐼",l:"https://drive.google.com/file/d/19Iz7pU-A9RUMHe6q1I9faYi02ht5MwbT/view"},
+    {t:"Kung Fu Panda 3",e:"🐼",l:"https://drive.google.com/file/d/1lfSnf9FQoB1xyeDJxEEh5JSG4ocnmqgx/view"},
+    {t:"Kung Fu Panda 4",e:"🐼",l:"https://drive.google.com/file/d/19e3HaItYsMHMCjHE0HD78-GsG1rbftJl/view"},
+  ],
+  L:[
+    {t:"Last Breath",e:"🌊",l:"https://drive.google.com/file/d/1a_l1BZGGTQ1P_A4NBQ0RVcB4ye_9lB1e/view"},
+    {t:"The Lego Movie 2",e:"🧱",l:"https://drive.google.com/file/d/1_sb4Ogn-0xQX3Znf21COpLMrfs_x6Nuv/view"},
+    {t:"The Lego Batman Movie",e:"🦇",l:"https://drive.google.com/drive/folders/1Rirg4uLaKcxMXh6YK3FnxWjnZZ-w8-OK"},
+    {t:"Leatherface (1990)",e:"🔪",l:"https://drive.google.com/file/d/1l1v62IhzGxBVZ8h4u8-8z3qyQ0LMHLDs/view"},
+    {t:"Limitless",e:"💊",l:"https://drive.google.com/file/d/1riRMl_1-5CtYty15bPAV5YR_PV6HTNsQ/view"},
+    {t:"The Lion King (1994)",e:"🦁",l:"https://drive.google.com/file/d/1fpkFiPnyvjxCtN6a89i-U2H1cr5_Y_HC/view"},
+    {t:"The Lion King 2",e:"🦁",l:"https://drive.google.com/file/d/1-sT4cdDqG6tt4wI0ba7Z3FhDoX8ded8L/view"},
+    {t:"The Little Mermaid (1989)",e:"🧜",l:"https://drive.google.com/file/d/1GM7QyJzFwEKM2fM42SWb7oIRN2UPUzqM/view"},
+    {t:"The Little Mermaid (2023)",e:"🧜",l:"https://drive.google.com/file/d/1sFYkkRX85JK-a2LRl8_QmZPhYkYIn6KG/view"},
+    {t:"The Little Rascals",e:"😄",l:"https://drive.google.com/file/d/1eiY3r9KqM3Dmjtq38eRtR_eJFSGeciPz/view"},
+    {t:"Luca",e:"🦎",l:"https://drive.google.com/file/d/1VcUlwoH5kBsHK6vYEMYMJuhpYgTCng20/view"},
+  ],
+  M:[
+    {t:"M3GAN 2.0",e:"🤖",l:"https://drive.google.com/file/d/1QkIGawMXMjf-FQ18o169NPPB8_l-Wx0I/view"},
+    {t:"Madagascar",e:"🦓",l:"https://drive.google.com/file/d/1TvrE3-T2tdfFhmEdhG_-NJlGNMnhHt2J/view"},
+    {t:"Madagascar 2",e:"🦓",l:"https://drive.google.com/file/d/1uNRfbrFF8al6BtxKkXWhuq-DeMVd9NZn/view"},
+    {t:"Madagascar 3",e:"🦓",l:"https://drive.google.com/file/d/1W4aM_WbjjxTlE_f5zcKPYZ5pNOym_W8K/view"},
+    {t:"Major Payne",e:"💂",l:"https://drive.google.com/file/d/1HOBF8qYxnEXjbjouFThL4B3ttoBiNUOY/view"},
+    {t:"Maleficent",e:"🧙",l:"https://drive.google.com/file/d/1yx66GkjBaCwjcMNoovV8w9yPNlZ7Q4Gu/view"},
+    {t:"The Mask",e:"😁",l:"https://drive.google.com/file/d/13IzLS6dOFDxCk_mNWpttFncqs1hQoJ3L/view"},
+    {t:"The Matrix",e:"💊",l:"https://drive.google.com/file/d/1qUy2Uk4nAGj72Ev81g67tx-snjKA-6Ne/view"},
+    {t:"The Matrix Reloaded",e:"💊",l:"https://drive.google.com/file/d/1ZAbBUVo2o3dS6NVUiK0_AbHRUi3RCpRU/view"},
+    {t:"The Matrix Revolutions",e:"💊",l:"https://drive.google.com/file/d/1KYbc6fE7ejUJM7a_CG0liFeTO28RJh-b/view"},
+    {t:"Mean Girls",e:"💅",l:"https://drive.google.com/file/d/1Hab49OuPK37MngOtQolLsVIzJ4AK9cNA/view"},
+    {t:"Meg 2",e:"🦈",l:"https://drive.google.com/file/d/1lsrwNXj0GlcfIKP7kaynPm4JzWk5v6gQ/view"},
+    {t:"Men in Black",e:"🕶️",l:"https://drive.google.com/file/d/1lKwqLzxgLyJi0BhN9Lc8HdHMM7LMVb5V/view"},
+    {t:"Mickey 17",e:"🐭",l:"https://drive.google.com/file/d/1w0ySmc9Lza6jAdgbxLdVQPd9xtmR_bq0/view"},
+    {t:"Minions",e:"🌙",l:"https://drive.google.com/file/d/1Wz1VPwDHWA3t8n54e-YpRM18ad1mQuSG/view"},
+    {t:"Minions: Rise of Gru",e:"🌙",l:"https://drive.google.com/file/d/1lrJNkBON3H_5n8lF3WKCaUT6AUl9qbh4/view"},
+    {t:"Moana",e:"🌊",l:"https://drive.google.com/file/d/1EsX8k7nfYQrzC6apqJqnyfH7HLAHl31G/view"},
+    {t:"Moana 2",e:"🌊",l:"https://drive.google.com/file/d/1iVJq1FsNG577gesP7CaTWPLgdqAtnaEg/view"},
+    {t:"The Monkey",e:"🐒",l:"https://drive.google.com/file/d/1qwCwLmhmov6xwEK6BcdWQGWx194aPGhm/view"},
+    {t:"Monsters Inc.",e:"👾",l:"https://drive.google.com/file/d/1lmlVArBa1cDynHvvDOddrMnCPvYaFVeK/view"},
+    {t:"Mortal Kombat (1995)",e:"🥊",l:"https://drive.google.com/file/d/1temXH9CFHCd7gjIsu8TMCFiqxMy8jXfj/view"},
+    {t:"Mufasa: The Lion King",e:"🦁",l:"https://drive.google.com/file/d/1uQXNlwz-_1PwGdnJqTGUswBhJWgH8zMP/view"},
+    {t:"Mulan",e:"🏮",l:"https://drive.google.com/drive/folders/0ByibEzjq_Q9LdHlaVzVTLXB5Slk"},
+    {t:"My Friend Dahmer",e:"😰",l:"https://drive.google.com/file/d/10zY2GZN3bttjjJU46m7vmN_L-Zn4wS4n/view"},
+  ],
+  N:[
+    {t:"Nightmare Before Christmas",e:"🎃",l:"https://drive.google.com/file/d/1kGlS0jKAdlY6ze9l9cn6ALEVEW7dFhO4/view"},
+    {t:"A Nightmare on Elm Street",e:"🔪",l:"https://drive.google.com/file/d/1Tsmb_pRgleOTXo6bAltJ6VDWDmf25Jwa/view"},
+    {t:"A Nightmare on Elm Street 2",e:"🔪",l:"https://drive.google.com/file/d/17HLx_cEKFN_CwSGSoCjX27bB-Ynz8xRq/view"},
+    {t:"A Nightmare on Elm Street 3",e:"🔪",l:"https://drive.google.com/file/d/1HbRwUQ8YTbjZ1qaRrB23f8bdBCgbaGFw/view"},
+    {t:"A Nightmare on Elm Street 4",e:"🔪",l:"https://drive.google.com/file/d/127PFUmzGoYU6n2qrvmbtXqHjev3rz_TL/view"},
+    {t:"A Nightmare on Elm Street 5",e:"🔪",l:"https://drive.google.com/file/d/16EYEuQa7aZVhqsUIF-NR8q8vqBailLsp/view"},
+    {t:"Norbit",e:"😂",l:"https://drive.google.com/file/d/1PUIzjrlfRen4M7CqwIcmVdABNBpMWt5s/view"},
+    {t:"Nosferatu (1922)",e:"🧛",l:"https://drive.google.com/file/d/1RqF32ewdSE5M6k9_liDSN16Eaw7EGhdO/view"},
+    {t:"Nosferatu (2024)",e:"🧛",l:"https://drive.google.com/file/d/1_zaOcGHMSJxWBvuZxVqM4r5gSrxPnqAt/view"},
+    {t:"Novocaine",e:"💉",l:"https://drive.google.com/file/d/1hxffkmG2xIxMXE8-ap16hyprKo3x-86V/view"},
+    {t:"The Nun II",e:"😱",l:"https://drive.google.com/file/d/1CPZj45zQd1Ih-G0I7Ifo8dACj-4jbOJa/view"},
+  ],
+  O:[
+    {t:"Once Upon a Deadpool",e:"💥",l:"https://drive.google.com/file/d/1iGY6cyipniuGrBtkHXdgJ0v4J9BohDF-/view"},
+    {t:"Oppenheimer",e:"☢️",l:"https://drive.google.com/file/d/1GLqywDPqfZSLmLAiKC8j2l0o52cAGP8S/view"},
+    {t:"Ouija: Origin of Evil",e:"👻",l:"https://drive.google.com/file/d/1kIJNcFnaM--qbwP2x4UFpK3oHEw5cCeU/view"},
+  ],
+  P:[
+    {t:"Pacific Rim",e:"🤖",l:"https://drive.google.com/file/d/1r4RH1aOMDp0_peZDHG8qEOk8BpI3Ii_T/view"},
+    {t:"Pacific Rim Uprising",e:"🤖",l:"https://drive.google.com/file/d/1rZZBiG6H7Q2Fznd552IxwQrIu0-X43zq/view"},
+    {t:"Paranormal Activity",e:"👻",l:"https://drive.google.com/file/d/1zfEW0gCWjqGslS6TN59edtaiy2JUX929/view"},
+    {t:"Paranormal Activity 2",e:"👻",l:"https://drive.google.com/file/d/1PCy4KRox73lWIwITH7iQPKP-Wr3bdEGB/view"},
+    {t:"Paranormal Activity 3",e:"👻",l:"https://drive.google.com/file/d/1R6zwscI4r5i5W5h-X5BFTdsnRhz-4s3I/view"},
+    {t:"Paranormal Activity 4",e:"👻",l:"https://drive.google.com/file/d/1zZMlZShsC9fquEZBJt_JB0S_YbRC0_Ec/view"},
+    {t:"Paranormal Activity: Tokyo Night",e:"👻",l:"https://drive.google.com/file/d/1K-c-pwa1hUYUhL6boGBoEoQSIkqcaKzV/view"},
+    {t:"Paranormal Activity: Ghost Dimension",e:"👻",l:"https://drive.google.com/file/d/1y_HD_j1eQN-3nTkCZ5Xg6MDb9PnngAVo/view"},
+    {t:"Paranormal Activity: The Marked Ones",e:"👻",l:"https://drive.google.com/file/d/1j3FyEqCg_22Cd13V2HdMm8qh-YLbK0wQ/view"},
+    {t:"PAW Patrol: The Mighty Movie",e:"🐾",l:"https://drive.google.com/file/d/13PKSmF1dnXkByra1B5NLarzB_ux4cU0T/view"},
+    {t:"Peanuts Movie",e:"🥜",l:"https://drive.google.com/file/d/16Ze08q_XKmANPNYreDVZnEbZEZTSLwOa/view"},
+    {t:"Peter Pan (1953)",e:"🧚",l:"https://drive.google.com/file/d/1q6DtsWQ-dFjBydahDLvLOtzW4-N8OIZf/view"},
+    {t:"Pet Sematary (1989)",e:"⚰️",l:"https://drive.google.com/file/d/1ZRWr-VgyKdy7vocHoVrhYKVFnJE9t8-g/view"},
+    {t:"Pet Sematary II",e:"⚰️",l:"https://drive.google.com/file/d/1lux44V88YffuSYuxqaqzVwfIU15r60k_/view"},
+    {t:"Pet Sematary (2019)",e:"⚰️",l:"https://drive.google.com/file/d/1tRdLKI1g0ioHzkuy_b2ypxla4alg2BEB/view"},
+    {t:"Pet Sematary: Bloodlines",e:"⚰️",l:"https://drive.google.com/file/d/122OjLQhI6uIS_qThRkLgUcgJh-U7PxBE/view"},
+    {t:"Piece by Piece",e:"🎵",l:"https://drive.google.com/file/d/1VFcUmw2ezWybQqevoY8jh3F50yWkxwzQ/view"},
+    {t:"Pirates of the Caribbean 1",e:"🏴‍☠️",l:"https://drive.google.com/file/d/1D4fFFOThEcYDjLQqISw-29Le-xKt27pg/view"},
+    {t:"Pirates of the Caribbean 3",e:"🏴‍☠️",l:"https://drive.google.com/file/d/1HuD4_RlXiHOUYHvi56h0t8D7__dCEH1Y/view"},
+    {t:"Pirates of the Caribbean 4",e:"🏴‍☠️",l:"https://drive.google.com/file/d/1Nc5QxL1XnvFJy6aNQ2s1j_TwtwqWRjoY/view"},
+    {t:"Plankton! The Movie",e:"🧽",l:"https://drive.google.com/file/d/1GhJnl35m05XYpjooWoxeg0lw54VpjCEx/view"},
+    {t:"Polar Express",e:"🚂",l:"https://drive.google.com/file/d/19KYYKqlEQyEuUTUQv32U53WoIDvKTRrx/view"},
+    {t:"Popeye the Slayer Man",e:"⚓",l:"https://drive.google.com/file/d/1T98LuCA5MC7O2WaCDNNuJLry7H1b2j3e/view"},
+    {t:"Power Rangers (2017)",e:"⚡",l:"https://drive.google.com/file/d/1bAS1zgiXsYJVXzhra9Fg2PHWBbVDU8lJ/view"},
+    {t:"Power Rangers Movie (1995)",e:"⚡",l:"https://drive.google.com/file/d/1e-f3lzrTrRV3iVT7Ft-KLSd6fHbyUT2i/view"},
+    {t:"The Princess and the Frog",e:"🐸",l:"https://drive.google.com/file/d/1Mm4-trdWWnxtYyAfkIj--2SXem5HeIi2/view"},
+    {t:"The Princess Bride",e:"🌹",l:"https://drive.google.com/file/d/1YnPym55TCYUgdEe65MHELL13ygweFutT/view"},
+    {t:"Prom Night",e:"🌹",l:"https://drive.google.com/file/d/1EOiFgTH1AcFyTmSP8KDZcKPpc1vim7p3/view"},
+    {t:"Puss in Boots: The Last Wish",e:"🐱",l:"https://drive.google.com/file/d/1SxMLkaBMyPSuruaAmGWoA7AKB4FV9j3J/view"},
+  ],
+  R:[
+    {t:"Rambo III",e:"💪",l:"https://drive.google.com/file/d/1KDIkm6VSTb_QrvSb8Gvbus8z-L3BGySI/view"},
+    {t:"Ratatouille",e:"🐭",l:"https://drive.google.com/file/d/1kjVDdXtZ3-O0SndMHeIwMXe4jNZJ4w2C/view"},
+    {t:"Real Steel",e:"🤖",l:"https://drive.google.com/file/d/1zamnVJgx2cGGc4r2w9jWiEqRIG9WJREE/view"},
+    {t:"Red One",e:"🎅",l:"https://drive.google.com/file/d/1QQx9ogqUJzS3G8GIZXLBAhgx2s2Ol2zZ/view"},
+    {t:"Rio",e:"🦜",l:"https://drive.google.com/file/d/1DIHKkPm7JVwOWWgM5RvYgOhAbFXWOAhf/view"},
+    {t:"Rocky",e:"🥊",l:"https://drive.google.com/file/d/0B7Z9hjzLxrtXZDBEZ29wOG90MGs/view"},
+    {t:"Ron's Gone Wrong",e:"🤖",l:"https://drive.google.com/file/d/1nKl-oBgmnWygnF7xm6CfSWikp22ElVZY/view"},
+    {t:"Rugrats: The Movie",e:"🍼",l:"https://drive.google.com/file/d/157WJal3P65gdyFlDbP4DcRfNku-Oursg/view"},
+    {t:"Rugrats in Paris",e:"🍼",l:"https://drive.google.com/file/d/1w3PdNgN0AXDmG1CYRv7v0kMYrC1Ywu_0/view"},
+  ],
+  S:[
+    {t:"Salem's Lot (2024)",e:"🧛",l:"https://drive.google.com/file/d/1PzQJ5iQOKas1DnXPUFsDsHbjEhR_bu1z/view"},
+    {t:"Saw",e:"🪚",l:"https://drive.google.com/file/d/1Rhz-BomwJLVXvUbUjsZSMt0SjNDJ01PR/view"},
+    {t:"Saw II",e:"🪚",l:"https://drive.google.com/file/d/1ispkvENgPzTEuPHcbv9HgduOBt1ycaQ_/view"},
+    {t:"Saw III",e:"🪚",l:"https://drive.google.com/file/d/1KEsCxCI-Fl-7Cb0kDkpFKy6BjObE78NQ/view"},
+    {t:"Saw IV",e:"🪚",l:"https://drive.google.com/file/d/123EAq27XH_xJor1kPLcs2UpFnfdVinkc/view"},
+    {t:"Saw V",e:"🪚",l:"https://drive.google.com/file/d/1qWsq51l7kBbd6CgGPLGJFjBHU0WhNl0F/view"},
+    {t:"Saw VI",e:"🪚",l:"https://drive.google.com/file/d/17QLqfjnyfCdQIpDc5NvsB7r4l8BIDYUV/view"},
+    {t:"Saw: The Final Chapter",e:"🪚",l:"https://drive.google.com/file/d/1A6jVnspMhHKdy21Lq_A-vneWqJDb1lpo/view"},
+    {t:"Saw X",e:"🪚",l:"https://drive.google.com/file/d/10Wn3otVUN00Sfc6sRZSnDFfaYDJ5VTNR/view"},
+    {t:"Scary Movie",e:"😱",l:"https://drive.google.com/file/d/1-61Fls8_MDTVq3r5dHP58joVRiUloxZQ/view"},
+    {t:"Scary Movie 2",e:"😱",l:"https://drive.google.com/file/d/1Jmeyjhlpg6A-W-XJPoqC8uhtWztuQe-F/view"},
+    {t:"Scary Movie 3",e:"😱",l:"https://drive.google.com/file/d/1KN1dzjj-d6MhY47MIgWdT2Au10Ft7Bf1/view"},
+    {t:"Scary Movie 4",e:"😱",l:"https://drive.google.com/file/d/1pgH5VfJEi5NRVEtp2y_vZMSOk_rh3Har/view"},
+    {t:"Scarface",e:"💰",l:"https://drive.google.com/file/d/1yC6lNaMy_WUIK3eKkKoRSEU0Y-cSJBnV/view"},
+    {t:"Scary Stories to Tell in the Dark",e:"📖",l:"https://drive.google.com/file/d/18zmvmokCEwueV56MaV3eYCvKUl4qFfpp/view"},
+    {t:"Scream (1996)",e:"😱",l:"https://drive.google.com/file/d/1pPzT8Ri09tg11w_9SPBhtDQuq7KH26XH/view"},
+    {t:"Scream 2",e:"😱",l:"https://drive.google.com/file/d/16TD5egSCItF4mL1rcPS6n5oDrOTpUbGT/view"},
+    {t:"Scream 3",e:"😱",l:"https://drive.google.com/file/d/1IzaFo-PmeI3AiQ_qoDdjCbUdiu8Ohs-w/view"},
+    {t:"Scream 4",e:"😱",l:"https://drive.google.com/file/d/1HfyVEE2oFq1X8dHMWr5xJmMyHo79l7iG/view"},
+    {t:"Scream (2022)",e:"😱",l:"https://drive.google.com/file/d/1WGU_asa-pD9tkZI5YK72qsAPksvkkDJN/view"},
+    {t:"Scream VI",e:"😱",l:"https://drive.google.com/file/d/1V7Hzo6Z4n5TJXFKI7tws0ksn-q9aBxzT/view"},
+    {t:"Seed of Chucky",e:"🔪",l:"https://drive.google.com/file/d/1cal928G6r3Vth-eqay5mbC3i3a6sWtzS/view"},
+    {t:"Shang-Chi",e:"👊",l:"https://drive.google.com/file/d/1xBiVuAnW0hFxIhG3samjzJJ-czMAKxN0/view"},
+    {t:"Shark Tale",e:"🦈",l:"https://drive.google.com/file/d/1tqtj-_jOe_a1DtU3ekZSf5n8NEtHT8hn/view"},
+    {t:"Shazam!",e:"⚡",l:"https://drive.google.com/file/d/111DMVHuhGLLFunQ1ixi_OG8ui0ckXbfU/view"},
+    {t:"Shazam! Fury of the Gods",e:"⚡",l:"https://drive.google.com/file/d/1LC17KNt1pxG1zJ43CwIBNGXaCN3cmLPc/view"},
+    {t:"The Shining",e:"🪓",l:"https://drive.google.com/file/d/1BJ-24OqRAM91ujUu5qJkxFQsoav9yDQU/view"},
+    {t:"Shin Godzilla",e:"🦖",l:"https://drive.google.com/file/d/1VnID4qhUDF8EOWLQJ3Z1K-M0AwoOTlFt/view"},
+    {t:"Shrek",e:"🧅",l:"https://drive.google.com/file/d/1ps_r1YV8y5h93_mUu4OFlPVVkPzT0Rui/view"},
+    {t:"Shrek 2",e:"🧅",l:"https://drive.google.com/file/d/1NoWXqvxNnXPiBj0kLY1lINF00Gg17mme/view"},
+    {t:"Shrek 3",e:"🧅",l:"https://drive.google.com/file/d/1qhxQw4uC6aO1KN0UZrybu1YY1vdtBwmM/view"},
+    {t:"Shrek Forever After",e:"🧅",l:"https://drive.google.com/file/d/1xN-pzN1CePUsWHTmd9o--cOA-X_gqzQg/view"},
+    {t:"Sing",e:"🎤",l:"https://drive.google.com/file/d/1bRSwv4_BuhY_StvUSf1TXE3QxC9R9ADA/view"},
+    {t:"Sing 2",e:"🎤",l:"https://drive.google.com/file/d/1uDLZSi8eF0AMJjciagelGOQSJVDshSDU/view"},
+    {t:"Sleepy Hollow",e:"🎃",l:"https://drive.google.com/file/d/18gseXON5RP2ipsWcd0XGZH9k4TyaeYYR/view"},
+    {t:"Smile",e:"😁",l:"https://drive.google.com/file/d/1J3-6Qgkhk0MPBpsTvgQp6O209EVL2iJH/view"},
+    {t:"Smile 2",e:"😁",l:"https://drive.google.com/file/d/1PeOUtsdJfWRqJvGwBhRmeBc2fLiQyTJY/view"},
+    {t:"Sniper: The Last Stand",e:"🎯",l:"https://drive.google.com/file/d/159k402C5RvOObYn-3pYz1CuRg-XNiZGr/view"},
+    {t:"Snitch",e:"🤫",l:"https://drive.google.com/file/d/17hMZl5qq3Khflm_xUYZW9b8nGCJ6OBfA/view"},
+    {t:"Snow White (2025)",e:"❄️",l:"https://drive.google.com/file/d/1YZrs6IeoQvhMBceswxnoSEixffTm3l46/view"},
+    {t:"Sonic the Hedgehog",e:"💨",l:"https://drive.google.com/file/d/1HaXeNylNfZXhRudGTNLUWtrN-oAmone4/view"},
+    {t:"Sonic the Hedgehog 2",e:"💨",l:"https://drive.google.com/file/d/13YPdlfR1BTzXfqwmfbzfiuPycjQsh0Yb/view"},
+    {t:"Sonic the Hedgehog 3",e:"💨",l:"https://drive.google.com/file/d/13pgT7HSDRXYeXvkU0RAEqbdrHrFxPiIm/view"},
+    {t:"South Park: Bigger Longer & Uncut",e:"🏔️",l:"https://drive.google.com/file/d/1povW59rvEfsLf7xfXE3Q_9m0FITjUbUV/view"},
+    {t:"South Park: End of Obesity",e:"🏔️",l:"https://drive.google.com/file/d/1k_Bk1E4vLdzymXcGOA92axzicOgmarFp/view"},
+    {t:"South Park: Post Covid",e:"🏔️",l:"https://drive.google.com/file/d/1is3m8OOl2UvAmSFaIVKYb3UQ6HMMe4ps/view"},
+    {t:"Space Jam",e:"🏀",l:"https://drive.google.com/file/d/1QK9RHd2T-ijthIL7A6NQvRztPkTx8NtN/view"},
+    {t:"Space Jam: A New Legacy",e:"🏀",l:"https://drive.google.com/file/d/17hubcXZlc8AQCick-5kdB11mpEQlM1Zw/view"},
+    {t:"Spider-Man (2002)",e:"🕷",l:"https://drive.google.com/file/d/14BaJhmDRr3veoH436CKdPDp9r-j5214I/view"},
+    {t:"Spider-Man 2",e:"🕷",l:"https://drive.google.com/file/d/1yV7ZmEkfOVOLdV51wN6vSeDf3_tQqBvf/view"},
+    {t:"Spider-Man 3",e:"🕷",l:"https://drive.google.com/file/d/1ExTfRPC3YGmCSg8W2uFSYkUMw7a1vcTR/view"},
+    {t:"The Amazing Spider-Man",e:"🕷",l:"https://drive.google.com/file/d/1jom1D1Dc3eF3ZmCXVzh8lhlXrFGOBpXK/view"},
+    {t:"The Amazing Spider-Man 2",e:"🕷",l:"https://drive.google.com/file/d/1bQpgzMav6AHi3UYnAagHPsGyraC0GWK_/view"},
+    {t:"Spider-Man: Homecoming",e:"🕷",l:"https://drive.google.com/file/d/16nP21GFh_p9LNNW59oX2pMmTznKV43K4/view"},
+    {t:"Spider-Man: Far From Home",e:"🕷",l:"https://drive.google.com/file/d/1YFUpSLmxb6xIlbdJXScIkRYvwYxvJ_18/view"},
+    {t:"Spider-Man: No Way Home",e:"🕷",l:"https://drive.google.com/file/d/1oddQM8w-8UqQIvB-fPpy1h-7xvAbklmA/view"},
+    {t:"Spider-Man: Into the Spider-Verse",e:"🕷",l:"https://drive.google.com/file/d/1V3Bq0lrDQUxJay5DDs3gK69ZvRNb1j2u/view"},
+    {t:"Spider-Man: Across the Spider-Verse",e:"🕷",l:"https://drive.google.com/file/d/1Sd1l_LhKRp_2OE5gRJJyPubnZjJccLgQ/view"},
+    {t:"SpongeBob Movie",e:"🧽",l:"https://drive.google.com/file/d/1r9XAqLDPOpnS16kyVDMLtsx9J3muPCb8/view"},
+    {t:"SpongeBob: Sponge on the Run",e:"🧽",l:"https://drive.google.com/file/d/1RCiXmbRfWyMQnJLa5vNTvSiIxZFG1mq5/view"},
+    {t:"Spiral: From the Book of Saw",e:"🪚",l:"https://drive.google.com/file/d/1beyobJKbXTeBi83Q9U0eqOUQaGcNJt2I/view"},
+    {t:"Star Trek: Section 31",e:"🚀",l:"https://drive.google.com/file/d/176Ep16TeQCk90seFbjv6PgcsVh0fRi7f/view"},
+    {t:"Star Wars: The Phantom Menace",e:"🌌",l:"https://drive.google.com/file/d/1kxXlV-lNOjqSnqwiMQxYVrcbhxQl45Sw/view"},
+    {t:"Star Wars: Attack of the Clones",e:"🌌",l:"https://drive.google.com/file/d/1u0ZRN7s8rgAMYtvnGf3zTjpM7Fu6TmW_/view"},
+    {t:"Star Wars: Revenge of the Sith",e:"🌌",l:"https://drive.google.com/file/d/1lEszWnr2BinTfzBGqtoDV1W9wMIlTQtb/view"},
+    {t:"Star Wars: A New Hope",e:"🌌",l:"https://drive.google.com/file/d/1nDgCNAuFgSI6fDKbRZFkDhzViib1ixYS/view"},
+    {t:"Star Wars: The Empire Strikes Back",e:"🌌",l:"https://drive.google.com/file/d/1q0Jof59Il_So2z5Q38ANn55qB2GCpOx3/view"},
+    {t:"Star Wars: The Force Awakens",e:"🌌",l:"https://drive.google.com/file/d/1D-T-C4PNPbZ61wiHqXgQlQqYy_NTcsKa/view"},
+    {t:"Star Wars: The Last Jedi",e:"🌌",l:"https://drive.google.com/file/d/1vCdep3QXu8GE9IaNUdVmCGLiG24kFrWb/view"},
+    {t:"Star Wars: The Rise of Skywalker",e:"🌌",l:"https://drive.google.com/file/d/1viDV-Gu6yGHOpyaDefPH3Id9fXSHuTsi/view"},
+    {t:"Rogue One: A Star Wars Story",e:"🌌",l:"https://drive.google.com/file/d/19Pa9tkJFpPZdImgpd8a9wQGaqt2yGlEJ/view"},
+    {t:"Star Wars: The Clone Wars",e:"🌌",l:"https://drive.google.com/file/d/16dO2t6nMYzRFTKGBVByMPYtru6kwix7H/view"},
+    {t:"Strays",e:"🐕",l:"https://drive.google.com/file/d/1mwatNbn0A7PeIm_alMZGYobXbsNIgBlo/view"},
+    {t:"Suicide Squad",e:"💣",l:"https://drive.google.com/file/d/1m2m6kudeN5pivaeCWfMR88xXEyZg8nFK/view"},
+    {t:"The Suicide Squad",e:"💣",l:"https://drive.google.com/file/d/11nKqV7QKkATlvO7pt8eHlfS32rSHeOVZ/view"},
+    {t:"Super Mario Bros. Movie",e:"🍄",l:"https://drive.google.com/file/d/1OsyF2LKJqjtv0b2Xd9GWOLcYkzny3VZo/view"},
+    {t:"Super Mario Galaxy Movie",e:"⭐",l:"https://drive.google.com/file/d/1_OTHUC6cJqq3HS0ysjWiNQ2F43vzi4_r/view"},
+    {t:"Superman (2025)",e:"🦸",l:"https://drive.google.com/file/d/1nO646VaJQBN725tPVe9TLFnLBFPJ-jbL/view"},
+  ],
+  T:[
+    {t:"Tangled",e:"🌸",l:"https://drive.google.com/file/d/1eirKJt3ulfEusRJ6OM0jwpJ_YbL8iExC/view"},
+    {t:"Terrifier",e:"🤡",l:"https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view"},
+    {t:"Terrifier 2",e:"🤡",l:"https://drive.google.com/file/d/1l5MqSuzSx_Aitg7Qx515bv6VnNeHhP38/view"},
+    {t:"Terrifier 3",e:"🤡",l:"https://drive.google.com/file/d/1sAj4FqfEIzHPIW7ZUPGGSOFTTaJr5AGI/view"},
+    {t:"Texas Chainsaw Massacre 2 (1986)",e:"🔪",l:"https://drive.google.com/file/d/15kgjKzt9RLPKE9a1c_csHkG-qWHcvD03/view"},
+    {t:"Texas Chainsaw Massacre (2022)",e:"🔪",l:"https://drive.google.com/file/d/1DX2PS1WKMKTBCcdwxzbjapo7He1OHTFb/view"},
+    {t:"Texas Chainsaw: Next Generation",e:"🔪",l:"https://drive.google.com/file/d/1-lJBd601MPHOB0DqibwVu_Uotw6beBh-/view"},
+    {t:"The Thing (1982)",e:"👽",l:"https://drive.google.com/file/d/1i1EOGDn62d9CH3DDqQsGm3L74nBDcOfk/view"},
+    {t:"The Thing (2011)",e:"👽",l:"https://drive.google.com/file/d/1V5JdguHC6RHfNngdl5Mst4OXxnYFLNB_/view"},
+    {t:"TMNT: Mutant Mayhem",e:"🐢",l:"https://drive.google.com/file/d/1emX4CShNejqhStNK-b0xDVBBMA0t2gcE/view"},
+    {t:"TMNT III (1993)",e:"🐢",l:"https://drive.google.com/file/d/1gdIpjtTCHV_a8p9KPQaQg1ljIcanpu5S/view"},
+    {t:"TMNT (2007)",e:"🐢",l:"https://drive.google.com/file/d/18iqYAOVbRHOT7jzJ3sqlyxi8RS5AH5sM/view"},
+    {t:"TMNT (2014)",e:"🐢",l:"https://drive.google.com/file/d/1nfyJg41IDD_zRmv3i64MUSpPuCPTq7gb/view"},
+    {t:"TMNT: Out of the Shadows",e:"🐢",l:"https://drive.google.com/file/d/1fWvuZyyF8dWKn9y60awRgwTxKAQd11cl/view"},
+    {t:"Top Gun",e:"✈️",l:"https://drive.google.com/file/d/1YPdexiO1cHulGguqGvHKq0Grsnpdlbs1/view"},
+    {t:"Top Gun: Maverick",e:"✈️",l:"https://drive.google.com/file/d/1nmGDHktR96jkaYl2lf-d-XTtNtFh4PTv/view"},
+    {t:"Toy Story (1995)",e:"🤠",l:"https://drive.google.com/file/d/1fW6Ov5NIaRh4h78-qBpWeln_Vs9oEXOQ/view"},
+    {t:"Toy Story 2",e:"🤠",l:"https://drive.google.com/file/d/1k3RVDc_Vah1H9lFsXQZJ6mE3KqdDcK_T/view"},
+    {t:"Toy Story 3",e:"🤠",l:"https://drive.google.com/file/d/13msxxmyEco7CRBkO_Ju1SMx5KK4r4Su8/view"},
+    {t:"Toy Story 4",e:"🤠",l:"https://drive.google.com/file/d/1bFUbsQ9VEazeCt5l_VBVDtjCsbJmZ_Vr/view"},
+    {t:"Transformers",e:"🤖",l:"https://drive.google.com/file/d/1Z9fJZ-jaWWpoEPa2CTIqN07ugZiyIuD4/view"},
+    {t:"Transformers: Revenge of the Fallen",e:"🤖",l:"https://drive.google.com/file/d/16W1mt5pR2E0_4DXhvHCpBabnTnMbCRTY/view"},
+    {t:"Transformers: Dark of the Moon",e:"🤖",l:"https://drive.google.com/file/d/1P3AU9onyXEKK03hRH63SKPoHbjPwMOFB/view"},
+    {t:"Transformers: Age of Extinction",e:"🤖",l:"https://drive.google.com/file/d/13ZLgr8tBzOq3ZuFHbEf5fDwev9jK_pwy/view"},
+    {t:"Transformers: The Last Knight",e:"🤖",l:"https://drive.google.com/file/d/1TP3PH5br78DxrdNUDoH0J0ciJQJl804q/view"},
+    {t:"Transformers: Rise of the Beasts",e:"🤖",l:"https://drive.google.com/file/d/1epYCAJMFrmUBlId2wWFI0lcC1UvbX-Ez/view"},
+    {t:"Transformers One",e:"🤖",l:"https://drive.google.com/file/d/1cD5AaH1qXrA3CdlyD6lEJIfspu4FDOD-/view"},
+    {t:"Trick 'r Treat",e:"🎃",l:"https://drive.google.com/file/d/1-N3Vn91nT0q6i5Yclxsheyva98kT0YXl/view"},
+    {t:"Trolls: Band Together",e:"🌈",l:"https://drive.google.com/file/d/1XRVLJkHTb7yOjW2daDKL1LQq_ySsRghU/view"},
+    {t:"Twilight",e:"🧛",l:"https://drive.google.com/file/d/1YEIurV6IBGg7IYqTE9EX2vHLUQeEfBjH/view"},
+    {t:"Twilight: New Moon",e:"🧛",l:"https://drive.google.com/file/d/1LTDkhMpQLpkNdy6KVU81H-Y_J4lQ3PHV/view"},
+    {t:"Twilight: Eclipse",e:"🧛",l:"https://drive.google.com/file/d/1l3n45XIBKJuV8Osp7V30X3Ki4QgAa4Cn/view"},
+    {t:"Twilight: Breaking Dawn Part 1",e:"🧛",l:"https://drive.google.com/file/d/1GTUALkIJ4mkxae00sdbQdGUhUl4i8lGm/view"},
+    {t:"Twilight: Breaking Dawn Part 2",e:"🧛",l:"https://drive.google.com/file/d/12J1e35T-HQtLoTvfs70-TlZ4oJsXsxvX/view"},
+  ],
+  V:[
+    {t:"Venom",e:"🕸️",l:"https://drive.google.com/file/d/1XoN0B1rsNKDDRphmI8bM606r4wRQ6JUH/view"},
+    {t:"Venom: Let There Be Carnage",e:"🕸️",l:"https://drive.google.com/file/d/13d5gq3Kx3koobcfRTVyH9Hhum3s8Fxag/view"},
+    {t:"Venom: The Last Dance",e:"🕸️",l:"https://drive.google.com/file/d/1C6aUcmJeLpm8ysdYwnt7HRZFAT6k0oQs/view"},
+  ],
+  W:[
+    {t:"Wakanda Forever",e:"🐆",l:"https://sites.google.com/view/chil-zone-return/moves/wakanda-forever"},
+    {t:"WALL-E",e:"🤖",l:"https://drive.google.com/file/d/0B9konOTuvSYRQTl2Nmp6NkpjSG8/view"},
+    {t:"Werewolves",e:"🐺",l:"https://drive.google.com/file/d/1ISYTbQADR-9A09knncZmZVlyNEzfalby/view"},
+    {t:"West Side Story (1961)",e:"💃",l:"https://drive.google.com/file/d/1CBGr82HWTP2XM-HJPURXFGV1uqE5-ip-/view"},
+    {t:"West Side Story (2021)",e:"💃",l:"https://drive.google.com/file/d/1XCfKDI8cKvYQO2UGFOKBe5qlmcL8Vsry/view"},
+    {t:"White Chicks",e:"😂",l:"https://drive.google.com/file/d/1IniRDbSyVeGuGIadQ_rX9RL8AJczmm2S/view"},
+    {t:"White Men Can't Jump (1992)",e:"🏀",l:"https://drive.google.com/file/d/1MXghG0Dnn9XJ9iSGE6-bIuM7vysIxBfy/view"},
+    {t:"White Men Can't Jump (2023)",e:"🏀",l:"https://drive.google.com/file/d/1-WrSZaYE3Sq_bHifzyd4UJP7tc6Ea0Ur/view"},
+    {t:"Who Framed Roger Rabbit",e:"🐰",l:"https://drive.google.com/file/d/13qCLa-UbWgLKDkm5EYs7y3-n5NVx7-73/view"},
+    {t:"Willy Wonka & the Chocolate Factory",e:"🍫",l:"https://drive.google.com/file/d/1oeD_wjeRQck_3uRIOw9ZXIxG5PuUIPVD/view"},
+    {t:"Wish",e:"⭐",l:"https://drive.google.com/file/d/1KOmgE1jMV0jT2QkWFFd3ieEzwf4GbVOw/view"},
+    {t:"The Wolverine",e:"🐺",l:"https://drive.google.com/file/d/0BzeqnwcztH5cRERqUGl6TFkyc3M/view"},
+    {t:"Wreck-It Ralph",e:"👾",l:"https://drive.google.com/file/d/11NQ1_ecO2FTIhofVPIfakshgSBnR6ngC/view"},
+    {t:"Wreck-It Ralph 2",e:"👾",l:"https://drive.google.com/file/d/1MQMWT5mYBF07GXiqgzAU8h9BcFe0phu9/view"},
+  ],
+  X:[
+    {t:"X-Men (2000)",e:"🦾",l:"https://drive.google.com/file/d/1BIJIiG8fdpyudl-1vXHIU3TBb3XMXJaa/view"},
+    {t:"X-Men: The Last Stand",e:"🦾",l:"https://drive.google.com/file/d/176dVR22sSEaJMY5TfITCW9TIC2fNYBMm/view"},
+    {t:"X-Men Origins: Wolverine",e:"🐺",l:"https://drive.google.com/file/d/0BxvqXivT-hg5d2VmZDdsNlBNUzQ/view"},
+    {t:"X-Men: Apocalypse",e:"🦾",l:"https://drive.google.com/file/d/1XOhalDbPc-27oTHBEoiQCRjsXrktB4aY/view"},
+  ],
+  Z:[
+    {t:"Zapped",e:"⚡",l:"https://drive.google.com/file/d/1gO0OtMfAoVUaZGxX825aH48OySgHYd5n/view"},
+    {t:"Zootopia",e:"🦊",l:"https://drive.google.com/file/d/1HYeIrbf8A-vfvJsvYP59AQzG9l8nt03h/view"},
+  ],
+};
+
+// ── TV ──
+const tvShows = {
+  A:[
+    {t:"Abbott Elementary S1",l:"https://drive.google.com/drive/folders/13dLvT0_1TkcRmVmF6tZlm80xqeoWhxZp"},
+    {t:"Abbott Elementary S2",l:"https://drive.google.com/drive/folders/1gAtljQ6SnEWUS8HXW-y5jtbcKILcUnFU"},
+    {t:"Adventure Time (S1-S10)",l:"https://drive.google.com/drive/folders/1OwoKydzUQUUp6n-Nh7CCAQXGLfchU8Ta"},
+    {t:"Adventure Time: Fionna and Cake",l:"https://drive.google.com/drive/folders/1TWYO4e4xYDMVou36cJHASEnJdV4FFkOt"},
+    {t:"The Amazing World of Gumball S1",l:"https://drive.google.com/drive/folders/1OXgcS7q8GexG3oOHxSMDuNYfUo-BMVxq"},
+    {t:"The Amazing World of Gumball S2",l:"https://drive.google.com/drive/folders/1VJlXHKRS2qokKTcZLwlF9_zeSNcAi0rU"},
+    {t:"The Amazing World of Gumball S3",l:"https://drive.google.com/drive/folders/1jhdpF65hUXwCRjOZKqquWB4z8L1ZpII7"},
+    {t:"The Amazing World of Gumball S4",l:"https://drive.google.com/drive/folders/1DO4mX1SM8_xwqpSGkyJ7k_iHrrPbhL9J"},
+    {t:"The Amazing World of Gumball S5",l:"https://drive.google.com/drive/folders/1W6TZs3tyU4wPqhFystx3cz0M7w6pzLbP"},
+    {t:"The Amazing World of Gumball S6",l:"https://drive.google.com/drive/folders/1pZE3vZHVmt7REai0Q1Dz3hJM9feupEVa"},
+    {t:"Arcane S1",l:"https://drive.google.com/drive/folders/1pnxYaACwXN9znetYaq2K6khYpQChihda"},
+  ],
+  B:[
+    {t:"Barbie Life in the Dreamhouse",l:"https://drive.google.com/drive/folders/16XksTOld5HoYI8uCgOU8aCHtlAFgERQR"},
+    {t:"Batman: The Animated Series",l:"https://sites.google.com/view/chil-zone-return/tv/batman-the-animated-series"},
+    {t:"Batman Beyond",l:"https://sites.google.com/view/chil-zone-return/tv/batman-beyond"},
+    {t:"Beast Games",l:"https://drive.google.com/drive/folders/1Q8_n0CTVT3eUg_mZe-10NDYnJl9p-9w7"},
+    {t:"Blues Clues S1",l:"https://drive.google.com/drive/folders/1vDYQQUT_BEMS779FI2rfC-FnkoUG3g4Y"},
+    {t:"Bluey S1-S3",l:"https://drive.google.com/drive/folders/1eGZDQz4BX1MJ58-JrtFs_gjQRoY-rltA"},
+    {t:"Boondocks",l:"https://drive.google.com/drive/folders/1ujarzaX_90FGOiRC15OmXOAgwSbdI_kA"},
+    {t:"Breaking Bad (Full)",l:"https://drive.google.com/drive/folders/1FnMjttr2xj9HZfypWbN4L8FlqJyz9LUs"},
+    {t:"The Boys S1-S3",l:"https://drive.google.com/drive/folders/1ezBjEruHXUq-cV5YGJK-WvXMUjbqNyCx"},
+    {t:"The Boys S4",l:"https://drive.google.com/drive/folders/14rrzdCpjttUBmXOVKRFLCR8TYiQP3yaU"},
+  ],
+  C:[
+    {t:"The Chi",l:"https://drive.google.com/drive/folders/1IMDngQ4nBi_jugA-8RS4AuQxtGgPs0cU"},
+    {t:"The Cleveland Show",l:"https://drive.google.com/drive/folders/1Yini_uXuxwQzlYqOX447QK2GQis52bxa"},
+    {t:"Cobra Kai",l:"https://drive.google.com/drive/folders/1iDvFUcwl4WvgAQgjPjrMDBarJ_I2NCSK"},
+    {t:"The Cuphead Show",l:"https://drive.google.com/drive/folders/1j_K1YV4w_sHAzwEAaUMl-qSk4qjrYSJ_"},
+  ],
+  D:[
+    {t:"Danny Phantom S1",l:"https://drive.google.com/drive/folders/1iZZSfbqgfu8YDIP-5g8qp8XQ4al5WrDC"},
+    {t:"Danny Phantom S2",l:"https://drive.google.com/drive/folders/1PEEIDi7H157aYS5y1SPf7m4d1kM786Wn"},
+    {t:"Danny Phantom S3",l:"https://drive.google.com/drive/folders/19EBjseVtK6BcEITdVfvpxG9dbQO6mpFF"},
+  ],
+  E:[
+    {t:"Euphoria",l:"https://drive.google.com/drive/folders/1BVkiWaMVA1mZ1J2bJcnE3_ywvNFg1IKP"},
+    {t:"Everybody Hates Chris",l:"https://drive.google.com/drive/folders/1RUZj9WQzdEBYYLeKhD_Y9GRcZbNZMSEy"},
+  ],
+  F:[
+    {t:"Family Guy (S1-S23)",l:"https://drive.google.com/drive/folders/11W6C-Jqv9iQVasqjfiaYz77puax1UTjH"},
+    {t:"Family Matters",l:"https://drive.google.com/drive/folders/1YX2tgiy_q_-FWYwv5puLRdWOhwlJVTQ3"},
+  ],
+  G:[
+    {t:"Garfield & Friends",l:"https://drive.google.com/drive/folders/1u9Pr61UADQ2cTYvkIkqpEjCzJf9bM9Ic"},
+    {t:"The Good Doctor S1",l:"https://drive.google.com/drive/folders/1-xSt1mLjjtY87DSpKjVbnV1P37jv_CMs"},
+    {t:"The Good Doctor S2",l:"https://drive.google.com/drive/folders/1AELIoYI4dmAAEPmAtN2mV1qXycI530dp"},
+    {t:"The Good Doctor S3",l:"https://drive.google.com/drive/folders/11yLhbzbHBC7SKbXM2J_GL4d8GD512rWU"},
+    {t:"The Good Doctor S4",l:"https://drive.google.com/drive/folders/1Z4_G8ZzFFGDmtyvNx89Jjn7kJ2BAVbeO"},
+    {t:"The Good Doctor S5",l:"https://drive.google.com/drive/folders/1NzP7wTzfC5BThyTNmw1j-BLWPnVoaNOk"},
+    {t:"The Good Doctor S6",l:"https://drive.google.com/drive/folders/15DzZ1sXWu_CEagMkG3tTFOcR1GncSkQl"},
+    {t:"Gravity Falls (Full)",l:"https://drive.google.com/drive/folders/1fU-FrVZ12bAZYxtxrofKkEQg2kMrIjm3"},
+  ],
+  H:[
+    {t:"Harley Quinn",l:"https://drive.google.com/drive/folders/1ap71sKGnRDDqySR6TlfL_sXpwoM5B1Q9"},
+    {t:"Harvey Birdman",l:"https://drive.google.com/drive/folders/140J4Jyv5DvSnrcM7bI9kvqMPUmTR6vZS"},
+    {t:"Hazbin Hotel",l:"https://drive.google.com/drive/folders/1FnnwXwhzJgxIFFjp9I0uW6EFknZ8l6U7"},
+    {t:"Hey Arnold",l:"https://drive.google.com/drive/folders/1tvjU4AqKfPOM_wPZA-pJsjYaOKguNaDD"},
+    {t:"House / Dr. House",l:"https://drive.google.com/drive/folders/1ps2iMF8-eaUr1xGc_wI8iTyoy8-JVUK6"},
+  ],
+  I:[
+    {t:"Invincible",l:"https://drive.google.com/drive/folders/1WILkOZNaq9ODyW4a_k_vrgQcxGvTOWBB"},
+  ],
+  K:[
+    {t:"KC Undercover",l:"https://sites.google.com/view/chil-zone-return/tv/k-c-undercover"},
+    {t:"Kim Possible S1",l:"https://drive.google.com/drive/folders/1OJgL1LyWu3FNJvsJ-Li3Vi18iJhKB_YY"},
+    {t:"Kim Possible S2",l:"https://drive.google.com/drive/folders/1KZoRGQPBOx5HkYQ5laLMugxqSyknDkcL"},
+    {t:"Kim Possible S3",l:"https://drive.google.com/drive/folders/1K9dgECky1gy11WrMcHDI_MtXCHyyvqEh"},
+    {t:"Kim Possible S4",l:"https://drive.google.com/drive/folders/1TR8mgOxvS6H05DxGUav9TC1ri41ZdHfR"},
+  ],
+  L:[
+    {t:"Lab Rats S1",l:"https://drive.google.com/drive/folders/1Q8TzYtSqGaM7VkSsGtPCz4PikIWZQQI7"},
+    {t:"Lab Rats S2",l:"https://drive.google.com/drive/folders/1yjysqP586p72v6rHLijKWxl9TVDMKjDa"},
+    {t:"Lab Rats S3",l:"https://drive.google.com/drive/folders/19nqs-gZQdA5REbqggVNsdWxvORONt6tY"},
+    {t:"Lab Rats S4",l:"https://drive.google.com/drive/folders/1uDbLXdKpC9j-eqvt1T7E6rFPN66jH-qj"},
+  ],
+  M:[
+    {t:"Miraculous",l:"https://drive.google.com/drive/folders/1QsOt7Qy2e3OITwrO22moBpbnv3fpQ4MQ"},
+    {t:"Moon Knight",l:"https://drive.google.com/drive/folders/1nW610bRzpYobTHqK5k13LRkiZrRvDmZ8"},
+    {t:"Murder Drones",l:"https://drive.google.com/drive/folders/1QAiFXO6iG-IB2A2oGModfBP74aVHa6S8"},
+    {t:"My Adventures With Superman",l:"https://drive.google.com/drive/folders/1tWh4y7PZNQuNaAjq-tZq3ivrhfo-fCni"},
+  ],
+  O:[
+    {t:"Outer Banks",l:"https://drive.google.com/drive/folders/1-2GIqLddtiou6bcJ9pUfVkZhUk_VnGML"},
+  ],
+  P:[
+    {t:"The PJs",l:"https://drive.google.com/drive/u/0/folders/1RUQMqskS3ybzT6w5WQGouH9EBd5pEcTh"},
+    {t:"The Powerpuff Girls",l:"https://drive.google.com/drive/folders/1IYfB0oASMroneHQn8KansvGRnNIcYnFd"},
+    {t:"The Proud Family",l:"https://drive.google.com/drive/folders/16Wl2PBxEjlETW1FzF7zZZ8vHH9WfO3eq"},
+  ],
+  R:[
+    {t:"Recess",l:"https://drive.google.com/drive/folders/10frlZDyugiDyKuxu27PDvHf8r3_qxRLG"},
+    {t:"Regular Show",l:"https://drive.google.com/drive/folders/1tedaT2-lJvdIToqgsBx7lDo4tJl3TY-U"},
+    {t:"Rick and Morty",l:"https://drive.google.com/drive/folders/1DXF-90DllQH-GKYN6_tRNXivDACF4p2n"},
+  ],
+  S:[
+    {t:"Scooby-Doo",l:"https://drive.google.com/drive/folders/1dq_qrg51SMtVW7SWAeYYrx-nKbfwKkXl"},
+    {t:"The Simpsons",l:"https://drive.google.com/drive/folders/1ZtFBjPAE-qVzdHJ3EKnvlBFNhux5m3Hi"},
+    {t:"Smiling Friends",l:"https://drive.google.com/drive/folders/1px8IK0jaSlqj3fK-yawRwD0aQD4pXGld"},
+    {t:"Sonic X",l:"https://drive.google.com/drive/folders/1rM_wiU6k3TbIDvrp3kt72-4BFWO4GC7G"},
+    {t:"Sonic Boom",l:"https://drive.google.com/drive/folders/1XbAygEBBhC7K0d5ZrU1c3VMk1A2AEcXm"},
+    {t:"Sonic Prime",l:"https://drive.google.com/drive/folders/1q_NeRaY-fU59j9eiZQMs5bu-uFDb7oK9"},
+    {t:"Adventures of Sonic the Hedgehog",l:"https://drive.google.com/drive/folders/1DN2ZHPmwQYAGwH351RYGbuwapqohGgbV"},
+    {t:"South Park (Full)",l:"https://drive.google.com/drive/folders/1PzKaoaK4blzlaoxnwC20gZoeYE5mDxWL"},
+    {t:"Spider-Man (Animated)",l:"https://drive.google.com/drive/folders/11CP20VTJqf7a2gjsLLOOu88xBropDjl2"},
+    {t:"The Spectacular Spider-Man",l:"https://drive.google.com/drive/folders/1-x_7IyRmcN6cBCOy3g2To9VEP0rGAsQ5"},
+    {t:"SpongeBob SquarePants (S1-S15)",l:"https://drive.google.com/drive/folders/1cOFMumtLFERJqS6Y5oTyBb6ZRXNHCgZF"},
+    {t:"Squid Game (Full Series)",l:"https://drive.google.com/drive/folders/1Zs2H3Nxl-yQHm21RJNbh2bIAesJ5ouY9"},
+    {t:"Static Shock S1",l:"https://drive.google.com/drive/folders/1LquU3cM5cLHClNJYIzr3MMW3TWD7cFAf"},
+    {t:"Static Shock S2",l:"https://drive.google.com/drive/folders/1qn4z619FFkWvT6hZym1iuJnhW1F0g9sl"},
+    {t:"Static Shock S3",l:"https://drive.google.com/drive/folders/1iptDIN4iEnihXHEAX-9IgswkGgbeHoYj"},
+    {t:"Static Shock S4",l:"https://drive.google.com/drive/folders/10hP9sXsV81QG-iMZrAK1i6yy_l0hFKqb"},
+    {t:"Steven Universe",l:"https://drive.google.com/drive/folders/1DdwOFAilBai2kDZVmRDCoNkqxTu6_E_5"},
+    {t:"Steven Universe Future",l:"https://drive.google.com/drive/folders/1A-I64-vVIDKD14IzEh6mcMcvFmMH0NVr"},
+  ],
+  T:[
+    {t:"Ted",l:"https://drive.google.com/drive/folders/1-6hBb-KZsUoc7ErXnaw2udeQv9u1THRJ"},
+    {t:"Teen Titans S1",l:"https://drive.google.com/drive/folders/1vqoOxi2w4IJmPelqXsTmcNCczxb6hIO7"},
+    {t:"Teen Titans S2",l:"https://drive.google.com/drive/folders/1rJxtTqih-pPjiFpF5ZbqKQmRyd9AK7jg"},
+    {t:"Teen Titans S3",l:"https://drive.google.com/drive/folders/1pDw-FSyAcNLLeSHiwyBLeg-6Pr3KQWvP"},
+    {t:"Teen Titans S4",l:"https://drive.google.com/drive/folders/1HvR1tsCeTnXVV6K1CJbfEoU0RpBLGe6h"},
+    {t:"Teen Titans S5",l:"https://drive.google.com/drive/folders/14rLPyemnSo-5fe6I9cXj1AvEekaBuaEb"},
+    {t:"TMNT Series S1",l:"https://drive.google.com/drive/folders/1h_pnGrifrJnpbP0H59oKqpo3dbCv5TSl"},
+    {t:"TMNT Series S2",l:"https://drive.google.com/drive/folders/1I_f_9tKL56cmonwKJYdpx9L8y9OqmWUd"},
+    {t:"TMNT Series S3",l:"https://drive.google.com/drive/folders/1DqUOZMN_Qa2APcNMLr1U8HZ4SFXdQjXB"},
+    {t:"TMNT Series S4",l:"https://drive.google.com/drive/folders/1Qp2xW3xAvGAykrch5TWd2VvVBPW7d6XM"},
+    {t:"TMNT Series S5",l:"https://drive.google.com/drive/folders/15r5t0S0tKORIf7YDx11-_UQgp6jI-GTS"},
+    {t:"The Amazing Digital Circus",l:"https://drive.google.com/drive/folders/1OPRfaVkM8MPcLLXmjAa24krAZCr0kHEO"},
+    {t:"Tom and Jerry",l:"https://drive.google.com/drive/folders/1BIKwvUvUCx8lHm3mwhVRV22hCcMau9ws"},
+    {t:"The Summer I Turned Pretty S1",l:"https://drive.google.com/drive/folders/1MYMY-BGuKDWgmcsuWjKX6uFV0yLukSBO"},
+    {t:"The Summer I Turned Pretty S2",l:"https://drive.google.com/drive/folders/1K_X6PMWG7j484hQv9nU9SYRKuR8AWx92"},
+  ],
+  W:[
+    {t:"Wednesday S1",l:"https://drive.google.com/file/d/1GD7dmbbwf0tgmc_0Bt6Rq4qXV7KSTCMD/view"},
+  ],
+  X:[
+    {t:"X-Men: The Animated Series S1",l:"https://drive.google.com/drive/folders/18a_VCltjLCHu0UIgOrfRRxq7OIj7dw9i"},
+    {t:"X-Men: The Animated Series S2",l:"https://drive.google.com/drive/folders/1khaD7HkjetVca7uuhDEgPzWqPLwFcErQ"},
+    {t:"X-Men: The Animated Series S3",l:"https://drive.google.com/drive/folders/13z5iRAxkLTvO3XWNBIuguRPJS-4MPHjX"},
+    {t:"X-Men: The Animated Series S4",l:"https://drive.google.com/drive/folders/1yUkaEirDrNUIURTEF-Yi0_VKAtyBftGZ"},
+    {t:"X-Men: The Animated Series S5",l:"https://drive.google.com/drive/folders/1lm_C-dAiAVANZlH66bZNnnUP8qWYo0zT"},
+  ],
+};
+
+// ── ANIME ──
+const animeShows = [
+  {t:"Attack on Titan",emoji:"⚔️",episodes:[
+    {ep:1,l:"https://drive.google.com/file/d/0B7TEzdS9mvQ4NTk1d0h6T09uSnc/view"},{ep:2,l:"https://drive.google.com/file/d/0B7TEzdS9mvQ4NWFENURXRHRPZVU/view"},
+    {ep:3,l:"https://drive.google.com/file/d/0B7TEzdS9mvQ4dW9kNGE0M05LOTg/view"},{ep:4,l:"https://drive.google.com/file/d/0B7TEzdS9mvQ4a0ZhelFqM3ZGU1U/view"},
+    {ep:5,l:"https://drive.google.com/file/d/0B7TEzdS9mvQ4azhxV2NPT1RGWWs/view"},{ep:6,l:"https://drive.google.com/file/d/0B7TEzdS9mvQ4NWNzb3VBaF9oUm8/view"},
+  ]},
+  {t:"Demon Slayer S1",emoji:"🗡️",episodes:[
+    {ep:1,l:"https://drive.google.com/file/d/16ApJR3QbXonfkNXPNmt2gWj6n24-0PaO/view"},{ep:2,l:"https://drive.google.com/file/d/1fK6TzSyBqeQH0YiHOj2dubiv-lc0FRfS/view"},
+    {ep:3,l:"https://drive.google.com/file/d/1LECvcdoa2u4vsBnLFDhIPeML2rTb1gOM/view"},{ep:4,l:"https://drive.google.com/file/d/1N8wIzuscxJWkLG9UQbFPldazlqHv96Tm/view"},
+    {ep:5,l:"https://drive.google.com/file/d/18RaZN2O_HxnLVcAsHAF7vUuOV3EKaClJ/view"},{ep:6,l:"https://drive.google.com/file/d/1WSSewkcYjggHl_cPo2gV-vxnX9MK0bZL/view"},
+    {ep:7,l:"https://drive.google.com/file/d/1BN9WqGCHrzrfeyemNkBMzaeAGFa9lSj0/view"},{ep:8,l:"https://drive.google.com/file/d/1rFnKUCWHsIthc4BR3IY82qMDSRcYSxo2/view"},
+    {ep:9,l:"https://drive.google.com/file/d/1O7n64GeylwkwNusFJTOnNcgD5diRpE8V/view"},{ep:10,l:"https://drive.google.com/file/d/1P-N2ABGWrdCK3KH5w1hWgaDJEmesW8LE/view"},
+    {ep:11,l:"https://drive.google.com/file/d/1XTOTHTLPepNRLjo236XIbfZzuDXEfRhU/view"},{ep:12,l:"https://drive.google.com/file/d/1WCLriQaQEGbKrOGarSB21d9mdJFOMIrC/view"},
+  ]},
+  {t:"Demon Slayer S2",emoji:"🗡️",episodes:[
+    {ep:1,l:"https://drive.google.com/file/d/1I_XCELTRKkuT6NPSfDuQ_2vuurkvIA-5/view"},{ep:2,l:"https://drive.google.com/file/d/1HiaXmf7QvgTt9kbxhjhg-uvgrwy4-kmo/view"},
+    {ep:3,l:"https://drive.google.com/file/d/1bYmKjqTy2Ad-Tp7_ugSdbhZ0LfWLOg9y/view"},{ep:4,l:"https://drive.google.com/file/d/1wPUdmCealDm-OA49GvFEQxeqxwwbNpw6/view"},
+    {ep:5,l:"https://drive.google.com/file/d/1_cngVEKZGSg-crdjqIFqDy_XufKqEsHa/view"},{ep:6,l:"https://drive.google.com/file/d/1Tqhbt9ZleDbooJh4QEJKiQ-a3MOiHs1Z/view"},
+    {ep:7,l:"https://drive.google.com/file/d/1Ch2Ze8FWx4ESUm8T2EaO4R_WFBjD8Pt8/view"},{ep:8,l:"https://drive.google.com/file/d/10Ukjzh73Ovxhz5uHKx3pyMA-OepIkVAr/view"},
+    {ep:9,l:"https://drive.google.com/file/d/1HCqGEfquIy03YnoirM_mTheIV0NZXuhU/view"},{ep:10,l:"https://drive.google.com/file/d/1Rrs75x4-zM9K3eQC5PjqeE2v3R_C-mKz/view"},
+    {ep:11,l:"https://drive.google.com/file/d/1HLXhjHYASG2rp3IZD7YkgXktoTsfwE5_/view"},
+  ]},
+  {t:"JJK S1 (Full Folder)",emoji:"👊",link:"https://drive.google.com/drive/folders/1pQ5CC4NeCB9bj-IrIHeu2x3nskc4gPeS"},
+  {t:"JJK Seasons 1-2 (Netflix)",emoji:"👊",link:"https://drive.google.com/drive/folders/1eqNcKK02wEdRV7RnfrmDRZf2s2QZHUyj"},
+  {t:"Jujutsu Kaisen 0 (Movie)",emoji:"👊",link:"https://drive.google.com/file/d/12p9t7WdTzoVoLg7U8qj_MHU87DUN-bPC/view"},
+  {t:"DragonBall Super: Broly",emoji:"🐉",link:"https://drive.google.com/file/d/1Ap3wJXnZEJFhvAypnDa3ekjInwhKIUxz/view"},
+  {t:"Spirited Away",emoji:"🏮",link:"https://drive.google.com/file/d/1sFvzAbum2UGqazkhrSmbtSMO9NjSV968/view"},
+  {t:"Fullmetal Alchemist: Brotherhood",emoji:"⚗️",link:"https://sites.google.com/view/free-animanga/dubbed/fullmetal-alchemist-brotherhood-dub"},
+  {t:"SpyXFamily S1 (Full)",emoji:"🕵️",episodes:[
+    {ep:1,l:"https://drive.google.com/file/d/1fKoBJycU0rihdlwfUsOHMQa9tYov-cyE/view"},{ep:2,l:"https://drive.google.com/file/d/15q5D_pK1kMbx_-fDg-NB9kuXWnaKNk_J/view"},
+    {ep:3,l:"https://drive.google.com/file/d/1WrP4lWYmNveeSUDzxkPi9_5c6B1nYcTm/view"},{ep:4,l:"https://drive.google.com/file/d/1D9BO47NDJI4c2Sh4z8hZjQaHV-A2lpIt/view"},
+    {ep:5,l:"https://drive.google.com/file/d/1WSc_ox6tZuKw6T6zbsCBQoRb6Ibs7ytK/view"},{ep:6,l:"https://drive.google.com/file/d/14kN32Ox9W8K4P1XNafxZo9zTx5MJHolP/view"},
+    {ep:7,l:"https://drive.google.com/file/d/1Fr3KS31mOJpA4FxmVOde3F2DkU5c5jbT/view"},{ep:8,l:"https://drive.google.com/file/d/1vW3OlJKl_G922I3e0OeXHyisMPQZV0fH/view"},
+    {ep:9,l:"https://drive.google.com/file/d/1qmhAPsWMHRt8cu4DlH5qt9_I5eBw1e7-/view"},{ep:10,l:"https://drive.google.com/file/d/14dlpcTzgzjabjJqpw9sZd8VZ6qlj0CvH/view"},
+    {ep:11,l:"https://drive.google.com/file/d/1s0NQuIMMIFT4t4rUVn3JKhVLwXTNco6Q/view"},{ep:12,l:"https://drive.google.com/file/d/13ZkwVB5XPA9zAKSakBmXuasPUlKswj_l/view"},
+  ]},
+];
+
+// ── MANGA ──
+const mangaSections = [
+  {title:"Dragon Ball",emoji:"🐉",items:[
+    {t:"Dragon Ball Super (Color)",l:"https://drive.google.com/drive/folders/1iSzHqkCiW5S44-_97x_6x_pTTMJrPrMH"},
+    {t:"Dragon Ball Super (Manga)",l:"https://drive.google.com/drive/folders/1hyV1oaf6Cj-DiwYljSNt10xHOnAxjila"},
+    {t:"Dragon Ball Manga",l:"https://drive.google.com/drive/folders/1TZ6z_ePBI2zt12Kqv0I2AYegGR6LjOrp"},
+  ]},
+  {title:"Naruto",emoji:"🍜",items:[
+    {t:"Naruto",l:"https://drive.google.com/drive/folders/1dHK5v5NZNiDvlQ9VK06AAPFNngnkkQCZ"},
+    {t:"Naruto Manga Volumes",l:"https://drive.google.com/drive/folders/1y7t_DUetRveLBX2372YREdH4Zys6AvN2"},
+  ]},
+  {title:"Jujutsu Kaisen (28 Volumes)",emoji:"👊",items:[
+    ...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28].map((n,i)=>({
+      t:`JJK Volume ${n}`,
+      l:["https://drive.google.com/file/d/1hHIS4ATPDCyVkuGbB2CVXFeItDOBiuZ5/view","https://drive.google.com/file/d/1p7_ZgDHMsPB86XfKOqbmZSrteT_6phe1/view","https://drive.google.com/file/d/19CdGROpCjlAXvQNCps66zCcynCvhLmC4/view","https://drive.google.com/file/d/1mwo7yTWnI6ZgO1-ODmjt4rGS5fPMArzW/view","https://drive.google.com/file/d/1vyiqa3MunjsLiIlDqF8YPBI3Pg4i34J_/view","https://drive.google.com/file/d/1jWL6T9p6pJA3sBlMATVEkmiR_W28JwuK/view","https://drive.google.com/file/d/1i_fgWLahqpzGQo_H_DZdwyvl_DxFC3cA/view","https://drive.google.com/file/d/1ijhIvV3SJhQZJmla-Qy__glIdP8lQXRC/view","https://drive.google.com/file/d/1PAYicW4Eecdf4pkS7p2-7gr3g09QrdT_/view","https://drive.google.com/file/d/1z6II1SI81Po_LqlcCO_mfL9AIV0JgNk-/view","https://drive.google.com/file/d/1ZbElMLqGSHqlFTB1TQqBnX2iz-rsqS6L/view","https://drive.google.com/file/d/1-hkOr_f_45a9Jpubt-NVwYDwLVo2vkUK/view","https://drive.google.com/file/d/1bOFhRliik60j3C4RbJrZ7TLeLkvCtdQV/view","https://drive.google.com/file/d/1aA3T4d56luncFAcfr5d--Z6nlPECNo3u/view","https://drive.google.com/file/d/1f9_uEABT6RK2sMjxm_oYoIweevNOUQ6J/view","https://drive.google.com/file/d/16wsniTQ92fY2bme9h_C9chT8kubDsB_G/view","https://drive.google.com/file/d/1_n9W_uJ0vEP_xpOjbaJnKGK20bQ2tXpc/view","https://drive.google.com/file/d/1OXLup_5sFVgJdsS53Uh3gMofVDmi7dWn/view","https://drive.google.com/file/d/1Fj9D0QAzjJV7ph4a9kmE7l0q2U3ZEWT2/view","https://drive.google.com/file/d/1-WMc5_1LbCnl3eufjw6ZZuim8KZ7xtth/view","https://drive.google.com/file/d/1f8hDbh2iuMRGkGBsyOJWCJKUMPwYzHud/view","https://drive.google.com/file/d/1hMXD9GOKHjqzk6FP72_Zr8ObO3qbBBNZ/view","https://drive.google.com/file/d/1sXtbBGGx16eOFffzgR9OoESVDvaaAkDs/view","https://drive.google.com/file/d/14_B61BF5soOssOoUJFy63fxkXnG49LbM/view","https://drive.google.com/file/d/1NDtXX0hPYUqVhBtDqwlONI2HLOlfs_fB/view","https://drive.google.com/file/d/19ftMmONDvr29cHg6vDOmQSjKwPTkgv26/view","https://drive.google.com/file/d/1OKAAJ8NVGMFsygwD1J-K7dGlYO-DVdVq/view","https://drive.google.com/file/d/16cSOUzyJGH_hjUhMP7g_-es0bu4_3h_b/view"][i]
+    }))
+  ]},
+  {title:"Other Manga",emoji:"📖",items:[
+    {t:"Solo Leveling",l:"https://drive.google.com/drive/folders/12tApujIKnQjaSlTRchrO0AZ8WhvhaNtl"},
+    {t:"Demon Slayer",l:"https://drive.google.com/drive/folders/1mmBVdj-oKIC0aSdOcMcEnQ129-rKimKo"},
+    {t:"Death Note",l:"https://drive.google.com/drive/folders/1LNhG5Hjk4p9eJqvt0ooEpyAqnQRzJwYE"},
+    {t:"Berserk",l:"https://drive.google.com/drive/folders/14Ri_EP2Q6HxWJQbU97ZEAjSc9MfTmKI3"},
+    {t:"Sakamoto Days",l:"https://drive.google.com/drive/folders/19DUxPkVk-4ixzNcLMIMjiQS5Zs6aCm7T"},
+    {t:"SpyXFamily",l:"https://drive.google.com/drive/folders/1GZKLsvSvgvHfM3CXg4DrCh4d0tGb0NLX"},
+    {t:"Dr. Stone",l:"https://drive.google.com/drive/folders/1uiqdQByTMfGeeQV8ut3o0BYuZu52CR7i"},
+    {t:"My Hero Academia",l:"https://drive.google.com/drive/folders/1Ty8TRLsEhVwDR0mMXe9bvZw2Mjgqbfr7"},
+    {t:"Chainsaw Man (Colored)",l:"https://drive.google.com/drive/folders/16KZIqJMkvzHeX8TsP_tOoLHSoqJwuWYf"},
+    {t:"Chainsaw Man Part 2",l:"https://drive.google.com/drive/folders/1juWFikMtGg4X-Ju9QVb-n0MSQOQvmIbg"},
+    {t:"Attack on Titan",l:"https://drive.google.com/drive/folders/1B46EboOes_-kq6jvdL1KSFAhrFMNk4Lj"},
+    {t:"The Promised Neverland",l:"https://drive.google.com/drive/folders/1FhcZTDf0G1Fy6RlpcrsrSC-Pg63UZOqq"},
+    {t:"Bleach",l:"https://drive.google.com/drive/folders/1wvJR_lTZCJ_b9QId26AW0X6aCfBMBQlB"},
+    {t:"Blue Lock",l:"https://drive.google.com/drive/folders/1hcGBwfdgJchkPlZMX55YF52aZRNdbXW9"},
+    {t:"Dandadan",l:"https://drive.google.com/drive/folders/1u-a-NGgGUHD-h5RBtVkYnp8TwJosaJIe"},
+    {t:"Fullmetal Alchemist",l:"https://drive.google.com/drive/folders/1OqoLf9E0z6e2MRD2g3UNKP3hE9puC4ts"},
+    {t:"Inuyasha",l:"https://drive.google.com/drive/folders/1n7qvsviHVecx08qMxI0bTRzpO3WmAEjG"},
+    {t:"Yu Yu Hakusho",l:"https://drive.google.com/drive/folders/1sqibKs8lPGa1pmostQQMafjRwhcF1hvg"},
+    {t:"Pokémon Adventures",l:"https://drive.google.com/drive/folders/1QKSJxCrNtvP7Li3lLz0GhuTV7WrbXMiS"},
+    {t:"Sailor Moon",l:"https://drive.google.com/drive/folders/1zZ9tlSypaIBKwM-1H9DjZA-P9Vyh6P-1"},
+    {t:"Darling in the FranXX",l:"https://drive.google.com/drive/folders/12P8fxgEN_fJlbJ4z_X6lorJUud7Qc0jS"},
+    {t:"Kingdom Hearts",l:"https://drive.google.com/drive/folders/1IMqZo3XL_Go8PYa8i5iMH-3w5kEE-fTC"},
+  ]},
+  {title:"Comics & Books",emoji:"📚",items:[
+    {t:"Sonic the Hedgehog Comics",l:"https://drive.google.com/drive/folders/1Rl63s8mf0P41xy-bVNamLoEz7xAkf-nL"},
+    {t:"Batman: The Killing Joke",l:"https://drive.google.com/drive/folders/16imspbk4aad2tLmaO7ewGBRKw3RsqLJV"},
+    {t:"Batman: The Dark Knight Returns",l:"https://drive.google.com/drive/folders/10y8F_caF-C36bYd58dDsWUUCJc5ye2oL"},
+    {t:"TMNT Comics",l:"https://drive.google.com/drive/folders/1Nb17fir8Loz7Zx9gkrlAGXvE7uAzi7TG"},
+    {t:"Invincible Comics (1-144)",l:"https://drive.google.com/drive/folders/1s21qKWyfqZeqr5ptjJDCFIrUSCPrVMhb"},
+    {t:"Dog Man Comics (1-12)",l:"https://sites.google.com/view/dogmanonline"},
+    {t:"Diary of a Wimpy Kid (Books 1-17)",l:"https://drive.google.com/drive/folders/1EQSlsKFmwH75gcaHwGsQMCLetLUoKkMV"},
+    {t:"The Holy Bible (KJV)",l:"https://drive.google.com/file/d/1708mzXROLnR3qvmNaXca1eRt9TQnFqBR/view"},
+    {t:"My Library",l:"https://drive.google.com/drive/folders/1-8aRHUeWHeRr_SXgVIu8GCa0cLl42vGD"},
+    {t:"GoComics",l:"https://www.gocomics.com/"},
+    {t:"Anna's Archive (Books)",l:"https://annas-archive.org"},
+  ]},
+];
+
+// ── ARTISTS & ALBUMS ──
+const artists=[
+  {n:"Ariana Grande",e:"🎤",l:"https://drive.google.com/open?id=1H5evdLpRnN7AxhsupZPhkrgU12VUrde7"},
+  {n:"Billie Eilish",e:"🖤",l:"https://drive.google.com/open?id=1q69xf-97Gxhlc_FDYzBESecw_vQ2hIOj"},
+  {n:"BossMan Dlow",e:"🔥",l:"https://drive.google.com/open?id=1Fzh_ijI_7o1WB_EVUy28ra05r5HH2ETx"},
+  {n:"Playboi Carti",e:"🦇",l:"https://drive.google.com/open?id=1ovIXe7jVDZIu5inIVpGPwOhZikBFWhxd"},
+  {n:"J. Cole",e:"🌲",l:"https://drive.google.com/open?id=1wGKiDDm_Z_At6EXFlwfDbPP2_h1uTgB7"},
+  {n:"Eminem",e:"🎙️",l:"https://drive.google.com/open?id=1HftywyHdt_TQLoQnJ-p2olCQYbvd0dp1"},
+  {n:"Frank Ocean",e:"🌊",l:"https://drive.google.com/open?id=1HAj9o_a8x_Y7xbSHaeQ6tZHCbHiv3mYr"},
+  {n:"GloRilla",e:"🦁",l:"https://drive.google.com/open?id=1FkBihzEYBT5LEqYa-G4AXMbUT0XoaEbC"},
+  {n:"Green Day",e:"🎸",l:"https://drive.google.com/open?id=18PtHOkkfBrc8L09JHWtnx4La21gOdkfw"},
+  {n:"Jhené Aiko",e:"🌸",l:"https://drive.google.com/open?id=1tvfgHURJdNUsl661M6O3KSWIuiFqIjKv"},
+  {n:"Kanye West",e:"🎹",l:"https://drive.google.com/open?id=14KoLzOlMFzO6CJ0rSr9vNjlpVXNn1rMo"},
+  {n:"Katy Perry",e:"🎡",l:"https://drive.google.com/open?id=1_oXiUpUgd_lQclUSvgoxMtSsRffyd-C-"},
+  {n:"Ken Carson",e:"❄️",l:"https://drive.google.com/open?id=1HcACquUp0XgiZyMiGRPtKdBAIIA1147y"},
+  {n:"Kendrick Lamar",e:"👑",l:"https://drive.google.com/open?id=1HAnVyOEvmF28Zz92CJwavewn0U5AcYuR"},
+  {n:"Korn",e:"🖤",l:"https://drive.google.com/open?id=1H4a7EfNVVvP-8lT6iu91iZO1EJbJmSbn"},
+  {n:"Lil Tecca",e:"💜",l:"https://drive.google.com/open?id=12jwn8ON0NLV3cnME4QpGELCvybP7i7kH"},
+  {n:"Mac Miller",e:"🌊",l:"https://drive.google.com/open?id=1lX-iDFeEzxpeImhYE5o9NvtQMrXSekG6"},
+  {n:"Rod Wave",e:"🌹",l:"https://drive.google.com/open?id=1L11GddHNvzuX4eEWEsvowoe9ki6mdBGx"},
+  {n:"SZA",e:"🪐",l:"https://drive.google.com/open?id=1DuoWuLmyfoXgxlHKrbyd5ECbhXWxl-1w"},
+  {n:"TV Girl",e:"📺",l:"https://drive.google.com/open?id=1bfxOWJMWcvdEZAKHUpUQ4aGatRV7qjdh"},
+  {n:"Tyler The Creator",e:"🌹",l:"https://drive.google.com/open?id=195odYQpKpAF4JamN-TAnR_-81G8Dkre4"},
+  {n:"Lil Uzi Vert",e:"👾",l:"https://drive.google.com/open?id=126MciWOY0cieXgseS0GfvN3NyD_k73NU"},
+  {n:"XXXTentacion",e:"💔",l:"https://drive.google.com/open?id=1v4lobD1KRNRufnRPIO2rXyE0JwVROdEC"},
+  {n:"NBA YoungBoy",e:"🏀",l:"https://drive.google.com/open?id=1DqlvJoKL12OfsxNppNDhT_ii_m76PjyX"},
+];
+const albums={
+  A:[{t:"Anyways, Life's Great",l:"https://drive.google.com/drive/folders/141lwlDVlIYYnvWqkrYthiVShdFTHbk_r"},{t:"A Great Chaos",l:"https://drive.google.com/drive/folders/1Iu1c7SZmeXYIG4isolN7yTIU-Qq285Ci"},{t:"Ai Youngboy",l:"https://drive.google.com/drive/folders/1tYEr7T_XJyffckG_N-0sGaVw2ks75sZO"},{t:"Ai Youngboy 2",l:"https://drive.google.com/drive/folders/1tYEr7T_XJyffckG_N-0sGaVw2ks75sZO"}],
+  B:[{t:"Bastard",l:"https://drive.google.com/drive/folders/1fK9WbjqVp4LjkhFaB7AVLCnn4sMmUQyb"},{t:"Blonde",l:"https://drive.google.com/drive/folders/1Bdkq0xWccmzAAYN_ydiihJmAC083wFcy"}],
+  C:[{t:"CTRL",l:"https://drive.google.com/drive/folders/1Yq6pdm9V0_C9-CECndaY0ftejTLzH4ob"},{t:"CALL ME IF YOU GET LOST",l:"https://drive.google.com/drive/folders/15ipGIcZGn8jbc9J1MChZr2RkwSKRU_-g"},{t:"Cherry Bomb",l:"https://drive.google.com/drive/folders/15tbYsgnxPfKJsmQHzx0cWuxPxnamx-EB"},{t:"Chromakopia",l:"https://drive.google.com/drive/folders/1lnx2LyzZ9eXy6010WPNx_GxYKA2ARSwS"}],
+  D:[{t:"DAMN.",l:"https://drive.google.com/drive/folders/1twO3fr4pgr7U9qOLei1Ew749k_HW2TLK"},{t:"Die Lit",l:"https://drive.google.com/drive/folders/1PC2R4G85g3uZMu1Mlp2DkPz3GwKG9HJy"},{t:"Dookie",l:"https://drive.google.com/drive/folders/1M-pmBhK-dM0ZRROxPNh64r0l3mp64sLr"}],
+  F:[{t:"Flower Boy",l:"https://drive.google.com/drive/folders/18-Ri0_hCVLsOdgSNi3geEG0Wlvi_iVQh"},{t:"Follow The Leader",l:"https://drive.google.com/drive/folders/1GwCUQFErhWymNAg2gmgEWaBs5CEh0_NK"}],
+  G:[{t:"GNX",l:"https://drive.google.com/drive/folders/1QnPAyKt-RvfXP4ykNuv4OIY8ucPfgLcj"},{t:"Goblin",l:"https://drive.google.com/drive/folders/1j9w5vfzeqYU0AfgIoFr_QgVoWvTIpd0u"},{t:"good kid m.A.A.d city",l:"https://drive.google.com/drive/folders/1v27OTSFLUOnblP2T0eJoG15GX-Y8wixj"},{t:"Graduation",l:"https://drive.google.com/drive/folders/1ofJuCepr47jBdfdupR5JlqOK-ZxueLMY"}],
+  H:[{t:"HIT ME HARD AND SOFT",l:"https://drive.google.com/drive/folders/1c5iMGSAAdKf6Z3yo22-me4K8eMlXGjH1"}],
+  I:[{t:"IGOR",l:"https://drive.google.com/drive/folders/1xjL4CdgN1akLg_IMiTX6ndJL8GWsHsV2"}],
+  M:[{t:"Mr. Morale & the Big Steppers",l:"https://drive.google.com/drive/folders/1sCELGQg8jT02b2aw66fnIPSjStb73XwA"},{t:"MUSIC",l:"https://drive.google.com/drive/folders/1A9r8sVR9P-VMAJYx-96jyZ3K9wDm85Mp"}],
+  S:[{t:"Section.80",l:"https://drive.google.com/drive/folders/1j9ZT16KiwUxiTZSE1rqAlAOHGKf55qAZ"},{t:"SOS",l:"https://drive.google.com/drive/folders/1z2FxXZHrFT-li9aSCYKzwwSih-0SXGTW"},{t:"Swimming",l:"https://drive.google.com/drive/folders/1GFZ8AVtfFpPt5cK8Cc0EnoA_oXX22Meo"},{t:"Sweetener",l:"https://drive.google.com/drive/folders/1Kmp59FnNUVipdOSquL8l1QXgY5f6l7WI"}],
+  T:[{t:"To Pimp a Butterfly",l:"https://drive.google.com/drive/folders/1RKRpEXlbrWyZKhKyaDQDYS9IwZCvdKuX"},{t:"The Death of Slim Shady",l:"https://drive.google.com/drive/folders/1wbaJ85s_JN5GF7YMvR0psr6rHI8gj4UV"}],
+  W:[{t:"Wolf",l:"https://drive.google.com/drive/folders/1XO7eqE5AgfZi_BLUwHM1OysIWWoRik7q"},{t:"Whole Lotta Red",l:"https://drive.google.com/drive/folders/1W1-fq8h-DOEIIDNdDH5ImIH7fVqXcFFN"}],
+};
+
+// ── STATE ──
+let currentMovie=null;
+
+// ── HELPERS ──
+function toPreview(url){
+  if(url.includes('drive.google.com/file')){
+    const m=url.match(/\/d\/([^\/\?]+)/);
+    return m?`https://drive.google.com/file/d/${m[1]}/preview`:url;
+  }
+  return url;
+}
+function svgPlay(){return`<svg viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12" fill="white"/></svg>`;}
+
+// ── BUILD MOVIES ──
+function buildMovies(list){
+  const letters=list?[...new Set(list.map(m=>m._letter))]:Object.keys(movies);
+  if(!list){
+    // build alpha nav
+    document.getElementById('movie-alpha').innerHTML=Object.keys(movies).map(l=>`<a onclick="scrollTo2('mv-${l}')">${l}</a>`).join('');
+    let html='';
+    for(const l of Object.keys(movies)){
+      html+=`<div class="section" id="mv-${l}"><div class="section-header">${l}</div><div class="grid">`;
+      movies[l].forEach(m=>html+=movieCard(m));
+      html+=`</div></div>`;
+    }
+    document.getElementById('movies-container').innerHTML=html;
+    document.getElementById('movies-results').style.display='none';
+    document.getElementById('movies-container').style.display='';
+  } else {
+    let html='<div class="grid">'+list.map(m=>movieCard(m)).join('')+'</div>';
+    document.getElementById('movies-results').innerHTML=html||'<div class="empty">No results found.</div>';
+    document.getElementById('movies-results').style.display='';
+    document.getElementById('movies-container').style.display='none';
+  }
+}
+function movieCard(m){
+  const idx=JSON.stringify(m);
+  return`<div class="card" onclick='openMovie(${JSON.stringify(m)})'>
+    <div class="card-thumb">${m.e}<div class="card-play">${svgPlay()}</div></div>
+    <div class="card-info"><div class="card-title">${m.t}</div></div>
+  </div>`;
+}
+
+// ── BUILD TV ──
+function buildTV(list){
+  const container=document.getElementById('tv-container');
+  const results=document.getElementById('tv-results');
+  if(!list){
+    let html='';
+    for(const l of Object.keys(tvShows)){
+      html+=`<div class="section"><div class="section-header">${l}</div>`;
+      tvShows[l].forEach(s=>html+=`<a class="list-item" href="${s.l}" target="_blank"><div class="play-dot">${svgPlay()}</div><span class="list-name">${s.t}</span><span class="list-arrow">›</span></a>`);
+      html+=`</div>`;
+    }
+    container.innerHTML=html;results.style.display='none';container.style.display='';
+  } else {
+    results.innerHTML=list.map(s=>`<a class="list-item" href="${s.l}" target="_blank"><div class="play-dot">${svgPlay()}</div><span class="list-name">${s.t}</span><span class="list-arrow">›</span></a>`).join('')||'<div class="empty">No results.</div>';
+    results.style.display='';container.style.display='none';
+  }
+}
+
+// ── BUILD ANIME ──
+function buildAnime(list){
+  const container=document.getElementById('anime-container');
+  const results=document.getElementById('anime-results');
+  const data=list||animeShows;
+  let html='';
+  data.forEach(a=>{
+    html+=`<div class="section"><div class="section-header">${a.emoji||'⛩️'} ${a.t}</div>`;
+    if(a.link) html+=`<a class="list-item" href="${a.link}" target="_blank"><div class="play-dot">${svgPlay()}</div><span class="list-name">Watch / Open</span><span class="list-arrow">›</span></a>`;
+    else if(a.episodes){
+      html+=`<div class="grid">`;
+      a.episodes.forEach(ep=>html+=`<a class="card" href="${ep.l}" target="_blank"><div class="card-thumb" style="font-size:1.3rem;font-weight:700;color:var(--accent)">EP ${ep.ep}</div><div class="card-info"><div class="card-title">Episode ${ep.ep}</div></div></a>`);
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+  });
+  if(list){results.innerHTML=html||'<div class="empty">No results.</div>';results.style.display='';container.style.display='none';}
+  else{container.innerHTML=html;results.style.display='none';container.style.display='';}
+}
+
+// ── BUILD MANGA ──
+function buildManga(list){
+  const container=document.getElementById('manga-container');
+  const results=document.getElementById('manga-results');
+  if(!list){
+    let html='';
+    mangaSections.forEach(sec=>{
+      html+=`<div class="section"><div class="section-header">${sec.emoji} ${sec.title}</div>`;
+      sec.items.forEach(item=>html+=`<a class="list-item" href="${item.l}" target="_blank"><div class="play-dot manga-dot">📖</div><span class="list-name">${item.t}</span><span class="list-arrow">›</span></a>`);
+      html+=`</div>`;
+    });
+    container.innerHTML=html;results.style.display='none';container.style.display='';
+  } else {
+    results.innerHTML=list.map(item=>`<a class="list-item" href="${item.l}" target="_blank"><div class="play-dot manga-dot">📖</div><span class="list-name">${item.t}</span><span class="list-arrow">›</span></a>`).join('')||'<div class="empty">No results.</div>';
+    results.style.display='';container.style.display='none';
+  }
+}
+
+// ── BUILD MUSIC ──
+function buildMusic(){
+  document.getElementById('artist-grid').innerHTML=artists.map(a=>`<a class="artist-card" href="${a.l}" target="_blank"><div class="artist-avatar">${a.e}</div><div class="artist-name">${a.n}</div></a>`).join('');
+  let html='';
+  for(const l of Object.keys(albums)){
+    html+=`<div class="section"><div class="section-header">${l}</div>`;
+    albums[l].forEach(a=>html+=`<a class="list-item" href="${a.l}" target="_blank"><div class="play-dot music-dot">💿</div><span class="list-name">${a.t}</span><span class="list-arrow">›</span></a>`);
+    html+=`</div>`;
+  }
+  document.getElementById('albums-container').innerHTML=html;
+}
+
+// ── PLAYER ──
+function openMovie(m){
+  if(typeof m==='string') m=JSON.parse(m);
+  currentMovie=m;
+  document.getElementById('modal-title').textContent=m.t;
+  document.getElementById('modal-iframe').src=toPreview(m.l);
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.getElementById('modal-iframe').src='';document.body.style.overflow='';}
+function closeModalBg(e){if(e.target===document.getElementById('modal'))closeModal();}
+function openFS(){
+  if(!currentMovie)return;
+  document.getElementById('fs-title').textContent=currentMovie.t;
+  document.getElementById('fs-iframe').src=toPreview(currentMovie.l);
+  document.getElementById('fs-overlay').classList.add('open');
+  closeModal();
+}
+function closeFS(){document.getElementById('fs-overlay').classList.remove('open');document.getElementById('fs-iframe').src='';}
+
+// ── SEARCH ──
+function handleSearch(){
+  const v=document.getElementById('search').value.toLowerCase().trim();
+  const tab=document.querySelector('.tab.active').textContent;
+  if(tab.includes('Movie')){
+    if(!v){buildMovies();return;}
+    const res=[];Object.entries(movies).forEach(([l,arr])=>arr.forEach(m=>{if(m.t.toLowerCase().includes(v))res.push(m);}));
+    buildMovies(res);
+  } else if(tab.includes('TV')){
+    if(!v){buildTV();return;}
+    const res=[];Object.values(tvShows).forEach(arr=>arr.forEach(s=>{if(s.t.toLowerCase().includes(v))res.push(s);}));
+    buildTV(res);
+  } else if(tab.includes('Anime')){
+    if(!v){buildAnime();return;}
+    buildAnime(animeShows.filter(a=>a.t.toLowerCase().includes(v)));
+  } else if(tab.includes('Manga')){
+    if(!v){buildManga();return;}
+    const res=[];mangaSections.forEach(sec=>sec.items.forEach(item=>{if(item.t.toLowerCase().includes(v))res.push(item);}));
+    buildManga(res);
+  }
+}
+
+// ── TABS ──
+function switchTab(tab,e){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(tab+'-page').classList.add('active');
+  document.getElementById('search').value='';
+  if(tab==='movies')buildMovies();
+  else if(tab==='tv')buildTV();
+  else if(tab==='anime')buildAnime();
+  else if(tab==='manga')buildManga();
+}
+function scrollTo2(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('fs-overlay').classList.contains('open'))closeFS();else closeModal();}});
+
+// ── INIT ──
+buildMovies();buildTV();buildAnime();buildManga();buildMusic();
+</script>
+</body>
+</html>
