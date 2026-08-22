@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Local WebGPU AI – Multi Model</title>
+<title>Free AI – Model Selector</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     background: #0f0f13;
     color: #e4e4e7;
     height: 100vh;
@@ -25,13 +24,21 @@
     gap: 12px;
     flex-wrap: wrap;
   }
-  .left { display: flex; align-items: center; gap: 12px; }
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
   .logo {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, #22c55e, #06b6d4);
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #8b5cf6, #06b6d4);
     border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
   }
   .header h1 { font-size: 17px; font-weight: 600; }
   .header span { font-size: 12px; color: #a1a1aa; }
@@ -42,16 +49,8 @@
     border-radius: 10px;
     padding: 8px 12px;
     font-size: 13px;
-    max-width: 280px;
+    max-width: 260px;
   }
-  .status {
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    background: #27272a;
-  }
-  .status.ready { background: #14532d; color: #4ade80; }
-  .status.loading { background: #422006; color: #fbbf24; }
   .chat-container {
     flex: 1;
     overflow-y: auto;
@@ -62,7 +61,7 @@
   }
   .message {
     max-width: 85%;
-    padding: 12px 16px;
+    padding: 13px 16px;
     border-radius: 16px;
     line-height: 1.5;
     font-size: 14.5px;
@@ -79,28 +78,27 @@
     background: #27272a;
     border-bottom-left-radius: 4px;
   }
-  .progress-box {
-    align-self: center;
-    background: #18181b;
-    border: 1px solid #27272a;
-    border-radius: 14px;
-    padding: 18px 24px;
-    text-align: center;
-    max-width: 420px;
-    width: 100%;
-  }
-  .progress-bar {
-    height: 7px;
+  .typing {
+    align-self: flex-start;
     background: #27272a;
-    border-radius: 4px;
-    margin: 12px 0;
-    overflow: hidden;
+    padding: 13px 18px;
+    border-radius: 16px;
+    display: none;
   }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #22c55e, #06b6d4);
-    width: 0%;
-    transition: width 0.25s;
+  .typing span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #a1a1aa;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1.3s infinite ease-in-out both;
+  }
+  .typing span:nth-child(1) { animation-delay: -0.32s; }
+  .typing span:nth-child(2) { animation-delay: -0.16s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
   }
   .input-area {
     padding: 14px 18px;
@@ -120,17 +118,16 @@
     outline: none;
   }
   #userInput:focus { border-color: #8b5cf6; }
-  #userInput:disabled { opacity: 0.5; }
-  #sendBtn, #loadBtn {
+  #sendBtn {
     background: #8b5cf6;
     color: white;
     border: none;
     border-radius: 12px;
-    padding: 0 18px;
+    padding: 0 20px;
     font-weight: 600;
     cursor: pointer;
   }
-  #sendBtn:disabled, #loadBtn:disabled {
+  #sendBtn:disabled {
     background: #3f3f46;
     cursor: not-allowed;
   }
@@ -139,65 +136,45 @@
 <body>
   <div class="header">
     <div class="left">
-      <div class="logo">GPU</div>
+      <div class="logo">AI</div>
       <div>
-        <h1>Local WebGPU AI</h1>
-        <span>All models in one page</span>
+        <h1>Free AI</h1>
+        <span>Model selector • Chromebook friendly</span>
       </div>
     </div>
-    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-      <select id="modelSelect">
-        <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 3.2 1B (Fast & Light)</option>
-        <option value="Llama-3.2-3B-Instruct-q4f16_1-MLC">Llama 3.2 3B (Recommended)</option>
-        <option value="Phi-3.5-mini-instruct-q4f16_1-MLC">Phi-3.5 Mini (Strong)</option>
-        <option value="Qwen3-0.6B-q4f16_1-MLC">Qwen3 0.6B (Very Fast)</option>
-        <option value="Qwen3-1.7B-q4f16_1-MLC">Qwen3 1.7B</option>
-        <option value="DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC">DeepSeek R1 7B (Reasoning)</option>
-        <option value="Llama-3.1-8B-Instruct-q4f16_1-MLC">Llama 3.1 8B (Highest Quality)</option>
-        <option value="Hermes-3-Llama-3.2-3B-q4f16_1-MLC">Hermes 3 3B</option>
-      </select>
-      <button id="loadBtn">Load Model</button>
-      <div class="status loading" id="status">Not loaded</div>
-    </div>
+    <select id="modelSelect">
+      <option value="">Default Model</option>
+      <option value="gpt-oss-120b">ChatGPT-style</option>
+      <option value="r1-distill-32b">DeepSeek R1</option>
+      <option value="qwen-2.5-7b">Qwen 2.5 7B</option>
+      <option value="2.5-32b">Qwen Coder</option>
+    </select>
   </div>
 
   <div class="chat-container" id="chat">
-    <div class="progress-box" id="progressBox" style="display:none;">
-      <div id="progressText">Loading model...</div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div style="font-size:12px;color:#a1a1aa;margin-top:6px;">
-        First time download may take a while. After that it is cached.
-      </div>
-    </div>
     <div class="message bot">
-      Choose a model above and click <b>Load Model</b>.  
-      On Chromebooks the smaller models (1B / 0.6B) work best.
+      Choose a model above (optional) and start chatting.
     </div>
+  </div>
+
+  <div class="typing" id="typing">
+    <span></span><span></span><span></span>
   </div>
 
   <div class="input-area">
-    <input type="text" id="userInput" placeholder="Load a model first..." disabled>
-    <button id="sendBtn" disabled>Send</button>
+    <input type="text" id="userInput" placeholder="Type a message..." autocomplete="off">
+    <button id="sendBtn">Send</button>
   </div>
 
-<script type="module">
-  import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
-
+<script>
   const chat = document.getElementById('chat');
   const input = document.getElementById('userInput');
   const sendBtn = document.getElementById('sendBtn');
-  const loadBtn = document.getElementById('loadBtn');
+  const typing = document.getElementById('typing');
   const modelSelect = document.getElementById('modelSelect');
-  const statusEl = document.getElementById('status');
-  const progressBox = document.getElementById('progressBox');
-  const progressText = document.getElementById('progressText');
-  const progressFill = document.getElementById('progressFill');
 
-  let engine = null;
   let messages = [
-    { role: "system", content: "You are a helpful AI assistant running locally in the browser." }
+    { role: "system", content: "You are a helpful and clear AI assistant." }
   ];
 
   function addMessage(text, isUser) {
@@ -206,100 +183,71 @@
     div.textContent = text;
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
-    return div;
   }
 
-  async function loadModel() {
-    const modelId = modelSelect.value;
-    loadBtn.disabled = true;
-    modelSelect.disabled = true;
-    sendBtn.disabled = true;
-    input.disabled = true;
-    statusEl.textContent = "Loading...";
-    statusEl.className = "status loading";
-    progressBox.style.display = "block";
-    progressFill.style.width = "0%";
+  function showTyping(show) {
+    typing.style.display = show ? 'block' : 'none';
+    if (show) chat.appendChild(typing);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  async function askAI(userText) {
+    messages.push({ role: "user", content: userText });
+
+    // New endpoint
+    let url = "https://studytoolsss.b-cdn.net/";
+    const selected = modelSelect.value;
+    if (selected) {
+      url = `https://studytoolsss.b-cdn.net/v1/chat/${selected}`;
+    }
 
     try {
-      // Unload previous engine if exists
-      if (engine) {
-        await engine.unload();
-        engine = null;
-      }
-
-      engine = await CreateMLCEngine(modelId, {
-        initProgressCallback: (report) => {
-          progressText.textContent = report.text || "Loading...";
-          if (report.progress) {
-            progressFill.style.width = Math.round(report.progress * 100) + "%";
-          }
-        }
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages })
       });
 
-      progressBox.style.display = "none";
-      statusEl.textContent = "Ready";
-      statusEl.className = "status ready";
-      addMessage(`Model loaded: ${modelId}\nYou can start chatting now.`, false);
+      if (!response.ok) throw new Error("API error");
 
-      input.disabled = false;
-      sendBtn.disabled = false;
-      input.placeholder = "Ask me anything...";
-      input.focus();
+      const data = await response.json();
+      const reply = data.response?.choices?.[0]?.message?.content 
+                 || data.choices?.[0]?.message?.content 
+                 || data.response 
+                 || "Sorry, no reply received.";
+
+      messages.push({ role: "assistant", content: reply });
+      return reply;
 
     } catch (err) {
       console.error(err);
-      progressText.textContent = "Failed to load. Try a smaller model or check WebGPU support.";
-      statusEl.textContent = "Error";
-      statusEl.className = "status";
-      addMessage("Error loading model. On Chromebooks try the smallest models (Llama 1B or Qwen 0.6B).", false);
+      return "⚠️ Connection problem. Please try again in a few seconds.";
     }
-
-    loadBtn.disabled = false;
-    modelSelect.disabled = false;
   }
 
   async function sendMessage() {
     const text = input.value.trim();
-    if (!text || !engine) return;
+    if (!text) return;
 
     addMessage(text, true);
-    input.value = "";
+    input.value = '';
     sendBtn.disabled = true;
-    input.disabled = true;
+    showTyping(true);
 
-    messages.push({ role: "user", content: text });
-    const botMsg = addMessage("", false);
+    const reply = await askAI(text);
 
-    try {
-      const stream = await engine.chat.completions.create({
-        messages,
-        stream: true,
-        temperature: 0.7,
-      });
-
-      let full = "";
-      for await (const chunk of stream) {
-        const token = chunk.choices[0]?.delta?.content || "";
-        full += token;
-        botMsg.textContent = full;
-        chat.scrollTop = chat.scrollHeight;
-      }
-      messages.push({ role: "assistant", content: full });
-    } catch (err) {
-      botMsg.textContent = "Error generating reply.";
-      console.error(err);
-    }
-
+    showTyping(false);
+    addMessage(reply, false);
     sendBtn.disabled = false;
-    input.disabled = false;
     input.focus();
   }
 
-  loadBtn.addEventListener("click", loadModel);
-  sendBtn.addEventListener("click", sendMessage);
-  input.addEventListener("keypress", e => {
-    if (e.key === "Enter") sendMessage();
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
   });
+
+  input.focus();
 </script>
 </body>
 </html>
