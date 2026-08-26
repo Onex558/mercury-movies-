@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uranium AI</title>
+<style>
+:root {
+  --green: #00ff88;
+  --green2: #39ff14;
+  --black: #050806;
+  --panel: #111812;
+  --border: #26352b;
+  --text: #edfdf3;
+  --muted: #84938a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--black);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app { display: flex; height: 100vh; }
+
+.sidebar {
+  width: 260px;
+  background: #080c09;
+  border-right: 1px solid var(--border);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px;
+  margin-bottom: 18px;
+}
+
+.logo {
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  background: var(--green);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  box-shadow: 0 0 25px rgba(0,255,136,.25);
+}
+
+.logo-text h1 { font-size: 18px; }
+.logo-text p { font-size: 11px; color: var(--muted); }
+
+.new-chat {
+  width: 100%;
+  border: 0;
+  border-radius: 11px;
+  padding: 12px;
+  background: var(--green);
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .15s;
+}
+.new-chat:hover {
+  background: var(--green2);
+  transform: translateY(-1px);
+}
+
+.sidebar-title {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  margin: 20px 8px 8px;
+}
+
+.history {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.history-item {
+  padding: 10px;
+  border-radius: 9px;
+  color: #c8d3cc;
+  font-size: 13px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.history-item:hover { background: var(--panel); }
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-bar {
+  height: 65px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,12,9,.92);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  gap: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-title { font-weight: 700; font-size: 16px; }
+.online { color: var(--green); font-size: 11px; }
+
+.model-select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 8px 11px;
+  outline: none;
+  max-width: 300px;
+}
+.model-select:focus { border-color: var(--green); }
+
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 10%;
+  scroll-behavior: smooth;
+}
+
+.welcome {
+  max-width: 700px;
+  margin: 9vh auto;
+  text-align: center;
+}
+
+.welcome-icon {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 20px;
+  border-radius: 23px;
+  background: var(--green);
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 43px;
+  box-shadow: 0 0 45px rgba(0,255,136,.25);
+}
+
+.welcome h2 { font-size: 30px; margin-bottom: 9px; }
+.welcome p { color: var(--muted); }
+
+.suggestions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.suggestion {
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: .15s;
+}
+.suggestion:hover {
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+
+.message-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.avatar {
+  flex: 0 0 35px;
+  height: 35px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai-avatar { background: var(--green); color: #000; }
+.user-avatar { background: #29312c; }
+
+.message-name {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.message-content {
+  max-width: 850px;
+  line-height: 1.65;
+  font-size: 15px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Bouncing dots */
+.typing-dots {
+  display: flex;
+  gap: 6px;
+  padding-top: 8px;
+  height: 20px;
+  align-items: flex-end;
+}
+
+.typing-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: bounceUpDown 1.2s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: 0s; }
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounceUpDown {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+.input-area {
+  padding: 14px 10% 23px;
+  border-top: 1px solid var(--border);
+  background: #080c09;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 7px;
+  transition: .15s;
+}
+.input-box:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(0,255,136,.06);
+}
+
+#userInput {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  font-size: 15px;
+  padding: 12px;
+  min-width: 0;
+}
+#userInput::placeholder { color: #66736b; }
+
+#sendBtn {
+  width: 43px;
+  height: 43px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--green);
+  color: #000;
+  font-size: 19px;
+  font-weight: 800;
+  cursor: pointer;
+}
+#sendBtn:hover { background: var(--green2); }
+#sendBtn:disabled {
+  background: #29332d;
+  color: #6a756d;
+  cursor: not-allowed;
+}
+
+.disclaimer {
+  text-align: center;
+  color: #59655d;
+  font-size: 10px;
+  margin-top: 8px;
+}
+
+@media (max-width: 700px) {
+  .sidebar { display: none; }
+  .header-bar { padding: 0 13px; }
+  .model-select { max-width: 180px; }
+  .chat { padding: 20px 15px; }
+  .input-area { padding: 10px 15px 15px; }
+  .suggestions { grid-template-columns: 1fr; }
+  .welcome { margin-top: 7vh; }
+  .welcome h2 { font-size: 25px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo-area">
+      <div class="logo">☢</div>
+      <div class="logo-text">
+        <h1>Uranium AI</h1>
+        <p>Powered by Workers AI</p>
+      </div>
+    </div>
+
+    <button class="new-chat" onclick="newChat()">+ New Chat</button>
+
+    <div class="sidebar-title">Recent Chats</div>
+    <div class="history" id="history"></div>
+  </aside>
+
+  <main class="main">
+    <header class="header-bar">
+      <div class="header-left">
+        <div class="header-title">☢ Uranium AI</div>
+        <div class="online">● Online</div>
+      </div>
+
+      <select id="modelSelect" class="model-select">
+        <!-- Most efficient (uses least neurons) -->
+        <option value="@cf/meta/llama-3.2-1b-instruct">Llama 3.2 1B (Lightest)</option>
+        <option value="@cf/ibm-granite/granite-4.0-h-micro">Granite 4.0 Micro (Very Efficient)</option>
+        <option value="@cf/meta/llama-3.1-8b-instruct-fast">Llama 3.1 8B Fast</option>
+        <option value="@cf/openai/gpt-oss-20b">GPT-OSS 20B</option>
+        <option value="@cf/zai-org/glm-4.7-flash">GLM 4.7 Flash</option>
+
+        <!-- Medium / Stronger -->
+        <option value="@cf/google/gemma-4-26b-a4b-it">Gemma 4 26B</option>
+        <option value="@cf/qwen/qwen3-30b-a3b-fp8">Qwen 3 30B</option>
+        <option value="@cf/mistralai/mistral-small-3.1-24b-instruct">Mistral Small 3.1 24B</option>
+        <option value="@cf/meta/llama-4-scout-17b-16e-instruct">Llama 4 Scout 17B</option>
+
+        <!-- Heavier (uses more neurons) -->
+        <option value="@cf/openai/gpt-oss-120b">GPT-OSS 120B (Strongest)</option>
+        <option value="@cf/meta/llama-3.3-70b-instruct-fp8-fast">Llama 3.3 70B Fast</option>
+        <option value="@cf/deepseek-ai/deepseek-r1-distill-qwen-32b">DeepSeek R1 Distill 32B</option>
+        <option value="@cf/qwen/qwen2.5-coder-32b-instruct">Qwen 2.5 Coder 32B</option>
+      </select>
+    </header>
+
+    <div class="chat" id="chat">
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">☢</div>
+        <h2>Welcome to Uranium AI</h2>
+        <p>Your AI assistant powered by Cloudflare Workers AI.</p>
+        <div class="suggestions">
+          <div class="suggestion" onclick="useSuggestion('Explain how black holes work')">🌌 Explain how black holes work</div>
+          <div class="suggestion" onclick="useSuggestion('Help me create a website')">💻 Help me create a website</div>
+          <div class="suggestion" onclick="useSuggestion('Give me a cool game idea')">🎮 Give me a game idea</div>
+          <div class="suggestion" onclick="useSuggestion('What can you do?')">☢ What can you do?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-box">
+        <input type="text" id="userInput" autocomplete="off" placeholder="Message Uranium AI...">
+        <button id="sendBtn">↑</button>
+      </div>
+      <div class="disclaimer">Uranium AI can make mistakes. Check important information.</div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const BACKEND_URL = "https://blue-cloud-ee3c.t20988828.workers.dev/";
+
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("userInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const modelSelect = document.getElementById("modelSelect");
+  const history = document.getElementById("history");
+
+  let messages = [
+    { role: "system", content: "You are Uranium AI, a helpful, friendly, accurate AI assistant." }
+  ];
+
+  function addMessage(text, role) {
+    const welcome = document.getElementById("welcome");
+    if (welcome) welcome.remove();
+
+    const row = document.createElement("div");
+    row.className = "message-row";
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar " + (role === "user" ? "user-avatar" : "ai-avatar");
+    avatar.textContent = role === "user" ? "👤" : "☢";
+
+    const wrapper = document.createElement("div");
+
+    const name = document.createElement("div");
+    name.className = "message-name";
+    name.textContent = role === "user" ? "You" : "Uranium AI";
+
+    const content = document.createElement("div");
+    content.className = "message-content";
+    content.textContent = text;
+
+    wrapper.appendChild(name);
+    wrapper.appendChild(content);
+    row.appendChild(avatar);
+    row.appendChild(wrapper);
+    chat.appendChild(row);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function showTyping() {
+    const row = document.createElement("div");
+    row.className = "message-row";
+    row.id = "typingRow";
+    row.innerHTML = `
+      <div class="avatar ai-avatar">☢</div>
+      <div>
+        <div class="message-name">Uranium AI</div>
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    `;
+    chat.appendChild(row);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function hideTyping() {
+    const row = document.getElementById("typingRow");
+    if (row) row.remove();
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+    messages.push({ role: "user", content: text });
+    addHistory(text);
+
+    input.value = "";
+    sendBtn.disabled = true;
+    showTyping();
+
+    try {
+      const response = await fetch(BACKEND_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: modelSelect.value,
+          messages: messages
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.success === false || data.errors) {
+        throw new Error("model_down");
+      }
+
+      const reply = data.result?.response || data.response || null;
+
+      if (!reply) {
+        throw new Error("model_down");
+      }
+
+      messages.push({ role: "assistant", content: reply });
+      hideTyping();
+      addMessage(reply, "assistant");
+
+    } catch (error) {
+      hideTyping();
+      addMessage("⚠️ This AI model is currently down. Please try a different one.", "assistant");
+    }
+
+    sendBtn.disabled = false;
+    input.focus();
+  }
+
+  function newChat() {
+    messages = [
+      { role: "system", content: "You are Uranium AI, a helpful, friendly, accurate AI assistant." }
+    ];
+
+    chat.innerHTML = `
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">☢</div>
+        <h2>Welcome to Uranium AI</h2>
+        <p>Your AI assistant powered by Cloudflare Workers AI.</p>
+        <div class="suggestions">
+          <div class="suggestion" onclick="useSuggestion('Explain how black holes work')">🌌 Explain how black holes work</div>
+          <div class="suggestion" onclick="useSuggestion('Help me create a website')">💻 Help me create a website</div>
+          <div class="suggestion" onclick="useSuggestion('Give me a cool game idea')">🎮 Give me a game idea</div>
+          <div class="suggestion" onclick="useSuggestion('What can you do?')">☢ What can you do?</div>
+        </div>
+      </div>
+    `;
+    input.focus();
+  }
+
+  function addHistory(text) {
+    const item = document.createElement("div");
+    item.className = "history-item";
+    item.textContent = text.substring(0, 45);
+    history.prepend(item);
+  }
+
+  function useSuggestion(text) {
+    input.value = text;
+    sendMessage();
+  }
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  sendBtn.addEventListener("click", sendMessage);
+  input.focus();
+</script>
+
+</body>
+</html>
