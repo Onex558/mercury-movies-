@@ -1,5 +1,5 @@
+````html
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -47,8 +47,6 @@ button {
   display: flex;
   height: 100vh;
 }
-
-/* SIDEBAR */
 
 .sidebar {
   width: 270px;
@@ -178,8 +176,6 @@ button {
   color: var(--danger);
 }
 
-/* MAIN */
-
 .main {
   flex: 1;
   min-width: 0;
@@ -227,8 +223,6 @@ button {
 .model-select:focus {
   border-color: var(--green);
 }
-
-/* CHAT */
 
 .chat {
   flex: 1;
@@ -288,8 +282,6 @@ button {
   border-color: var(--green);
   transform: translateY(-1px);
 }
-
-/* MESSAGES */
 
 .message-row {
   display: flex;
@@ -387,8 +379,6 @@ button {
   font-size: .9em;
 }
 
-/* CODE BLOCK */
-
 .code-block {
   position: relative;
   margin: 12px 0;
@@ -444,8 +434,6 @@ button {
   white-space: pre;
 }
 
-/* MESSAGE BUTTONS */
-
 .message-actions {
   display: flex;
   gap: 7px;
@@ -460,8 +448,6 @@ button {
   color: var(--green);
   border-color: var(--green);
 }
-
-/* TYPING */
 
 .typing-dots {
   display: flex;
@@ -484,17 +470,17 @@ button {
 }
 
 .typing-dots span:nth-child(2) {
-  animation-delay: 0.15s;
+  animation-delay: .15s;
 }
 
 .typing-dots span:nth-child(3) {
-  animation-delay: 0.3s;
+  animation-delay: .3s;
 }
 
 @keyframes bounceUpDown {
-  0%, 60%, 100% {
+  0%,60%,100% {
     transform: translateY(0);
-    opacity: 0.4;
+    opacity: .4;
   }
 
   30% {
@@ -502,8 +488,6 @@ button {
     opacity: 1;
   }
 }
-
-/* INPUT */
 
 .input-area {
   padding: 14px 10% 23px;
@@ -571,130 +555,125 @@ button {
   margin-top: 8px;
 }
 
-/* MOBILE */
-
-@media (max-width: 700px) {
+@media (max-width:700px) {
   .sidebar {
-    display: none;
+    display:none;
   }
 
   .header-bar {
-    padding: 0 13px;
+    padding:0 13px;
   }
 
   .model-select {
-    max-width: 180px;
+    max-width:180px;
   }
 
   .chat {
-    padding: 20px 15px;
+    padding:20px 15px;
   }
 
   .input-area {
-    padding: 10px 15px 15px;
+    padding:10px 15px 15px;
   }
 
   .suggestions {
-    grid-template-columns: 1fr;
+    grid-template-columns:1fr;
   }
 
   .welcome {
-    margin-top: 7vh;
+    margin-top:7vh;
   }
 
   .welcome h2 {
-    font-size: 25px;
+    font-size:25px;
   }
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="app">
 
-  <aside class="sidebar">
+<aside class="sidebar">
 
-```
 <div class="logo-area">
   <div class="logo">☢</div>
 
   <div class="logo-text">
     <h1>Uranium AI</h1>
-    <p>Powered by URNAIUM AI</p>
+    <p>Powered by URANIUM AI</p>
   </div>
 </div>
 
 <button class="new-chat" onclick="newChat()">+ New Chat</button>
 
 <div class="sidebar-title">Recent Chats</div>
+
 <div class="history" id="history"></div>
-```
 
-  </aside>
+</aside>
 
-  <main class="main">
+<main class="main">
 
-```
 <header class="header-bar">
 
-  <div class="header-left">
-    <div class="header-title">☢ Uranium AI</div>
-    <div class="online">● Online</div>
-  </div>
+<div class="header-left">
+  <div class="header-title">☢ Uranium AI</div>
+  <div class="online">● Online</div>
+</div>
 
-  <select id="modelSelect" class="model-select">
+<select id="modelSelect" class="model-select">
 
-    <option value="@cf/openai/gpt-oss-20b">
-      GPT-OSS 20B (Recommended)
-    </option>
+<option value="@cf/openai/gpt-oss-20b">
+GPT-OSS 20B (Recommended)
+</option>
 
-    <option value="@cf/openai/gpt-oss-120b">
-      GPT-OSS 120B (Strongest)
-    </option>
+<option value="@cf/openai/gpt-oss-120b">
+GPT-OSS 120B (Strongest)
+</option>
 
-    <option value="@cf/meta/llama-3.3-70b-instruct-fp8-fast">
-      Llama 3.3 70B Fast
-    </option>
+<option value="@cf/meta/llama-3.3-70b-instruct-fp8-fast">
+Llama 3.3 70B Fast
+</option>
 
-    <option value="@cf/meta/llama-4-scout-17b-16e-instruct">
-      Llama 4 Scout 17B
-    </option>
+<option value="@cf/meta/llama-4-scout-17b-16e-instruct">
+Llama 4 Scout 17B
+</option>
 
-    <option value="@cf/meta/llama-3.1-8b-instruct-fast">
-      Llama 3.1 8B Fast
-    </option>
+<option value="@cf/meta/llama-3.1-8b-instruct-fast">
+Llama 3.1 8B Fast
+</option>
 
-    <option value="@cf/google/gemma-4-26b-a4b-it">
-      Gemma 4 26B
-    </option>
+<option value="@cf/google/gemma-4-26b-a4b-it">
+Gemma 4 26B
+</option>
 
-    <option value="@cf/qwen/qwen3-30b-a3b-fp8">
-      Qwen 3 30B
-    </option>
+<option value="@cf/qwen/qwen3-30b-a3b-fp8">
+Qwen 3 30B
+</option>
 
-    <option value="@cf/qwen/qwen2.5-coder-32b-instruct">
-      Qwen 2.5 Coder 32B
-    </option>
+<option value="@cf/qwen/qwen2.5-coder-32b-instruct">
+Qwen 2.5 Coder 32B
+</option>
 
-    <option value="@cf/mistralai/mistral-small-3.1-24b-instruct">
-      Mistral Small 3.1 24B
-    </option>
+<option value="@cf/mistralai/mistral-small-3.1-24b-instruct">
+Mistral Small 3.1 24B
+</option>
 
-    <option value="@cf/ibm-granite/granite-4.0-h-micro">
-      Granite 4.0 Micro
-    </option>
+<option value="@cf/ibm-granite/granite-4.0-h-micro">
+Granite 4.0 Micro
+</option>
 
-    <option value="@cf/deepseek-ai/deepseek-r1-distill-qwen-32b">
-      DeepSeek R1 Distill 32B
-    </option>
+<option value="@cf/deepseek-ai/deepseek-r1-distill-qwen-32b">
+DeepSeek R1 Distill 32B
+</option>
 
-    <option value="@cf/zai-org/glm-4.7-flash">
-      GLM 4.7 Flash
-    </option>
+<option value="@cf/zai-org/glm-4.7-flash">
+GLM 4.7 Flash
+</option>
 
-  </select>
+</select>
 
 </header>
 
@@ -702,27 +681,26 @@ button {
 
 <div class="input-area">
 
-  <div class="input-box">
+<div class="input-box">
 
-    <input
-      type="text"
-      id="userInput"
-      autocomplete="off"
-      placeholder="Message Uranium AI..."
-    >
+<input
+  type="text"
+  id="userInput"
+  autocomplete="off"
+  placeholder="Message Uranium AI..."
+>
 
-    <button id="sendBtn" title="Send message">↑</button>
-
-  </div>
-
-  <div class="disclaimer">
-    Uranium AI can make mistakes. Check important information.
-  </div>
+<button id="sendBtn" title="Send message">↑</button>
 
 </div>
-```
 
-  </main>
+<div class="disclaimer">
+Uranium AI can make mistakes. Check important information.
+</div>
+
+</div>
+
+</main>
 
 </div>
 
@@ -732,12 +710,16 @@ button {
    CONFIG
 ========================= */
 
-const BACKEND_URL = "https://classlinknet.b-cdn.net/";
+// GOOGLE APPS SCRIPT WEB APP
+const BACKEND_URL =
+  "https://script.google.com/macros/s/AKfycbw2uA_syRv0SjSAQnGPSsbbVK-pxYuFS8hrIPak9rG7TlyX_Z2A6kDa6AqP89b_nh34/exec";
+
 const STORAGE_KEY = "uranium_ai_chats_v1";
 
 const SYSTEM_MESSAGE = {
   role: "system",
-  content: "You are Uranium AI, a helpful, friendly, accurate AI assistant. Use Markdown when helpful. Put programming code inside fenced code blocks with a language name when possible."
+  content:
+    "You are Uranium AI, a helpful, friendly, accurate AI assistant. Use Markdown when helpful. Put programming code inside fenced code blocks with a language name when possible."
 };
 
 
@@ -774,7 +756,9 @@ if (chats.length > 0) {
 
 function loadChats() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const saved = JSON.parse(
+      localStorage.getItem(STORAGE_KEY)
+    );
 
     if (!Array.isArray(saved)) return [];
 
@@ -791,7 +775,10 @@ function loadChats() {
 
 function saveChats() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(chats)
+    );
   } catch (error) {
     console.warn("Could not save chats:", error);
   }
@@ -800,11 +787,12 @@ function saveChats() {
 function createId() {
   return (
     Date.now().toString(36) +
-    Math.random().toString(36).slice(2, 8)
+    Math.random().toString(36).slice(2,8)
   );
 }
 
 function createChat(title = "New Chat") {
+
   const newChatData = {
     id: createId(),
     title: title,
@@ -814,46 +802,62 @@ function createChat(title = "New Chat") {
   };
 
   chats.unshift(newChatData);
+
   activeChatId = newChatData.id;
+
   messages = newChatData.messages;
 
   saveChats();
+
   renderHistory();
 
   return newChatData;
 }
 
 function getActiveChat() {
-  return chats.find(chat => chat.id === activeChatId);
+  return chats.find(
+    chat => chat.id === activeChatId
+  );
 }
 
 function saveActiveChat() {
+
   const active = getActiveChat();
 
   if (!active) return;
 
   active.messages = messages;
+
   active.updatedAt = Date.now();
 
   if (
     active.title === "New Chat" &&
-    messages.filter(message => message.role === "user").length > 0
-  ) {
-    const firstUserMessage = messages.find(
+    messages.filter(
       message => message.role === "user"
-    );
+    ).length > 0
+  ) {
+
+    const firstUserMessage =
+      messages.find(
+        message => message.role === "user"
+      );
 
     if (firstUserMessage) {
-      active.title = firstUserMessage.content
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 38) || "New Chat";
+
+      active.title =
+        firstUserMessage.content
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0,38) || "New Chat";
     }
   }
 
-  chats.sort((a, b) => b.updatedAt - a.updatedAt);
+  chats.sort(
+    (a,b) => b.updatedAt - a.updatedAt
+  );
 
   saveChats();
+
   renderHistory();
 }
 
@@ -868,58 +872,76 @@ function renderHistory() {
 
   chats.forEach(chatData => {
 
-    const item = document.createElement("div");
+    const item =
+      document.createElement("div");
 
     item.className =
       "history-item" +
-      (chatData.id === activeChatId ? " active" : "");
+      (
+        chatData.id === activeChatId
+          ? " active"
+          : ""
+      );
 
-
-    const main = document.createElement("div");
+    const main =
+      document.createElement("div");
 
     main.className = "history-main";
 
-    main.textContent = chatData.title || "New Chat";
+    main.textContent =
+      chatData.title || "New Chat";
 
-    main.title = chatData.title || "New Chat";
+    main.title =
+      chatData.title || "New Chat";
 
-    main.addEventListener("click", () => {
-      loadChat(chatData.id);
-    });
+    main.addEventListener(
+      "click",
+      () => loadChat(chatData.id)
+    );
 
+    const actions =
+      document.createElement("div");
 
-    const actions = document.createElement("div");
+    actions.className =
+      "history-actions";
 
-    actions.className = "history-actions";
+    const renameBtn =
+      document.createElement("button");
 
+    renameBtn.className =
+      "history-btn";
 
-    const renameBtn = document.createElement("button");
-
-    renameBtn.className = "history-btn";
-
-    renameBtn.title = "Rename chat";
+    renameBtn.title =
+      "Rename chat";
 
     renameBtn.textContent = "✎";
 
-    renameBtn.addEventListener("click", event => {
-      event.stopPropagation();
-      renameChat(chatData.id);
-    });
+    renameBtn.addEventListener(
+      "click",
+      event => {
+        event.stopPropagation();
+        renameChat(chatData.id);
+      }
+    );
 
+    const deleteBtn =
+      document.createElement("button");
 
-    const deleteBtn = document.createElement("button");
+    deleteBtn.className =
+      "history-btn delete";
 
-    deleteBtn.className = "history-btn delete";
-
-    deleteBtn.title = "Delete chat";
+    deleteBtn.title =
+      "Delete chat";
 
     deleteBtn.textContent = "×";
 
-    deleteBtn.addEventListener("click", event => {
-      event.stopPropagation();
-      deleteChat(chatData.id);
-    });
-
+    deleteBtn.addEventListener(
+      "click",
+      event => {
+        event.stopPropagation();
+        deleteChat(chatData.id);
+      }
+    );
 
     actions.appendChild(renameBtn);
     actions.appendChild(deleteBtn);
@@ -930,12 +952,12 @@ function renderHistory() {
     history.appendChild(item);
 
   });
-
 }
 
 function loadChat(id) {
 
-  const chatData = chats.find(chat => chat.id === id);
+  const chatData =
+    chats.find(chat => chat.id === id);
 
   if (!chatData) return;
 
@@ -944,72 +966,91 @@ function loadChat(id) {
   messages = chatData.messages;
 
   renderHistory();
+
   renderMessages();
 
   input.focus();
-
 }
 
 function renameChat(id) {
 
-  const chatData = chats.find(chat => chat.id === id);
+  const chatData =
+    chats.find(chat => chat.id === id);
 
   if (!chatData) return;
 
-  const newTitle = prompt(
-    "Rename this chat:",
-    chatData.title
-  );
+  const newTitle =
+    prompt(
+      "Rename this chat:",
+      chatData.title
+    );
 
   if (newTitle === null) return;
 
-  const cleanTitle = newTitle.trim();
+  const cleanTitle =
+    newTitle.trim();
 
   if (!cleanTitle) return;
 
-  chatData.title = cleanTitle.slice(0, 60);
-  chatData.updatedAt = Date.now();
+  chatData.title =
+    cleanTitle.slice(0,60);
+
+  chatData.updatedAt =
+    Date.now();
 
   saveChats();
-  renderHistory();
 
+  renderHistory();
 }
 
 function deleteChat(id) {
 
-  const chatData = chats.find(chat => chat.id === id);
+  const chatData =
+    chats.find(chat => chat.id === id);
 
   if (!chatData) return;
 
-  const confirmed = confirm(
-    `Delete "${chatData.title}"?`
-  );
+  const confirmed =
+    confirm(
+      `Delete "${chatData.title}"?`
+    );
 
   if (!confirmed) return;
 
-  chats = chats.filter(chat => chat.id !== id);
+  chats =
+    chats.filter(
+      chat => chat.id !== id
+    );
 
   if (activeChatId === id) {
 
     if (chats.length > 0) {
+
       activeChatId = chats[0].id;
-      messages = chats[0].messages;
+
+      messages =
+        chats[0].messages;
+
     } else {
+
       activeChatId = null;
+
       messages = [SYSTEM_MESSAGE];
     }
-
   }
 
   saveChats();
 
   if (activeChatId) {
+
     renderHistory();
+
     renderMessages();
+
   } else {
+
     newChat();
   }
-
 }
 
 
@@ -1024,7 +1065,6 @@ function newChat() {
   renderMessages();
 
   input.focus();
-
 }
 
 
@@ -1036,44 +1076,55 @@ function renderMessages() {
 
   chat.innerHTML = "";
 
-  const visibleMessages = messages.filter(
-    message => message.role !== "system"
-  );
+  const visibleMessages =
+    messages.filter(
+      message => message.role !== "system"
+    );
 
   if (visibleMessages.length === 0) {
+
     renderWelcome();
+
     return;
   }
 
-  visibleMessages.forEach((message, index) => {
+  visibleMessages.forEach(
+    (message,index) => {
 
-    addMessageToScreen(
-      message.content,
-      message.role,
-      index,
-      false
-    );
+      addMessageToScreen(
+        message.content,
+        message.role,
+        index,
+        false
+      );
 
-  });
+    }
+  );
 
-  chat.scrollTop = chat.scrollHeight;
-
+  chat.scrollTop =
+    chat.scrollHeight;
 }
 
 function renderWelcome() {
 
-  const welcome = document.createElement("div");
+  const welcome =
+    document.createElement("div");
 
-  welcome.className = "welcome";
+  welcome.className =
+    "welcome";
 
-  welcome.id = "welcome";
+  welcome.id =
+    "welcome";
 
   welcome.innerHTML = `
+
     <div class="welcome-icon">☢</div>
 
     <h2>Welcome to Uranium AI</h2>
 
-    <p>Your AI assistant powered by Cloudflare Workers AI.</p>
+    <p>
+      Your AI assistant powered by Cloudflare Workers AI.
+    </p>
 
     <div class="suggestions">
 
@@ -1096,23 +1147,39 @@ function renderWelcome() {
     </div>
   `;
 
-  const suggestions = welcome.querySelectorAll(".suggestion");
+  const suggestions =
+    welcome.querySelectorAll(
+      ".suggestion"
+    );
 
   const suggestionTexts = [
+
     "Explain how black holes work",
+
     "Help me create a website",
+
     "Give me a cool game idea",
+
     "What can you do?"
+
   ];
 
-  suggestions.forEach((suggestion, index) => {
-    suggestion.addEventListener("click", () => {
-      useSuggestion(suggestionTexts[index]);
-    });
-  });
+  suggestions.forEach(
+    (suggestion,index) => {
+
+      suggestion.addEventListener(
+        "click",
+        () => {
+          useSuggestion(
+            suggestionTexts[index]
+          );
+        }
+      );
+
+    }
+  );
 
   chat.appendChild(welcome);
-
 }
 
 function addMessageToScreen(
@@ -1122,111 +1189,136 @@ function addMessageToScreen(
   scroll = true
 ) {
 
-  const welcome = document.getElementById("welcome");
+  const welcome =
+    document.getElementById("welcome");
 
   if (welcome) welcome.remove();
 
+  const row =
+    document.createElement("div");
 
-  const row = document.createElement("div");
+  row.className =
+    "message-row";
 
-  row.className = "message-row";
-
-
-  const avatar = document.createElement("div");
+  const avatar =
+    document.createElement("div");
 
   avatar.className =
     "avatar " +
-    (role === "user"
-      ? "user-avatar"
-      : "ai-avatar");
+    (
+      role === "user"
+        ? "user-avatar"
+        : "ai-avatar"
+    );
 
   avatar.textContent =
     role === "user"
       ? "👤"
       : "☢";
 
+  const wrapper =
+    document.createElement("div");
 
-  const wrapper = document.createElement("div");
+  wrapper.className =
+    "message-wrapper";
 
-  wrapper.className = "message-wrapper";
+  const name =
+    document.createElement("div");
 
-
-  const name = document.createElement("div");
-
-  name.className = "message-name";
+  name.className =
+    "message-name";
 
   name.textContent =
     role === "user"
       ? "You"
       : "Uranium AI";
 
+  const content =
+    document.createElement("div");
 
-  const content = document.createElement("div");
-
-  content.className = "message-content";
-
+  content.className =
+    "message-content";
 
   if (role === "assistant") {
-    content.appendChild(renderMarkdown(text));
+
+    content.appendChild(
+      renderMarkdown(text)
+    );
+
   } else {
+
     content.textContent = text;
   }
 
-
   wrapper.appendChild(name);
-  wrapper.appendChild(content);
 
+  wrapper.appendChild(content);
 
   if (role === "assistant") {
 
-    const actions = document.createElement("div");
+    const actions =
+      document.createElement("div");
 
-    actions.className = "message-actions";
+    actions.className =
+      "message-actions";
 
+    const copyBtn =
+      document.createElement("button");
 
-    const copyBtn = document.createElement("button");
+    copyBtn.className =
+      "message-action";
 
-    copyBtn.className = "message-action";
+    copyBtn.textContent =
+      "📋 Copy";
 
-    copyBtn.textContent = "📋 Copy";
+    copyBtn.addEventListener(
+      "click",
+      () => copyText(text,copyBtn)
+    );
 
-    copyBtn.addEventListener("click", () => {
-      copyText(text, copyBtn);
-    });
+    const regenerateBtn =
+      document.createElement("button");
 
+    regenerateBtn.className =
+      "message-action";
 
-    const regenerateBtn = document.createElement("button");
+    regenerateBtn.textContent =
+      "🔄 Regenerate";
 
-    regenerateBtn.className = "message-action";
+    regenerateBtn.addEventListener(
+      "click",
+      () => {
 
-    regenerateBtn.textContent = "🔄 Regenerate";
+        if (
+          typeof messageIndex !==
+          "number"
+        ) return;
 
-    regenerateBtn.addEventListener("click", () => {
-
-      if (typeof messageIndex !== "number") return;
-
-      regenerateMessage(messageIndex);
-
-    });
-
+        regenerateMessage(
+          messageIndex
+        );
+      }
+    );
 
     actions.appendChild(copyBtn);
-    actions.appendChild(regenerateBtn);
+
+    actions.appendChild(
+      regenerateBtn
+    );
 
     wrapper.appendChild(actions);
-
   }
 
-
   row.appendChild(avatar);
+
   row.appendChild(wrapper);
 
   chat.appendChild(row);
 
   if (scroll) {
-    chat.scrollTop = chat.scrollHeight;
+    chat.scrollTop =
+      chat.scrollHeight;
   }
-
 }
 
 
@@ -1235,175 +1327,223 @@ function addMessageToScreen(
 ========================= */
 
 function escapeHTML(value) {
+
   return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 function renderMarkdown(text) {
 
-  const container = document.createElement("div");
+  const container =
+    document.createElement("div");
 
-  const source = String(text || "");
+  const source =
+    String(text || "");
 
-  const parts = source.split(/```/);
+  const parts =
+    source.split(/```/);
 
-  parts.forEach((part, index) => {
+  parts.forEach(
+    (part,index) => {
 
-    if (index % 2 === 1) {
+      if (index % 2 === 1) {
 
-      const firstNewline = part.indexOf("\n");
+        const firstNewline =
+          part.indexOf("\n");
 
-      let language = "";
-      let code = part;
+        let language = "";
 
-      if (firstNewline !== -1) {
-        language = part.slice(0, firstNewline).trim();
-        code = part.slice(firstNewline + 1);
-      }
+        let code = part;
 
-      const codeBlock = document.createElement("div");
+        if (firstNewline !== -1) {
 
-      codeBlock.className = "code-block";
+          language =
+            part
+              .slice(0,firstNewline)
+              .trim();
 
+          code =
+            part.slice(
+              firstNewline + 1
+            );
+        }
 
-      const header = document.createElement("div");
+        const codeBlock =
+          document.createElement("div");
 
-      header.className = "code-header";
+        codeBlock.className =
+          "code-block";
 
+        const header =
+          document.createElement("div");
 
-      const languageLabel = document.createElement("span");
+        header.className =
+          "code-header";
 
-      languageLabel.className = "code-language";
+        const languageLabel =
+          document.createElement("span");
 
-      languageLabel.textContent = language || "code";
+        languageLabel.className =
+          "code-language";
 
+        languageLabel.textContent =
+          language || "code";
 
-      const copyButton = document.createElement("button");
+        const copyButton =
+          document.createElement("button");
 
-      copyButton.className = "copy-code-btn";
+        copyButton.className =
+          "copy-code-btn";
 
-      copyButton.textContent = "Copy";
+        copyButton.textContent =
+          "Copy";
 
+        copyButton.addEventListener(
+          "click",
+          () => copyText(
+            code,
+            copyButton,
+            "Copied!"
+          )
+        );
 
-      copyButton.addEventListener("click", () => {
-        copyText(code, copyButton, "Copied!");
-      });
+        header.appendChild(
+          languageLabel
+        );
 
+        header.appendChild(
+          copyButton
+        );
 
-      header.appendChild(languageLabel);
-      header.appendChild(copyButton);
+        const pre =
+          document.createElement("pre");
 
+        const codeElement =
+          document.createElement("code");
 
-      const pre = document.createElement("pre");
+        codeElement.textContent =
+          code;
 
-      const codeElement = document.createElement("code");
+        pre.appendChild(
+          codeElement
+        );
 
-      codeElement.textContent = code;
+        codeBlock.appendChild(header);
 
-      pre.appendChild(codeElement);
+        codeBlock.appendChild(pre);
 
-      codeBlock.appendChild(header);
-      codeBlock.appendChild(pre);
+        container.appendChild(
+          codeBlock
+        );
 
-      container.appendChild(codeBlock);
+      } else {
 
-    } else {
+        const html =
+          renderMarkdownText(part);
 
-      const html = renderMarkdownText(part);
+        if (html.trim()) {
 
-      if (html.trim()) {
-        const section = document.createElement("div");
+          const section =
+            document.createElement("div");
 
-        section.innerHTML = html;
+          section.innerHTML = html;
 
-        while (section.firstChild) {
-          container.appendChild(section.firstChild);
+          while (section.firstChild) {
+
+            container.appendChild(
+              section.firstChild
+            );
+          }
         }
       }
-
     }
-
-  });
+  );
 
   return container;
-
 }
 
 function renderMarkdownText(text) {
 
-  let escaped = escapeHTML(text);
+  let escaped =
+    escapeHTML(text);
 
-  escaped = escaped.replace(
-    /^### (.+)$/gm,
-    "<h3>$1</h3>"
-  );
+  escaped =
+    escaped.replace(
+      /^### (.+)$/gm,
+      "<h3>$1</h3>"
+    );
 
-  escaped = escaped.replace(
-    /^## (.+)$/gm,
-    "<h2>$1</h2>"
-  );
+  escaped =
+    escaped.replace(
+      /^## (.+)$/gm,
+      "<h2>$1</h2>"
+    );
 
-  escaped = escaped.replace(
-    /^# (.+)$/gm,
-    "<h1>$1</h1>"
-  );
+  escaped =
+    escaped.replace(
+      /^# (.+)$/gm,
+      "<h1>$1</h1>"
+    );
 
+  escaped =
+    escaped.replace(
+      /\*\*(.+?)\*\*/g,
+      "<strong>$1</strong>"
+    );
 
-  escaped = escaped.replace(
-    /\*\*(.+?)\*\*/g,
-    "<strong>$1</strong>"
-  );
+  escaped =
+    escaped.replace(
+      /`([^`]+)`/g,
+      '<code class="inline-code">$1</code>'
+    );
 
-  escaped = escaped.replace(
-    /`([^`]+)`/g,
-    '<code class="inline-code">$1</code>'
-  );
+  escaped =
+    escaped.replace(
+      /(?:^|\n)[*-] (.+)/g,
+      "\n<li>$1</li>"
+    );
 
+  escaped =
+    escaped.replace(
+      /(?:^|\n)(\d+)\. (.+)/g,
+      "\n<li>$2</li>"
+    );
 
-  escaped = escaped.replace(
-    /(?:^|\n)[*-] (.+)/g,
-    "\n<li>$1</li>"
-  );
+  escaped =
+    escaped.replace(
+      /((?:\n<li>.*?<\/li>)+)/gs,
+      "<ul>$1</ul>"
+    );
 
-  escaped = escaped.replace(
-    /(?:^|\n)(\d+)\. (.+)/g,
-    "\n<li>$2</li>"
-  );
+  const blocks =
+    escaped
+      .split(/\n{2,}/)
+      .map(block => block.trim())
+      .filter(Boolean)
+      .map(block => {
 
+        if (
+          block.startsWith("<h1>") ||
+          block.startsWith("<h2>") ||
+          block.startsWith("<h3>") ||
+          block.startsWith("<ul>")
+        ) {
+          return block;
+        }
 
-  escaped = escaped.replace(
-    /((?:\n<li>.*?<\/li>)+)/gs,
-    "<ul>$1</ul>"
-  );
-
-
-  const blocks = escaped
-    .split(/\n{2,}/)
-    .map(block => block.trim())
-    .filter(Boolean)
-    .map(block => {
-
-      if (
-        block.startsWith("<h1>") ||
-        block.startsWith("<h2>") ||
-        block.startsWith("<h3>") ||
-        block.startsWith("<ul>")
-      ) {
-        return block;
-      }
-
-      return "<p>" +
-        block.replace(/\n/g, "<br>") +
-        "</p>";
-
-    });
+        return "<p>" +
+          block.replace(
+            /\n/g,
+            "<br>"
+          ) +
+          "</p>";
+      });
 
   return blocks.join("");
-
 }
 
 
@@ -1419,35 +1559,50 @@ async function copyText(
 
   try {
 
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(
+      text
+    );
 
-    const originalText = button.textContent;
+    const originalText =
+      button.textContent;
 
-    button.textContent = successText;
+    button.textContent =
+      successText;
 
-    button.classList.add("copied");
+    button.classList.add(
+      "copied"
+    );
 
     setTimeout(() => {
-      button.textContent = originalText;
-      button.classList.remove("copied");
-    }, 1500);
+
+      button.textContent =
+        originalText;
+
+      button.classList.remove(
+        "copied"
+      );
+
+    },1500);
 
   } catch {
 
-    const textarea = document.createElement("textarea");
+    const textarea =
+      document.createElement(
+        "textarea"
+      );
 
     textarea.value = text;
 
-    document.body.appendChild(textarea);
+    document.body.appendChild(
+      textarea
+    );
 
     textarea.select();
 
     document.execCommand("copy");
 
     textarea.remove();
-
   }
-
 }
 
 
@@ -1459,38 +1614,52 @@ function showTyping() {
 
   hideTyping();
 
-  const row = document.createElement("div");
+  const row =
+    document.createElement("div");
 
-  row.className = "message-row";
+  row.className =
+    "message-row";
 
-  row.id = "typingRow";
+  row.id =
+    "typingRow";
 
   row.innerHTML = `
-    <div class="avatar ai-avatar">☢</div>
+
+    <div class="avatar ai-avatar">
+      ☢
+    </div>
 
     <div>
-      <div class="message-name">Uranium AI</div>
+
+      <div class="message-name">
+        Uranium AI
+      </div>
 
       <div class="typing-dots">
+
         <span></span>
         <span></span>
         <span></span>
+
       </div>
+
     </div>
   `;
 
   chat.appendChild(row);
 
-  chat.scrollTop = chat.scrollHeight;
-
+  chat.scrollTop =
+    chat.scrollHeight;
 }
 
 function hideTyping() {
 
-  const row = document.getElementById("typingRow");
+  const row =
+    document.getElementById(
+      "typingRow"
+    );
 
   if (row) row.remove();
-
 }
 
 
@@ -1498,26 +1667,29 @@ function hideTyping() {
    ERRORS
 ========================= */
 
-function addModelError() {
+function addModelError(errorMessage) {
 
   const errorText =
-    "⚠️ This model is not working right now. Please try a different model from the model selector and send your message again.";
+    errorMessage ||
+    "⚠️ Uranium AI couldn't get a response. Check your Apps Script deployment, Cloudflare API token, and selected model.";
 
   messages.push({
+
     role: "assistant",
+
     content: errorText
   });
 
   saveActiveChat();
 
-  const visibleIndex = messages.length - 2;
+  const visibleIndex =
+    messages.length - 2;
 
   addMessageToScreen(
     errorText,
     "assistant",
     visibleIndex
   );
-
 }
 
 
@@ -1527,18 +1699,22 @@ function addModelError() {
 
 async function sendMessage() {
 
-  const text = input.value.trim();
+  const text =
+    input.value.trim();
 
   if (!text) return;
 
-
-  const welcome = document.getElementById("welcome");
+  const welcome =
+    document.getElementById(
+      "welcome"
+    );
 
   if (welcome) welcome.remove();
 
-
   messages.push({
+
     role: "user",
+
     content: text
   });
 
@@ -1550,45 +1726,73 @@ async function sendMessage() {
     messages.length - 2
   );
 
-
   input.value = "";
 
   sendBtn.disabled = true;
 
   showTyping();
 
-
   try {
 
-    const response = await fetch(BACKEND_URL, {
+    const response =
+      await fetch(
+        BACKEND_URL,
+        {
+          method: "POST",
 
-      method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+          body: JSON.stringify({
 
-      body: JSON.stringify({
-        model: modelSelect.value,
-        messages: messages
-      })
+            model:
+              modelSelect.value,
 
-    });
+            messages:
+              messages
 
+          })
+        }
+      );
 
     let data;
 
     try {
-      data = await response.json();
-    } catch {
-      throw new Error("Invalid response");
-    }
 
+      data =
+        await response.json();
+
+    } catch {
+
+      throw new Error(
+        "Invalid response from Apps Script"
+      );
+    }
 
     if (!response.ok) {
-      throw new Error("Model failed");
+
+      throw new Error(
+        "HTTP " +
+        response.status +
+        ": " +
+        (
+          data.error ||
+          "Request failed"
+        )
+      );
     }
 
+    if (
+      data.success === false &&
+      data.error
+    ) {
+
+      throw new Error(
+        data.error
+      );
+    }
 
     const reply =
       data.result?.response ||
@@ -1596,19 +1800,40 @@ async function sendMessage() {
       data.result?.message ||
       data.message;
 
-
     if (
       !reply ||
       typeof reply !== "string" ||
-      reply.trim() === "" ||
-      reply.trim().toLowerCase() === "no reply received."
+      reply.trim() === ""
     ) {
-      throw new Error("No reply");
+
+      let cloudflareError =
+        "";
+
+      if (
+        Array.isArray(data.errors) &&
+        data.errors.length
+      ) {
+
+        cloudflareError =
+          data.errors
+            .map(
+              e =>
+                e.message ||
+                JSON.stringify(e)
+            )
+            .join(", ");
+      }
+
+      throw new Error(
+        cloudflareError ||
+        "No reply received"
+      );
     }
 
-
     messages.push({
+
       role: "assistant",
+
       content: reply
     });
 
@@ -1622,21 +1847,29 @@ async function sendMessage() {
       messages.length - 2
     );
 
-
   } catch (error) {
 
     hideTyping();
 
-    addModelError();
+    console.error(
+      "Uranium AI error:",
+      error
+    );
+
+    addModelError(
+      "⚠️ " +
+      (
+        error.message ||
+        "The AI request failed."
+      )
+    );
 
   } finally {
 
     sendBtn.disabled = false;
 
     input.focus();
-
   }
-
 }
 
 
@@ -1644,37 +1877,49 @@ async function sendMessage() {
    REGENERATE
 ========================= */
 
-async function regenerateMessage(messageIndex) {
+async function regenerateMessage(
+  messageIndex
+) {
 
   if (sendBtn.disabled) return;
 
-  const assistantMessage = messages[messageIndex];
+  const assistantMessage =
+    messages[messageIndex];
 
   if (!assistantMessage) return;
 
-  if (assistantMessage.role !== "assistant") return;
-
+  if (
+    assistantMessage.role !==
+    "assistant"
+  ) return;
 
   let userIndex = -1;
 
   for (
-    let index = messageIndex - 1;
+    let index =
+      messageIndex - 1;
     index >= 0;
     index--
   ) {
 
-    if (messages[index].role === "user") {
+    if (
+      messages[index].role ===
+      "user"
+    ) {
+
       userIndex = index;
+
       break;
     }
-
   }
-
 
   if (userIndex === -1) return;
 
-
-  messages = messages.slice(0, messageIndex);
+  messages =
+    messages.slice(
+      0,
+      messageIndex
+    );
 
   saveActiveChat();
 
@@ -1684,38 +1929,62 @@ async function regenerateMessage(messageIndex) {
 
   showTyping();
 
-
   try {
 
-    const response = await fetch(BACKEND_URL, {
+    const response =
+      await fetch(
+        BACKEND_URL,
+        {
+          method: "POST",
 
-      method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+          body: JSON.stringify({
 
-      body: JSON.stringify({
-        model: modelSelect.value,
-        messages: messages
-      })
+            model:
+              modelSelect.value,
 
-    });
+            messages:
+              messages
 
+          })
+        }
+      );
 
     let data;
 
     try {
-      data = await response.json();
-    } catch {
-      throw new Error("Invalid response");
-    }
 
+      data =
+        await response.json();
+
+    } catch {
+
+      throw new Error(
+        "Invalid response from Apps Script"
+      );
+    }
 
     if (!response.ok) {
-      throw new Error("Model failed");
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
     }
 
+    if (
+      data.success === false &&
+      data.error
+    ) {
+
+      throw new Error(
+        data.error
+      );
+    }
 
     const reply =
       data.result?.response ||
@@ -1723,19 +1992,21 @@ async function regenerateMessage(messageIndex) {
       data.result?.message ||
       data.message;
 
-
     if (
       !reply ||
       typeof reply !== "string" ||
-      reply.trim() === "" ||
-      reply.trim().toLowerCase() === "no reply received."
+      reply.trim() === ""
     ) {
-      throw new Error("No reply");
+
+      throw new Error(
+        "No reply received"
+      );
     }
 
-
     messages.push({
+
       role: "assistant",
+
       content: reply
     });
 
@@ -1749,21 +2020,29 @@ async function regenerateMessage(messageIndex) {
       messages.length - 2
     );
 
-
   } catch (error) {
 
     hideTyping();
 
-    addModelError();
+    console.error(
+      "Regenerate error:",
+      error
+    );
+
+    addModelError(
+      "⚠️ " +
+      (
+        error.message ||
+        "Regeneration failed."
+      )
+    );
 
   } finally {
 
     sendBtn.disabled = false;
 
     input.focus();
-
   }
-
 }
 
 
@@ -1776,7 +2055,6 @@ function useSuggestion(text) {
   input.value = text;
 
   sendMessage();
-
 }
 
 
@@ -1784,46 +2062,56 @@ function useSuggestion(text) {
    EVENTS
 ========================= */
 
-input.addEventListener("keydown", event => {
+input.addEventListener(
+  "keydown",
+  event => {
 
-  if (event.key === "Enter" && !event.shiftKey) {
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
 
-    event.preventDefault();
+      event.preventDefault();
 
-    sendMessage();
-
+      sendMessage();
+    }
   }
-
-});
-
+);
 
 sendBtn.addEventListener(
   "click",
   sendMessage
 );
 
+modelSelect.addEventListener(
+  "change",
+  () => {
 
-modelSelect.addEventListener("change", () => {
-  localStorage.setItem(
-    "uranium_ai_last_model",
-    modelSelect.value
-  );
-});
-
-
-const lastModel = localStorage.getItem(
-  "uranium_ai_last_model"
+    localStorage.setItem(
+      "uranium_ai_last_model",
+      modelSelect.value
+    );
+  }
 );
+
+const lastModel =
+  localStorage.getItem(
+    "uranium_ai_last_model"
+  );
 
 if (
   lastModel &&
   [...modelSelect.options].some(
-    option => option.value === lastModel
+    option =>
+      option.value === lastModel
   )
 ) {
-  modelSelect.value = lastModel;
+
+  modelSelect.value =
+    lastModel;
 }
 
+renderHistory();
 
 input.focus();
 
@@ -1831,3 +2119,4 @@ input.focus();
 
 </body>
 </html>
+````
